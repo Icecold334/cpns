@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\GuruController;
 use App\Http\Controllers\PanelController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\SoalController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -17,6 +19,8 @@ Auth::routes(['verify' => true]);
 // })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/panel', [PanelController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::resource('/guru', GuruController::class)->middleware(['auth', 'verified']);
+Route::resource('/siswa', SiswaController::class)->middleware(['auth', 'verified']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

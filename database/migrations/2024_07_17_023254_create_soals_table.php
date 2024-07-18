@@ -13,6 +13,20 @@ return new class extends Migration
     {
         Schema::create('soals', function (Blueprint $table) {
             $table->id();
+            $table->foreignid('id_paket')->references('id')->on('pakets');
+            $table->foreignid('id_kategori')->references('id')->on('kategoris');
+            $table->string('gambar')->nullable();
+            $table->string('soal');
+            $table->string('a');
+            $table->string('b');
+            $table->string('c');
+            $table->string('d');
+            $table->string('e');
+            $table->string('poin_a');
+            $table->string('poin_b');
+            $table->string('poin_c');
+            $table->string('poin_d');
+            $table->string('poin_e');
             $table->timestamps();
         });
     }
