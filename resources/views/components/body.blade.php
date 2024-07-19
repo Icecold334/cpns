@@ -10,7 +10,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>{{ env('APP_NAME') }}</title>
+        <title>{{ $title }} | {{ env('APP_NAME') }}</title>
 
         <!-- Custom fonts for this template-->
         <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="

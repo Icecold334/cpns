@@ -12,7 +12,7 @@ class GuruController extends Controller
      */
     public function index()
     {
-        return view('guru.index');
+        return view('guru.index', ['title' => 'Daftar Guru']);
     }
 
     /**
@@ -20,7 +20,7 @@ class GuruController extends Controller
      */
     public function create()
     {
-        return view('guru.create');
+        return view('guru.create', ['title' => 'Tambah Guru']);
     }
 
     /**
