@@ -9,7 +9,7 @@
                     <input type="text" class="form-control  @error('name') is-invalid @enderror" id="name"
                         placeholder="Nama Guru" wire:model.live="name" autocomplete="off">
                     @error('name')
-                        <div id="name" class="invalid-feedback">
+                        <div class="invalid-feedback">
                             {{ $message }}
                         </div>
                     @enderror
@@ -17,17 +17,19 @@
             </div>
             <div class="col-xl-6 col-md-12 col-sm-12">
                 <div class="form-group mb-3">
-                    <label for="name" class="form-label d-block mb-3">Nama Guru<span
+                    <label for="gender" class="form-label d-block mb-3">Jenis Kelamin<span
                             class="text-danger">*</span></label>
 
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="gender" id="laki" checked>
+                        <input class="form-check-input" type="radio" name="gender" id="laki" wire:model="gender"
+                            value="0">
                         <label class="form-check-label" for="laki">
                             Laki-laki
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="gender" id="perempuan">
+                        <input class="form-check-input" type="radio" name="gender" id="perempuan" wire:model="gender"
+                            value="1">
                         <label class="form-check-label" for="perempuan">
                             Perempuan
                         </label>
@@ -39,11 +41,13 @@
                     <label for="email" class="form-label">Email<span class="text-danger">*</span></label>
                     <input type="text" class="form-control  @error('email') is-invalid @enderror" id="email"
                         placeholder="Email Guru" wire:model.live="email" autocomplete="off">
-                    @error('email')
-                        <div id="email" class="invalid-feedback">
-                            {{ $message }}
+                    @if ($errors->has('email'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('email') }}
                         </div>
-                    @enderror
+                    @else
+                        <div id="emailHelp" class="form-text small">Pastikan alamat email sudah benar.</div>
+                    @endif
                 </div>
             </div>
             <div class="col-xl-12 col-md-12 col-sm-12">
@@ -52,7 +56,7 @@
                     <input type="file" class="form-control  @error('img') is-invalid @enderror" id="img"
                         placeholder="img Guru" wire:model.live="img" autocomplete="off">
                     @error('img')
-                        <div id="img" class="invalid-feedback">
+                        <div class="invalid-feedback">
                             {{ $message }}
                         </div>
                     @enderror

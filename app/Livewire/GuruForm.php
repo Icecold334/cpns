@@ -3,29 +3,44 @@
 
 namespace App\Livewire;
 
-use Livewire\Attributes\Validate;
-use Livewire\WithFileUploads;
+use App\Models\User;
+use Illuminate\Contracts\Session\Session;
 use Livewire\Component;
+use Illuminate\Support\Str;
+use Livewire\WithFileUploads;
+use Livewire\Attributes\Validate;
+use Illuminate\Support\Facades\Hash;
 
 class GuruForm extends Component
 {
     use WithFileUploads;
-    #[Validate('required', message: 'Nama tidak boleh kosong!')]
-    #[Validate('min:6', message: 'Nama minimal :min karakter')]
+    #[Validate('required', message: 'Nama wajib diisi!')]
+    #[Validate('min:3', message: 'Nama terlalu singkat!')]
     public $name;
-    #[Validate('required', message: 'Jenis kelamin tidak boleh kosong!')]
-    public $gender;
-    #[Validate('required', message: 'Email tidak boleh kosong!')]
+    #[Validate('required', message: 'Jenis kelamin wajib diisi!')]
+    public $gender = 0;
+    #[Validate('required', message: 'Email wajib diisi!')]
     #[Validate('email', message: 'Format email salah!')]
+    #[Validate('unique:users', message: 'Email sudah terdaftar!')]
     public $email;
+    #[Validate('nullable')]
     #[Validate('image', message: 'Format file harus jpeg/png/jpg/gif!')]
     #[Validate('max:2048', message: 'Ukuran file maksimal 2MB!')]
     #[Validate('mimes:jpeg,png,jpg,gif', message: 'Format file harus jpeg/png/jpg/gif!')]
     public $img;
     public function save()
     {
-        $validated = $this->validate();
-        return $this->reset();
+        $this->validate();
+        User::create([
+            'name' => $this->name,
+            'email' => $this->email,
+            'gender' => $this->gender,
+            'img' => $this->img,
+            'role' => 2,
+            'password' => Hash::make('password123'),
+
+        ]);
+        return redirect()->to('/guru')->with('icon', 'success')->with('title', 'Berhasil')->with('message', $this->name . ' berhasil ditambahkan!');
     }
 
     public function render()

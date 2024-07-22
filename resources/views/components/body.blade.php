@@ -150,6 +150,10 @@
                 return angka.replace(/[^\d.]/g, '').toString()
             }
         </script>
+        @session('title')
+            <x-alert title="{{ session('title') }}" message="{{ session('message') }}"
+                icon="{{ session('icon') }}"></x-alert>
+        @endsession
         @stack('scripts')
     </body>
 
