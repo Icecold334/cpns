@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+
 
 class GuruController extends Controller
 {
@@ -12,7 +15,7 @@ class GuruController extends Controller
      */
     public function index()
     {
-        return view('guru.index', ['title' => 'Daftar Guru']);
+        return view('guru.index', ['title' => 'Daftar Guru', 'gurus' => User::where('role', 2)->get()]);
     }
 
     /**
@@ -34,9 +37,9 @@ class GuruController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show(User $guru)
     {
-        //
+        return view('guru.show', ['title' => 'Detail Guru', 'user' => $guru]);
     }
 
     /**
@@ -58,8 +61,10 @@ class GuruController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function destroy(User $guru)
     {
-        //
+        Gate::allowIf(Auth::user()->role == 1);
+        $guru->delete();
+        return redirect()->route('guru.index')->with('icon', 'success')->with('title', 'Berhasil')->with('message', $guru->name . ' berhasil dihapus!');
     }
 }
