@@ -45,9 +45,9 @@ class GuruController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
+    public function edit(User $guru)
     {
-        //
+        return view('guru.edit', ['title' => "Ubah $guru->name", 'user' => $guru]);
     }
 
     /**

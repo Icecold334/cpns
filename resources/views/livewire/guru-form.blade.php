@@ -1,5 +1,6 @@
 <div>
-    <form wire:submit.prevent="save" enctype="multipart/form-data">
+
+    <form wire:submit.prevent="@if ($name == null) save @else update @endif" enctype="multipart/form-data">
         @csrf
         <div class="row">
 
