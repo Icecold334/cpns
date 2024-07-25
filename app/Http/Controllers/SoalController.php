@@ -13,7 +13,7 @@ class SoalController extends Controller
      */
     public function index()
     {
-        return view('soal.index');
+        return view('soal.index', ['title' => 'Daftar Soal']);
     }
     /**
      * Show the form for creating a new resource.

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class SiswaController extends Controller
 {
@@ -12,7 +14,7 @@ class SiswaController extends Controller
      */
     public function index()
     {
-        return view('siswa.index');
+        return view('siswa.index', ['title' => 'Daftar Siswa', 'siswas' => User::where('role', 3)->get()]);
     }
 
     /**
@@ -20,7 +22,7 @@ class SiswaController extends Controller
      */
     public function create()
     {
-        //
+        return view('siswa.create', ['title' => 'Tambah Siswa']);
     }
 
     /**
@@ -58,8 +60,11 @@ class SiswaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function destroy(User $siswa)
     {
-        //
+        Gate::allowIf(Auth::user()->role == 1);
+
+        $siswa->delete();
+        return redirect()->route('siswa.index')->with('icon', 'success')->with('title', 'Berhasil')->with('message', $siswa->name . ' berhasil dihapus!');
     }
 }

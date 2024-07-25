@@ -1,17 +1,14 @@
 <?php
 
-
 namespace App\Livewire;
 
 use App\Models\User;
-use Illuminate\Contracts\Session\Session;
 use Livewire\Component;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Validate;
-use Illuminate\Support\Facades\Hash;
 
-class GuruForm extends Component
+class SiswaForm extends Component
 {
     use WithFileUploads;
     public $id;
@@ -38,11 +35,11 @@ class GuruForm extends Component
             'email' => $this->email,
             'gender' => $this->gender,
             'img' => $this->img,
-            'role' => 2,
+            'role' => 3,
             'password' => Hash::make('password123'),
 
         ]);
-        return redirect()->to('/guru')->with('icon', 'success')->with('title', 'Berhasil')->with('message', $this->name . ' berhasil ditambahkan!');
+        return redirect()->to('/siswa')->with('icon', 'success')->with('title', 'Berhasil')->with('message', $this->name . ' berhasil ditambahkan!');
     }
     public function update()
     {
@@ -57,11 +54,10 @@ class GuruForm extends Component
             'gender' => $this->gender,
             'img' => $this->img,
         ]);
-        return redirect()->to('/guru')->with('icon', 'success')->with('title', 'Berhasil')->with('message', $this->name . ' berhasil diubah!');
+        return redirect()->to('/siswa')->with('icon', 'success')->with('title', 'Berhasil')->with('message', $this->name . ' berhasil diubah!');
     }
-
     public function render()
     {
-        return view('livewire.guru-form');
+        return view('livewire.siswa-form');
     }
 }

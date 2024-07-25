@@ -74,7 +74,7 @@
                     label: "Semua",
                     value: -1
                 }],
-                pageLength: 8,
+                pageLength: 10,
                 language: {
                     decimal: "",
                     searchPlaceholder: "Cari Data",

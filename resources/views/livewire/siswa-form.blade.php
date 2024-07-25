@@ -6,9 +6,9 @@
 
             <div class="col-xl-6 col-md-12 col-sm-12">
                 <div class="form-group mb-3">
-                    <label for="name" class="form-label">Nama Guru<span class="text-danger">*</span></label>
+                    <label for="name" class="form-label">Nama Siswa<span class="text-danger">*</span></label>
                     <input type="text" class="form-control  @error('name') is-invalid @enderror" id="name"
-                        placeholder="Nama Guru" wire:model.live="name" autocomplete="off">
+                        placeholder="Nama Siswa" wire:model.live="name" autocomplete="off">
                     @error('name')
                         <div class="invalid-feedback">
                             {{ $message }}
@@ -41,7 +41,7 @@
                 <div class="form-group mb-3">
                     <label for="email" class="form-label">Email<span class="text-danger">*</span></label>
                     <input type="text" class="form-control  @error('email') is-invalid @enderror" id="email"
-                        placeholder="Email Guru" wire:model.live="email" autocomplete="off">
+                        placeholder="Email Siswa" wire:model.live="email" autocomplete="off">
                     @if ($errors->has('email'))
                         <div class="invalid-feedback">
                             {{ $errors->first('email') }}
@@ -55,7 +55,7 @@
                 <div class="form-group mb-3">
                     <label for="img" class="form-label">Foto</label>
                     <input type="file" class="form-control  @error('img') is-invalid @enderror" id="img"
-                        placeholder="img Guru" wire:model.live="img" autocomplete="off">
+                        placeholder="img Siswa" wire:model.live="img" autocomplete="off">
                     @error('img')
                         <div class="invalid-feedback">
                             {{ $message }}
