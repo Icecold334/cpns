@@ -36,17 +36,17 @@ class SiswaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show(User $siswa)
     {
-        //
+        return view('siswa.show', ['title' => 'Detail Siswa', 'user' => $siswa]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
+    public function edit(User $siswa)
     {
-        //
+        return view('siswa.edit', ['title' => "Ubah $siswa->name", 'user' => $siswa]);
     }
 
     /**

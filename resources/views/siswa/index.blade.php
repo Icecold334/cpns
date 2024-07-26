@@ -20,10 +20,10 @@
                         {{-- <td class="text-center">{{ $user->phone ?? '-' }}</td> --}}
                         <td class="text-center">{{ $user->email }}</td>
                         <td class="text-center">
-                            <a href="/guru/{{ $user->id }}" class="btn badge bg-info text-white px-1">
+                            <a href="/siswa/{{ $user->id }}" class="btn badge bg-info text-white px-1">
                                 <i class="fa-solid fa-circle-info"></i>
                             </a>
-                            <a href="/guru/{{ $user->id }}/edit" class="btn badge bg-warning text-white px-1">
+                            <a href="/siswa/{{ $user->id }}/edit" class="btn badge bg-warning text-white px-1">
                                 <i class="fa-solid fa-pen-to-square"></i>
                             </a>
                             <form class="d-inline" action="/siswa/{{ $user->id }}" method="POST"

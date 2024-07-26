@@ -20,9 +20,9 @@ class GuruForm extends Component
     public $name;
     #[Validate('required', message: 'Jenis kelamin wajib diisi!')]
     public $gender = 0;
-    #[Validate('required', message: 'Email wajib diisi!')]
-    #[Validate('email', message: 'Format email salah!')]
-    #[Validate('unique:users', message: 'Email sudah terdaftar!')]
+    // #[Validate('required', message: 'Email wajib diisi!')]
+    // #[Validate('email', message: 'Format email salah!')]
+    // #[Validate('unique:users', message: 'Email sudah terdaftar!')]
     public $email = '';
     #[Validate('nullable')]
     #[Validate('image', message: 'Format file harus jpeg/png/jpg/gif!')]
@@ -32,7 +32,13 @@ class GuruForm extends Component
 
     public function save()
     {
-        $this->validate();
+        $ruleEmail = ['required', 'email', 'unique:users'];
+
+        $this->validate(['email' => $ruleEmail], [
+            'email.required' => 'Email wajib diisi!',
+            'email.email' => 'Format email salah!',
+            'email.unique' => 'Email sudah terdaftar!',
+        ]);
         User::create([
             'name' => $this->name,
             'email' => $this->email,
@@ -50,7 +56,11 @@ class GuruForm extends Component
 
         $ruleEmail = $user->email == $this->email ? ['required', 'email'] : ['required', 'email', 'unique:users'];
 
-        $this->validate(['email' => $ruleEmail]);
+        $this->validate(['email' => $ruleEmail], [
+            'email.required' => 'Email wajib diisi!',
+            'email.email' => 'Format email salah!',
+            'email.unique' => 'Email sudah terdaftar!',
+        ]);
         $user->update([
             'name' => $this->name,
             'email' => $this->email,

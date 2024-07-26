@@ -54,6 +54,10 @@
             <div class="col-xl-12 col-md-12 col-sm-12">
                 <div class="form-group mb-3">
                     <label for="img" class="form-label">Foto</label>
+                    @if ($img)
+                        <img src="{{ $img->temporaryUrl() }}" class="d-block img-thumbnail mb-3" width="30%"
+                            alt="">
+                    @endif
                     <input type="file" class="form-control  @error('img') is-invalid @enderror" id="img"
                         placeholder="img Guru" wire:model.live="img" autocomplete="off">
                     @error('img')
