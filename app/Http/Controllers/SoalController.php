@@ -20,7 +20,7 @@ class SoalController extends Controller
      */
     public function create()
     {
-        //
+        return view('soal.create', ['title' => 'Tambah Soal']);
     }
 
     /**
