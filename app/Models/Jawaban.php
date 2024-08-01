@@ -4,16 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Kategori extends Model
+class Jawaban extends Model
 {
     use HasFactory;
 
     protected $guarded = ['id'];
 
-    public function soal(): HasMany
+    public function soal(): BelongsTo
     {
-        return $this->hasMany(Soal::class, 'kategori_id');
+        return $this->belongsTo(Soal::class, 'soal_id');
     }
 }

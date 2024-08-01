@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -53,10 +54,14 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function paket(): HasMany
     {
-        return $this->hasMany(Paket::class, 'id_guru');
+        return $this->hasMany(Paket::class, 'user_id');
     }
-    public function plot(): HasMany
+    public function hasil(): HasMany
     {
-        return $this->hasMany(PlotPaket::class, 'id_siswa');
+        return $this->hasMany(Hasil::class, 'user_id');
+    }
+    public function respon(): HasMany
+    {
+        return $this->hasMany(Respon::class, 'user_id');
     }
 }

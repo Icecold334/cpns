@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Soal;
 use App\Http\Requests\StoreSoalRequest;
 use App\Http\Requests\UpdateSoalRequest;
+use App\Models\Paket;
 
 class SoalController extends Controller
 {
@@ -13,14 +14,14 @@ class SoalController extends Controller
      */
     public function index()
     {
-        return view('soal.index', ['title' => 'Daftar Soal']);
     }
+
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        return view('soal.create', ['title' => 'Tambah Soal']);
+        //
     }
 
     /**

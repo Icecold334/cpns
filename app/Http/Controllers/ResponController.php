@@ -2,19 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Paket;
-use App\Http\Requests\StorePaketRequest;
-use App\Http\Requests\UpdatePaketRequest;
+use App\Models\Respon;
+use App\Http\Requests\StoreResponRequest;
+use App\Http\Requests\UpdateResponRequest;
 
-class PaketController extends Controller
+class ResponController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        // dd('as');
-        return view('paket.index', ['title' => 'Daftar Paket Soal', 'soals' => Paket::all()]);
+        //
     }
 
     /**
@@ -28,7 +27,7 @@ class PaketController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePaketRequest $request)
+    public function store(StoreResponRequest $request)
     {
         //
     }
@@ -36,7 +35,7 @@ class PaketController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Paket $paket)
+    public function show(Respon $respon)
     {
         //
     }
@@ -44,7 +43,7 @@ class PaketController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Paket $paket)
+    public function edit(Respon $respon)
     {
         //
     }
@@ -52,7 +51,7 @@ class PaketController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePaketRequest $request, Paket $paket)
+    public function update(UpdateResponRequest $request, Respon $respon)
     {
         //
     }
@@ -60,7 +59,7 @@ class PaketController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Paket $paket)
+    public function destroy(Respon $respon)
     {
         //
     }
