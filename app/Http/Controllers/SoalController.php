@@ -12,15 +12,17 @@ class SoalController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Paket $paket)
     {
+        return view('soal.index', ['title' => $paket->nama, 'paket' => $paket, 'soals' => Soal::where('paket_id', $paket->id)->orderBy('category_id')->get()]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Paket $paket)
     {
+        dd($paket);
         //
     }
 
@@ -43,9 +45,9 @@ class SoalController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Soal $soal)
+    public function edit(Paket $paket, Soal $soal)
     {
-        //
+        return view('soal.edit', ['title' => 'Ubah Soal', 'paket' => $paket, 'soals' => Soal::where('paket_id', $paket->id)->orderBy('category_id')->get()]);
     }
 
     /**
@@ -59,7 +61,7 @@ class SoalController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Soal $soal)
+    public function destroy(Paket $paket, Soal $soal)
     {
         //
     }

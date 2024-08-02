@@ -30,5 +30,10 @@ class DatabaseSeeder extends Seeder
         Jawaban::factory()->create(['soal_id' => 1, 'jawaban' => '2', 'benar' => true]);
         Jawaban::factory()->create(['soal_id' => 1, 'jawaban' => '4', 'benar' => false]);
         Jawaban::factory()->create(['soal_id' => 1, 'jawaban' => '1', 'benar' => false]);
+        Soal::factory()->create(['paket_id' => 1, 'kategori_id' => 1, 'soal' => 'Siapa Hokage ke-7?']);
+        Jawaban::factory()->create(['soal_id' => 1, 'jawaban' => 'Sakura', 'benar' => false]);
+        Jawaban::factory()->create(['soal_id' => 1, 'jawaban' => 'Himawari', 'benar' => false]);
+        Jawaban::factory()->create(['soal_id' => 1, 'jawaban' => 'Naruto', 'benar' => true]);
+        Jawaban::factory()->create(['soal_id' => 1, 'jawaban' => 'Jokowi', 'benar' => false]);
     }
 }

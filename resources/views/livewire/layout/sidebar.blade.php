@@ -35,7 +35,7 @@
         {{-- @livewire('layout.components.sidelink', ['title' => 'Dashboard', 'href' => '/panel', 'active' => request()->is('panel')]) --}}
         @livewire('layout.components.sidelink', ['title' => 'Guru', 'href' => '/guru', 'active' => request()->is('guru*'), 'icon' => '<i class="fa-solid fa-chalkboard-user"></i>'])
         @livewire('layout.components.sidelink', ['title' => 'Siswa', 'href' => '/siswa', 'active' => request()->is('siswa*'), 'icon' => '<i class="fa-solid fa-users-rectangle"></i>'])
-        @livewire('layout.components.sidelink', ['title' => 'Soal', 'href' => '/paket', 'active' => request()->is('soal*'), 'icon' => '<i class="fa-solid fa-rectangle-list"></i>'])
+        @livewire('layout.components.sidelink', ['title' => 'Paket Soal', 'href' => '/paket', 'active' => request()->is('paket*'), 'icon' => '<i class="fa-solid fa-rectangle-list"></i>'])
         @livewire('layout.components.sidelink', ['title' => 'Laporan', 'href' => '/laporan', 'active' => request()->is('laporan*'), 'icon' => '<i class="fa-solid fa-chart-pie"></i>'])
 
 

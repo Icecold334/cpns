@@ -19,10 +19,11 @@ Auth::routes(['verify' => true]);
 //     return view('livewire.layout.body');
 // })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/panel', [PanelController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
-Route::resource('/guru', GuruController::class)->middleware(['auth', 'verified']);
-Route::resource('/siswa', SiswaController::class)->middleware(['auth', 'verified']);
-Route::resource('/paket', PaketController::class)->middleware(['auth', 'verified']);
+Route::get('panel', [PanelController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::resource('guru', GuruController::class)->middleware(['auth', 'verified']);
+Route::resource('siswa', SiswaController::class)->middleware(['auth', 'verified']);
+Route::resource('paket', PaketController::class)->middleware(['auth', 'verified']);
+Route::resource('paket.soal', SoalController::class)->middleware(['auth', 'verified']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

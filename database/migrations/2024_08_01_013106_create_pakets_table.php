@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('pakets', function (Blueprint $table) {
             $table->id();
-            $table->text('uuid');
+            $table->string('uuid')->default();
             $table->string('nama');
             $table->foreignId('user_id')->constrained('users');
             $table->timestamps();

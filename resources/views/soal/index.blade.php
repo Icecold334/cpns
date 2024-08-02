@@ -1,45 +1,44 @@
 <x-body>
     <x-slot:title>{{ $title }}</x-slot>
-    <h1>Daftar Paket Soal <a href="{{ route('paket.create') }}"><i class="fa-solid fa-circle-plus"></i></a></h1>
+    <h1><a href="{{ route('paket.index') }}"><i class="fa-solid fa-circle-chevron-left"></i></a> {{ $title }} <a
+            href="{{ route('paket.soal.create', ['paket' => $paket->uuid]) }}"><i class="fa-solid fa-circle-plus"></i></a>
+    </h1>
     <div class="table-responsive">
-        <table class="table" id="pakets">
+        <table class="table" id="soals">
             <thead>
                 <tr>
                     <th class="text-center" style="width: 5%">#</th>
-                    <th class="text-center">Nama</th>
-                    <th class="text-center">Penulis</th>
-                    <th class="text-center">Jumlah Soal</th>
+                    <th class="text-center">Soal</th>
+                    <th class="text-center" style="width: 30%">Kategori</th>
                     <th class="text-center" style="width: 10%"></th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($pakets as $paket)
+                @foreach ($soals as $soal)
                     <tr>
                         <td class="text-center">{{ $loop->iteration }}</td>
-                        <td>{{ $paket->nama }}</td>
-                        <td>{{ $paket->user->name }}</td>
-                        <td class="text-center">{{ $paket->soal->count() }}</td>
+                        <td>{{ $soal->soal }}</td>
+                        <td>{{ $soal->kategori->deskripsi }}</td>
                         <td class="text-center">
-                            <a href="/paket/{{ $paket->uuid }}/soal" class="btn badge bg-info text-white px-1">
-                                <i class="fa-solid fa-circle-info"></i>
-                            </a>
-                            <a href="/paket/{{ $paket->uuid }}/edit" class="btn badge bg-warning text-white px-1">
+                            <a href="{{ route('paket.soal.edit', ['paket' => $paket->uuid, 'soal' => $soal->uuid]) }}"
+                                class="btn badge bg-warning text-white px-1">
                                 <i class="fa-solid fa-pen-to-square"></i>
                             </a>
-                            <form class="d-inline" action="/paket/{{ $paket->uuid }}" method="POST"
-                                id="formDel{{ $paket->uuid }}">
+                            <form class="d-inline"
+                                action="{{ route('paket.soal.destroy', ['paket' => $paket->uuid, 'soal' => $soal->uuid]) }}"
+                                method="POST" id="formDel{{ $soal->uuid }}">
                                 @csrf
                                 @method('DELETE')
                             </form>
-                            <button class="btn badge bg-danger text-white px-1" id="delete{{ $paket->uuid }}">
+                            <button class="btn badge bg-danger text-white px-1" id="delete{{ $soal->uuid }}">
                                 <i class="fa-solid fa-trash"></i>
                             </button>
                             @push('scripts')
                                 <script>
-                                    $('#delete{{ $paket->uuid }}').click(() => {
+                                    $('#delete{{ $soal->uuid }}').click(() => {
                                         Swal.fire({
                                             title: "Apa Kamu Yakin?",
-                                            text: "Yakin Hapus {{ $paket->nama }}?",
+                                            text: "Yakin hapus soal?",
                                             icon: "question",
                                             showCancelButton: true,
                                             confirmButtonColor: "#3085d6",
@@ -48,7 +47,7 @@
                                             cancelButtonText: "Tidak"
                                         }).then((result) => {
                                             if (result.isConfirmed) {
-                                                let form = $('#formDel{{ $paket->uuid }}')
+                                                let form = $('#formDel{{ $soal->uuid }}')
                                                 form.submit();
                                             }
                                         });
@@ -63,11 +62,11 @@
     </div>
     @push('scripts')
         <script>
-            $("#pakets").DataTable({
+            $("#soals").DataTable({
                 "responsive": true,
                 columnDefs: [{
                     orderable: false,
-                    targets: 4
+                    targets: 3
                 }],
                 paging: true,
                 lengthMenu: [5, 10, 20, {

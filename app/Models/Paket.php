@@ -18,12 +18,15 @@ class Paket extends Model
     {
         return 'uuid';
     }
-
-    public function setUuidAttribute($value)
+    protected static function boot()
     {
-        $this->attributes['uuid'] = $value ?: 'tanamtanamubi'; // Adjust length as needed
-    }
+        parent::boot();
 
+        static::creating(function ($model) {
+            // Mengisi kolom dengan string acak unik sebelum model disimpan
+            $model->uuid = fake()->uuid();
+        });
+    }
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');

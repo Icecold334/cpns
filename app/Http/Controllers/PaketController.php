@@ -14,7 +14,7 @@ class PaketController extends Controller
     public function index()
     {
         // dd('as');
-        return view('paket.index', ['title' => 'Daftar Paket Soal', 'soals' => Paket::all()]);
+        return view('paket.index', ['title' => 'Daftar Paket Soal', 'pakets' => Paket::all()]);
     }
 
     /**
