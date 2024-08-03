@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('paket_id')->constrained('pakets');
             $table->foreignId('kategori_id')->constrained('kategoris');
             $table->string('soal');
+            $table->string('img')->nullable();
             $table->timestamps();
         });
     }

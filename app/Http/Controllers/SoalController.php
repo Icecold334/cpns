@@ -22,8 +22,7 @@ class SoalController extends Controller
      */
     public function create(Paket $paket)
     {
-        dd($paket);
-        //
+        return view('soal.create', ['title' => 'Tambah Soal']);
     }
 
     /**
@@ -47,7 +46,7 @@ class SoalController extends Controller
      */
     public function edit(Paket $paket, Soal $soal)
     {
-        return view('soal.edit', ['title' => 'Ubah Soal', 'paket' => $paket, 'soals' => Soal::where('paket_id', $paket->id)->orderBy('category_id')->get()]);
+        return view('soal.edit', ['title' => 'Ubah Soal', 'paket' => $paket, 'soal' => $soal]);
     }
 
     /**

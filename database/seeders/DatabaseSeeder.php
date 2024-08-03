@@ -25,15 +25,17 @@ class DatabaseSeeder extends Seeder
         Kategori::factory()->create(['nama' => 'TIU', 'deskripsi' => 'Tes Intelegensia Umum']);
         Kategori::factory()->create(['nama' => 'TKP', 'deskripsi' => 'Tes Karakteristik Pribadi']);
         Paket::factory()->create(['nama' => 'Paket Soal A', 'user_id' => 1]);
-        Soal::factory()->create(['paket_id' => 1, 'kategori_id' => 1, 'soal' => 'Berapa 1 + 1?']);
+        Soal::factory()->create(['paket_id' => 1, 'kategori_id' => 2, 'soal' => 'Berapa 1 + 1?']);
         Jawaban::factory()->create(['soal_id' => 1, 'jawaban' => '3', 'benar' => false]);
+        Jawaban::factory()->create(['soal_id' => 1, 'jawaban' => '8', 'benar' => false]);
         Jawaban::factory()->create(['soal_id' => 1, 'jawaban' => '2', 'benar' => true]);
         Jawaban::factory()->create(['soal_id' => 1, 'jawaban' => '4', 'benar' => false]);
         Jawaban::factory()->create(['soal_id' => 1, 'jawaban' => '1', 'benar' => false]);
         Soal::factory()->create(['paket_id' => 1, 'kategori_id' => 1, 'soal' => 'Siapa Hokage ke-7?']);
-        Jawaban::factory()->create(['soal_id' => 1, 'jawaban' => 'Sakura', 'benar' => false]);
-        Jawaban::factory()->create(['soal_id' => 1, 'jawaban' => 'Himawari', 'benar' => false]);
-        Jawaban::factory()->create(['soal_id' => 1, 'jawaban' => 'Naruto', 'benar' => true]);
-        Jawaban::factory()->create(['soal_id' => 1, 'jawaban' => 'Jokowi', 'benar' => false]);
+        Jawaban::factory()->create(['soal_id' => 2, 'jawaban' => 'Sakura', 'benar' => false]);
+        Jawaban::factory()->create(['soal_id' => 2, 'jawaban' => 'Jan Ethes', 'benar' => false]);
+        Jawaban::factory()->create(['soal_id' => 2, 'jawaban' => 'Himawari', 'benar' => false]);
+        Jawaban::factory()->create(['soal_id' => 2, 'jawaban' => 'Naruto', 'benar' => true]);
+        Jawaban::factory()->create(['soal_id' => 2, 'jawaban' => 'Jokowi', 'benar' => false]);
     }
 }
