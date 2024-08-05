@@ -13,7 +13,6 @@ class PaketController extends Controller
      */
     public function index()
     {
-        // dd('as');
         return view('paket.index', ['title' => 'Daftar Paket Soal', 'pakets' => Paket::all()]);
     }
 
@@ -22,7 +21,7 @@ class PaketController extends Controller
      */
     public function create()
     {
-        //
+        return view('paket.create', ['title' => 'Tambah Paket Soal']);
     }
 
     /**

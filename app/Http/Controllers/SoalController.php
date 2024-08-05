@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Soal;
 use App\Http\Requests\StoreSoalRequest;
 use App\Http\Requests\UpdateSoalRequest;
+use App\Models\Jawaban;
 use App\Models\Paket;
 
 class SoalController extends Controller
@@ -62,6 +63,8 @@ class SoalController extends Controller
      */
     public function destroy(Paket $paket, Soal $soal)
     {
-        //
+        Jawaban::where('soal_id', $soal->id)->delete();
+        $soal->delete();
+        return redirect()->route('paket.soal.index', ['paket' => Paket::where('id', $paket->id)->first()->uuid])->with('icon', 'success')->with('title', 'Berhasil')->with('message', 'Soal berhasil dihapus!');
     }
 }
