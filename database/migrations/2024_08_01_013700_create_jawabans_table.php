@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('jawabans', function (Blueprint $table) {
             $table->id();
             $table->foreignId('soal_id')->constrained('soals',);
+            $table->string('row');
             $table->string('jawaban');
             $table->boolean('benar')->default(false);
             $table->integer('poin')->default(0);

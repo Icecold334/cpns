@@ -22,7 +22,7 @@ class SoalController extends Controller
      */
     public function create(Paket $paket)
     {
-        return view('soal.create', ['title' => 'Tambah Soal']);
+        return view('soal.create', ['title' => 'Tambah Soal', 'paket' => $paket]);
     }
 
     /**

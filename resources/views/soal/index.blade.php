@@ -9,6 +9,7 @@
                 <tr>
                     <th class="text-center" style="width: 5%">#</th>
                     <th class="text-center">Soal</th>
+                    <th class="text-center" style="width: 30%">Jawaban</th>
                     <th class="text-center" style="width: 30%">Kategori</th>
                     <th class="text-center" style="width: 10%"></th>
                 </tr>
@@ -17,7 +18,8 @@
                 @foreach ($soals as $soal)
                     <tr>
                         <td class="text-center">{{ $loop->iteration }}</td>
-                        <td>{{ $soal->soal }}</td>
+                        <td>{{ Str::words($soal->soal, 4, '...') }}</td>
+                        <td>{{ Str::words($soal->jawaban->where('benar', true)->first()->jawaban, 4, '...') }}</td>
                         <td>{{ $soal->kategori->deskripsi }}</td>
                         <td class="text-center">
                             <a href="{{ route('paket.soal.edit', ['paket' => $paket->uuid, 'soal' => $soal->uuid]) }}"

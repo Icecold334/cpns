@@ -2,11 +2,11 @@
 
 namespace App\Livewire;
 
-use App\Models\Jawaban;
-use App\Models\Kategori;
+use App\Models\Soal;
 use App\Models\Paket;
+use App\Models\Jawaban;
 use Livewire\Component;
-use Livewire\Attributes\Layout;
+use App\Models\Kategori;
 use Livewire\Attributes\Validate;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
 
@@ -14,13 +14,12 @@ class CreateSoal extends Component
 {
 
     use WithFileUploads;
+    public $paket;
     public $soal_array;
     #[Validate('required', message: 'Nama wajib diisi!')]
     public $soal;
-    public $uuid;
-    public $paket_id;
+    #[Validate('required', message: 'Pilih Kategori!')]
     public $kategori_id;
-    public $img;
     #[Validate('required', message: 'Nama wajib diisi!')]
     public $kategoris;
     #[Validate('required', message: 'a!')]
@@ -33,21 +32,27 @@ class CreateSoal extends Component
     public $d;
     #[Validate('required', message: 'e!')]
     public $e;
+    public $benar;
+    public $img;
+    public $jawaban_array;
 
     public function mount()
     {
         $this->kategoris = Kategori::all();
-        $this->soal = $this->soal_array->soal;
-        $this->img = $this->soal_array->img;
-        $this->kategori_id = $this->soal_array->kategori_id;
-        $this->a = Jawaban::where('soal_id', $this->soal_array->id)->skip(0)->take(1)->first()->jawaban;
-        $this->b = Jawaban::where('soal_id', $this->soal_array->id)->skip(1)->take(1)->first()->jawaban;
-        $this->c = Jawaban::where('soal_id', $this->soal_array->id)->skip(2)->take(1)->first()->jawaban;
-        $this->d = Jawaban::where('soal_id', $this->soal_array->id)->skip(3)->take(1)->first()->jawaban;
-        $this->e = Jawaban::where('soal_id', $this->soal_array->id)->skip(4)->take(1)->first()->jawaban;
+        if ($this->soal_array != null) {
+            $this->soal = $this->soal_array->soal;
+            $this->img = $this->soal_array->img;
+            $this->kategori_id = $this->soal_array->kategori_id;
+            $this->jawaban_array = Jawaban::where('soal_id', $this->soal_array->id)->get();
+            $this->a = $this->jawaban_array[0]->jawaban;
+            $this->b = $this->jawaban_array[1]->jawaban;
+            $this->c = $this->jawaban_array[2]->jawaban;
+            $this->d = $this->jawaban_array[3]->jawaban;
+            $this->e = $this->jawaban_array[4]->jawaban;
+            $this->benar = $this->jawaban_array->where('benar', 1)->first()->row;
+        }
     }
 
-    // save
     public function update()
     {
         $this->validate();
@@ -55,20 +60,115 @@ class CreateSoal extends Component
             'soal' => $this->soal,
             'kategori_id' => $this->kategori_id
         ]);
-
-        $jawabanA = Jawaban::where('soal_id', $this->soal_array->id)->get()[0];
-        $jawabanA->update(['jawaban' => $this->a]);
-        $jawabanB = Jawaban::where('soal_id', $this->soal_array->id)->get()[1];
-        $jawabanB->update(['jawaban' => $this->b]);
-        $jawabanC = Jawaban::where('soal_id', $this->soal_array->id)->get()[2];
-        $jawabanC->update(['jawaban' => $this->c]);
-        $jawabanD = Jawaban::where('soal_id', $this->soal_array->id)->get()[3];
-        $jawabanD->update(['jawaban' => $this->d]);
-        $jawabanE = Jawaban::where('soal_id', $this->soal_array->id)->get()[4];
-        $jawabanE->update(['jawaban' => $this->e]);
-        // dd($jawaban);
-        return redirect()->route('paket.soal.index', ['paket' => Paket::where('id', $this->soal_array->paket_id)->first()->uuid])->with('icon', 'success')->with('title', 'Berhasil')->with('message', 'Soal berhasil diubah!');
+        if ($this->kategori_id != 3) {
+            Jawaban::where('soal_id', $this->soal_array->id)->where('row', '=', $this->benar)->update(['benar' => 1]);
+            Jawaban::where('soal_id', $this->soal_array->id)->where('row', '!=', $this->benar)->update(['benar' => 0]);
+            $this->jawaban_array[0]->update(['jawaban' => $this->a, 'poin' => 0]);
+            $this->jawaban_array[1]->update(['jawaban' => $this->b, 'poin' => 0]);
+            $this->jawaban_array[2]->update(['jawaban' => $this->c, 'poin' => 0]);
+            $this->jawaban_array[3]->update(['jawaban' => $this->d, 'poin' => 0]);
+            $this->jawaban_array[4]->update(['jawaban' => $this->e, 'poin' => 0]);
+        } else {
+            Jawaban::where('soal_id', $this->soal_array->id)->update(['benar' => 1]);
+            $this->jawaban_array[0]->update(['jawaban' => $this->a, 'poin' => 1]);
+            $this->jawaban_array[1]->update(['jawaban' => $this->b, 'poin' => 2]);
+            $this->jawaban_array[2]->update(['jawaban' => $this->c, 'poin' => 3]);
+            $this->jawaban_array[3]->update(['jawaban' => $this->d, 'poin' => 4]);
+            $this->jawaban_array[4]->update(['jawaban' => $this->e, 'poin' => 5]);
+        }
+        return redirect()->route('paket.soal.edit', ['paket' => Paket::where('id', $this->soal_array->paket_id)->first()->uuid, 'soal' => $this->soal_array->uuid])->with('icon', 'success')->with('title', 'Berhasil')->with('message', 'Soal berhasil diubah!');
     }
+
+    public function save()
+    {
+        $this->validate();
+        $soal = new Soal();
+        $soal->paket_id = $this->paket->id;
+        $soal->kategori_id = $this->kategori_id;
+        $soal->soal = $this->soal;
+        $soal->img = $this->img;
+        $soal->save();
+        if ($this->kategori_id != 3) {
+            // a
+            $jawaban = new Jawaban();
+            $jawaban->soal_id = $soal->id;
+            $jawaban->row = 1;
+            $jawaban->jawaban = $this->a;
+            $jawaban->benar = $this->benar == 1 ? 1 : 0;
+            $jawaban->save();
+            // b
+            $jawaban = new Jawaban();
+            $jawaban->soal_id = $soal->id;
+            $jawaban->row = 2;
+            $jawaban->jawaban = $this->b;
+            $jawaban->benar = $this->benar == 2 ? 1 : 0;
+            $jawaban->save();
+            // c
+            $jawaban = new Jawaban();
+            $jawaban->soal_id = $soal->id;
+            $jawaban->row = 3;
+            $jawaban->jawaban = $this->c;
+            $jawaban->benar = $this->benar == 3 ? 1 : 0;
+            $jawaban->save();
+            // d
+            $jawaban = new Jawaban();
+            $jawaban->soal_id = $soal->id;
+            $jawaban->row = 4;
+            $jawaban->jawaban = $this->d;
+            $jawaban->benar = $this->benar == 4 ? 1 : 0;
+            $jawaban->save();
+            // e
+            $jawaban = new Jawaban();
+            $jawaban->soal_id = $soal->id;
+            $jawaban->row = 5;
+            $jawaban->jawaban = $this->e;
+            $jawaban->benar = $this->benar == 5 ? 1 : 0;
+            $jawaban->save();
+        } else {
+            // a
+            $jawaban = new Jawaban();
+            $jawaban->soal_id = $soal->id;
+            $jawaban->row = 1;
+            $jawaban->jawaban = $this->a;
+            $jawaban->benar = 1;
+            $jawaban->poin = $jawaban->row;
+            $jawaban->save();
+            // b
+            $jawaban = new Jawaban();
+            $jawaban->soal_id = $soal->id;
+            $jawaban->row = 2;
+            $jawaban->jawaban = $this->b;
+            $jawaban->benar = 1;
+            $jawaban->poin = $jawaban->row;
+            $jawaban->save();
+            // c
+            $jawaban = new Jawaban();
+            $jawaban->soal_id = $soal->id;
+            $jawaban->row = 3;
+            $jawaban->jawaban = $this->c;
+            $jawaban->benar = 1;
+            $jawaban->poin = $jawaban->row;
+            $jawaban->save();
+            // d
+            $jawaban = new Jawaban();
+            $jawaban->soal_id = $soal->id;
+            $jawaban->row = 4;
+            $jawaban->jawaban = $this->d;
+            $jawaban->benar = 1;
+            $jawaban->poin = $jawaban->row;
+            $jawaban->save();
+            // e
+            $jawaban = new Jawaban();
+            $jawaban->soal_id = $soal->id;
+            $jawaban->row = 5;
+            $jawaban->jawaban = $this->e;
+            $jawaban->benar = 1;
+            $jawaban->poin = $jawaban->row;
+            $jawaban->save();
+        }
+    }
+
+
     public function render()
     {
         return view('livewire.create-soal');
