@@ -6,11 +6,12 @@
             <div class="col-xl-12 col-md-12 col-sm-12">
                 <div class="form-group mb-3">
                     <label for="img" class="form-label">Foto</label>
+
                     @if ($img)
                         <div class="row justify-content-center">
                             <div class="col-6">
-                                <img src="{{ $img->temporaryUrl() }}" class="img-thumbnail items-center mb-3"
-                                    alt="">
+                                <img src="{{ is_string($img) ? asset($img) : $img->temporaryUrl() }}"
+                                    class="img-thumbnail items-center mb-3" alt="">
                             </div>
                         </div>
                     @endif
@@ -145,5 +146,8 @@
         <button type="submit" class="btn btn-primary">Simpan</button>
 
     </form>
+    {{-- @if ($title_alert) --}}
+    <x-alert title="{{ $title_alert }}" message="{{ $message_alert }}" icon="{{ $icon_alert }}"></x-alert>
+    {{-- @endif --}}
 
 </div>

@@ -1,5 +1,5 @@
 <script>
-    let timerInterval;
+    var timerInterval;
     Swal.fire({
         title: "{{ $title }}",
         icon: "{{ $icon }}",

@@ -8,6 +8,8 @@ use App\Models\Jawaban;
 use Livewire\Component;
 use App\Models\Kategori;
 use Livewire\Attributes\Validate;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
 
 class CreateSoal extends Component
@@ -32,9 +34,16 @@ class CreateSoal extends Component
     public $d;
     #[Validate('required', message: 'e!')]
     public $e;
-    public $benar;
+    #[Validate('nullable')]
+    #[Validate('image', message: 'Format file harus jpeg/png/jpg/gif!')]
+    #[Validate('max:2048', message: 'Ukuran file maksimal 2MB!')]
+    #[Validate('mimes:jpeg,png,jpg,gif', message: 'Format file harus jpeg/png/jpg/gif!')]
     public $img;
+    public $benar;
     public $jawaban_array;
+    public $title_alert;
+    public $message_alert;
+    public $icon_alert;
 
     public function mount()
     {
@@ -56,9 +65,16 @@ class CreateSoal extends Component
     public function update()
     {
         $this->validate();
+        if ($this->img != null && !is_string($this->img)) {
+            Storage::delete(str_replace('storage', 'public', $this->soal_array->img));
+            $img =  str_replace('public', 'storage', $this->img->store('public/soal'));
+        } else {
+            $img = $this->soal_array->img;
+        }
         $this->soal_array->update([
             'soal' => $this->soal,
-            'kategori_id' => $this->kategori_id
+            'kategori_id' => $this->kategori_id,
+            'img' => $img
         ]);
         if ($this->kategori_id != 3) {
             Jawaban::where('soal_id', $this->soal_array->id)->where('row', '=', $this->benar)->update(['benar' => 1]);
@@ -86,7 +102,7 @@ class CreateSoal extends Component
         $soal->paket_id = $this->paket->id;
         $soal->kategori_id = $this->kategori_id;
         $soal->soal = $this->soal;
-        $soal->img = $this->img;
+        $soal->img = $this->img != null ? str_replace('public', 'storage', $this->img->store('public/soal')) : null;
         $soal->save();
         if ($this->kategori_id != 3) {
             // a
@@ -166,6 +182,11 @@ class CreateSoal extends Component
             $jawaban->poin = $jawaban->row;
             $jawaban->save();
         }
+        $this->title_alert = 'Berhasil';
+        $this->message_alert = 'Soal berhasil ditambahkan!';
+        $this->icon_alert = 'success';
+
+        // $this->resetExcept(['kategoris']);
     }
 
 

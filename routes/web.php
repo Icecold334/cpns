@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/mikro', function () {
+    return  'alo';
+});
 
 Auth::routes(['verify' => true]);
 
