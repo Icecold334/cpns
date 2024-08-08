@@ -97,6 +97,9 @@ class CreateSoal extends Component
 
     public function save()
     {
+        $this->title_alert = null;
+        $this->message_alert = null;
+        $this->icon_alert = null;
         $this->validate();
         $soal = new Soal();
         $soal->paket_id = $this->paket->id;
@@ -186,7 +189,7 @@ class CreateSoal extends Component
         $this->message_alert = 'Soal berhasil ditambahkan!';
         $this->icon_alert = 'success';
 
-        // $this->resetExcept(['kategoris']);
+        $this->resetExcept(['kategoris', 'paket', 'title_alert', 'message_alert', 'icon_alert']);
     }
 
 

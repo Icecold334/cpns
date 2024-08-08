@@ -24,7 +24,8 @@
                     @enderror
                 </div>
             </div>
-            <div class="{{ $kategori_id == 3 ? 'col-xl-12 col-md-12 col-sm-12' : 'col-xl-8 col-md-8 col-sm-12' }} ">
+            <div
+                class="{{ $kategori_id == null || $kategori_id == 3 ? 'col-xl-12 col-md-12 col-sm-12' : 'col-xl-8 col-md-8 col-sm-12' }} ">
                 <div class="form-group mb-3">
                     <label for="kategori_id" class="form-label">Kategori<span class="text-danger">*</span></label>
                     <select class="custom-select @error('kategori_id')  is-invalid @enderror"
@@ -42,7 +43,7 @@
                     @enderror
                 </div>
             </div>
-            <div class="{{ $kategori_id == 3 ? 'd-none' : '' }} col-xl-4 col-md-4 col-sm-12">
+            <div class="{{ $kategori_id == null || $kategori_id == 3 ? 'd-none' : '' }} col-xl-4 col-md-4 col-sm-12">
                 <div class="form-group mb-3">
                     <label for="benar" class="form-label">Jawaban Benar<span class="text-danger">*</span></label>
                     <select class="custom-select @error('benar') is-invalid @enderror" aria-label="Pilih Kategori"
@@ -143,11 +144,12 @@
                 </div>
             </div>
         </div>
+        @if ($title_alert != null)
+            <livewire:alert :message="$message_alert" :title="$title_alert" :icon="$icon_alert" />
+        @endif
         <button type="submit" class="btn btn-primary">Simpan</button>
 
     </form>
-    {{-- @if ($title_alert) --}}
-    <x-alert title="{{ $title_alert }}" message="{{ $message_alert }}" icon="{{ $icon_alert }}"></x-alert>
-    {{-- @endif --}}
+
 
 </div>

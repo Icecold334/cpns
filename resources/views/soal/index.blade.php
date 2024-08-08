@@ -1,8 +1,22 @@
 <x-body>
     <x-slot:title>{{ $title }}</x-slot>
-    <h1><a href="{{ route('paket.index') }}"><i class="fa-solid fa-circle-chevron-left"></i></a> {{ $title }} <a
-            href="{{ route('paket.soal.create', ['paket' => $paket->uuid]) }}"><i class="fa-solid fa-circle-plus"></i></a>
-    </h1>
+    <div class="row">
+
+        <div class="col-xl-6 col-md-12 col-sm-12">
+            <h1 class=""><a href="{{ route('paket.index') }}"><i class="fa-solid fa-circle-chevron-left"></i></a>
+                {{ $title }}
+                <a href="{{ route('paket.soal.create', ['paket' => $paket->uuid]) }}"><i
+                        class="fa-solid fa-circle-plus"></i></a>
+            </h1>
+        </div>
+        <div
+            class="col-xl-6 col-md-12 col-sm-12 d-flex justify-content-end justify-content-md-end justify-content-sm-start align-items-center">
+            <h4 class="align-middle mb-0">
+                Penulis : {{ $paket->user->name }}
+                Jumlah Soal : {{ $paket->soal->count() }}
+            </h4>
+        </div>
+    </div>
     <div class="table-responsive">
         <table class="table" id="soals">
             <thead>
@@ -19,7 +33,8 @@
                     <tr>
                         <td class="text-center">{{ $loop->iteration }}</td>
                         <td>{{ Str::words($soal->soal, 4, '...') }}</td>
-                        <td>{{ Str::words($soal->jawaban->where('benar', true)->first()->jawaban, 4, '...') }}</td>
+                        <td>{{ $soal->kategori->id != 3 ? Str::words($soal->jawaban->where('benar', true)->first()->jawaban, 4, '...') : '-' }}
+                        </td>
                         <td>{{ $soal->kategori->deskripsi }}</td>
                         <td class="text-center">
                             <a href="{{ route('paket.soal.edit', ['paket' => $paket->uuid, 'soal' => $soal->uuid]) }}"
@@ -68,7 +83,7 @@
                 "responsive": true,
                 columnDefs: [{
                     orderable: false,
-                    targets: 3
+                    targets: 4
                 }],
                 paging: true,
                 lengthMenu: [5, 10, 20, {
