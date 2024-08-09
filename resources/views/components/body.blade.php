@@ -40,7 +40,9 @@
         <div id="wrapper">
 
             <!-- Sidebar -->
-            @livewire('layout.sidebar')
+            @if (!request()->is('paket/test*'))
+                @livewire('layout.sidebar')
+            @endif
             <!-- End of Sidebar -->
 
             <!-- Content Wrapper -->
@@ -48,13 +50,14 @@
 
                 <!-- Main Content -->
                 <div id="content">
-
-                    <!-- Topbar -->
-                    @livewire('layout.navbar')
-                    <!-- End of Topbar -->
+                    @if (!request()->is('paket/test*'))
+                        <!-- Topbar -->
+                        @livewire('layout.navbar')
+                        <!-- End of Topbar -->
+                    @endif
 
                     <!-- Begin Page Content -->
-                    <div class="container-fluid">
+                    <div class="container-fluid {{ request()->is('paket/test*') ? 'my-5 py-3' : '' }}">
 
                         <!-- Page Heading -->
                         {{ $slot }}
@@ -65,15 +68,17 @@
                 </div>
                 <!-- End of Main Content -->
 
-                <!-- Footer -->
-                <footer class="sticky-footer bg-white">
-                    <div class="container my-auto">
-                        <div class="copyright text-center my-auto">
-                            <span>Copyright &copy; {{ env('APP_NAME') }} 2020</span>
+                @if (!request()->is('paket/test*'))
+                    <!-- Footer -->
+                    <footer class="sticky-footer  bg-white">
+                        <div class="container my-auto">
+                            <div class="copyright text-center my-auto">
+                                <span>Copyright &copy; {{ env('APP_NAME') }} 2020</span>
+                            </div>
                         </div>
-                    </div>
-                </footer>
-                <!-- End of Footer -->
+                    </footer>
+                    <!-- End of Footer -->
+                @endif
 
             </div>
             <!-- End of Content Wrapper -->
@@ -82,7 +87,8 @@
         <!-- End of Page Wrapper -->
 
         <!-- Scroll to Top Button-->
-        <a class="scroll-to-top rounded" href="#page-top">
+        <a class="scroll-to-top
+                        rounded" href="#page-top">
             <i class="fas fa-angle-up"></i>
         </a>
 
@@ -97,7 +103,8 @@
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
-                    <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                    <div class="modal-body">Select "Logout" below if you are ready to end your current
+                        session.</div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
                         <a class="btn btn-primary" href="login.html">Logout</a>
@@ -105,6 +112,7 @@
                 </div>
             </div>
         </div>
+        @stack('html')
 
         <!-- Bootstrap core JavaScript-->
         <script src="/vendor/jquery/jquery.min.js"></script>

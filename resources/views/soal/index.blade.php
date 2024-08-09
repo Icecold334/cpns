@@ -5,16 +5,57 @@
         <div class="col-xl-6 col-md-12 col-sm-12">
             <h1 class=""><a href="{{ route('paket.index') }}"><i class="fa-solid fa-circle-chevron-left"></i></a>
                 {{ $title }}
-                <a href="{{ route('paket.soal.create', ['paket' => $paket->uuid]) }}"><i
-                        class="fa-solid fa-circle-plus"></i></a>
+
             </h1>
         </div>
         <div
-            class="col-xl-6 col-md-12 col-sm-12 d-flex justify-content-end justify-content-md-end justify-content-sm-start align-items-center">
-            <h4 class="align-middle mb-0">
-                Penulis : {{ $paket->user->name }}
-                Jumlah Soal : {{ $paket->soal->count() }}
-            </h4>
+            class="col-xl-6 col-md-12 col-sm-12  d-flex justify-content-xl-end justify-content-md-end justify-content-sm-start align-items-center">
+            <a href="{{ route('paket.soal.create', ['paket' => $paket->uuid]) }}" class="btn btn-outline-primary mx-3"><i
+                    class="fa-solid fa-circle-plus"></i> Tambah Soal</a>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#info-soal">
+                <i class="fa-solid fa-circle-info"></i> Informasi Paket Soal
+            </button>
+            @push('html')
+                <div class="modal fade" id="info-soal" tabindex="-1" aria-labelledby="info-soalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="info-soalLabel">Informasi Paket Soal</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <table>
+                                    <tr>
+                                        <td>Nama Paket</td>
+                                        <td>:</td>
+                                        <td>{{ $paket->nama }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Penulis</td>
+                                        <td>:</td>
+                                        <td>{{ $paket->user->name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Jumlah Soal</td>
+                                        <td>:</td>
+                                        <td>{{ $paket->soal->count() }} Soal</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Durasi</td>
+                                        <td>:</td>
+                                        <td>120 menit</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endpush
         </div>
     </div>
     <div class="table-responsive">
@@ -33,7 +74,8 @@
                     <tr>
                         <td class="text-center">{{ $loop->iteration }}</td>
                         <td>{{ Str::words($soal->soal, 4, '...') }}</td>
-                        <td>{{ $soal->kategori->id != 3 ? Str::words($soal->jawaban->where('benar', true)->first()->jawaban, 4, '...') : '-' }}
+                        <td class="{{ $soal->kategori->id == 3 ? 'text-center' : '' }}">
+                            {{ $soal->kategori->id != 3 ? Str::words($soal->jawaban->where('benar', true)->first()->jawaban, 4, '...') : '-' }}
                         </td>
                         <td>{{ $soal->kategori->deskripsi }}</td>
                         <td class="text-center">

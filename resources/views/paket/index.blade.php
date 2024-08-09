@@ -19,43 +19,77 @@
                         <td>{{ $paket->nama }}</td>
                         <td>{{ $paket->user->name }}</td>
                         <td class="text-center">{{ $paket->soal->count() }}</td>
-                        <td class="text-center">
-                            <a href="/paket/{{ $paket->uuid }}/soal" class="btn badge bg-info text-white px-1">
-                                <i class="fa-solid fa-circle-info"></i>
-                            </a>
-                            <a href="/paket/{{ $paket->uuid }}/edit" class="btn badge bg-warning text-white px-1">
-                                <i class="fa-solid fa-pen-to-square"></i>
-                            </a>
-                            <form class="d-inline" action="/paket/{{ $paket->uuid }}" method="POST"
-                                id="formDel{{ $paket->uuid }}">
-                                @csrf
-                                @method('DELETE')
-                            </form>
-                            <button class="btn badge bg-danger text-white px-1" id="delete{{ $paket->uuid }}">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                            @push('scripts')
-                                <script>
-                                    $('#delete{{ $paket->uuid }}').click(() => {
-                                        Swal.fire({
-                                            title: "Apa Kamu Yakin?",
-                                            text: "Yakin Hapus {{ $paket->nama }}?",
-                                            icon: "question",
-                                            showCancelButton: true,
-                                            confirmButtonColor: "#3085d6",
-                                            cancelButtonColor: "#d33",
-                                            confirmButtonText: "Ya",
-                                            cancelButtonText: "Tidak"
-                                        }).then((result) => {
-                                            if (result.isConfirmed) {
-                                                let form = $('#formDel{{ $paket->uuid }}')
-                                                form.submit();
-                                            }
+                        @if (Auth::user()->role != 3)
+                            <td class="text-center">
+                                <a href="/paket/{{ $paket->uuid }}/soal" class="btn badge bg-info text-white px-1">
+                                    <i class="fa-solid fa-circle-info"></i>
+                                </a>
+                                <a href="/paket/{{ $paket->uuid }}/edit" class="btn badge bg-warning text-white px-1">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </a>
+                                <form class="d-inline" action="/paket/{{ $paket->uuid }}" method="POST"
+                                    id="formDel{{ $paket->uuid }}">
+                                    @csrf
+                                    @method('DELETE')
+                                </form>
+                                <button class="btn badge bg-danger text-white px-1" id="delete{{ $paket->uuid }}">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                                @push('scripts')
+                                    <script>
+                                        $('#delete{{ $paket->uuid }}').click(() => {
+                                            Swal.fire({
+                                                title: "Apa Kamu Yakin?",
+                                                text: "Yakin Hapus {{ $paket->nama }}?",
+                                                icon: "question",
+                                                showCancelButton: true,
+                                                confirmButtonColor: "#3085d6",
+                                                cancelButtonColor: "#d33",
+                                                confirmButtonText: "Ya",
+                                                cancelButtonText: "Tidak"
+                                            }).then((result) => {
+                                                if (result.isConfirmed) {
+                                                    let form = $('#formDel{{ $paket->uuid }}')
+                                                    form.submit();
+                                                }
+                                            });
                                         });
-                                    });
-                                </script>
-                            @endpush
-                        </td>
+                                    </script>
+                                @endpush
+                            </td>
+                        @else
+                            <td class="text-center">
+                                <a href="/paket/test/{{ $paket->uuid }}" class="btn badge bg-success text-white"><i
+                                        class="fa-solid fa-play"></i>
+                                    Kerjakan Soal</a>
+                                {{-- <button class="btn badge bg-success text-white" id="play{{ $paket->id }}"> <i
+                                        class="fa-solid fa-play"></i>
+                                    Kerjakan Soal</button> --}}
+                                {{-- @push('scripts')
+                                    <script>
+                                        $('#play{{ $paket->id }}').click(() => {
+                                            Swal.fire({
+                                                title: "Are you sure?",
+                                                text: "You won't be able to revert this!",
+                                                icon: "warning",
+                                                showCancelButton: true,
+                                                confirmButtonColor: "#3085d6",
+                                                cancelButtonColor: "#d33",
+                                                confirmButtonText: "Yes, delete it!"
+                                            }).then((result) => {
+                                                if (result.isConfirmed) {
+                                                    Swal.fire({
+                                                        title: "Deleted!",
+                                                        text: "Your file has been deleted.",
+                                                        icon: "success"
+                                                    });
+                                                }
+                                            });
+                                        });
+                                    </script>
+                                @endpush --}}
+                            </td>
+                        @endif
                     </tr>
                 @endforeach
             </tbody>

@@ -3,11 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Paket;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StorePaketRequest;
 use App\Http\Requests\UpdatePaketRequest;
 
 class PaketController extends Controller
 {
+
+    public function testIndex(Paket $paket)
+    {
+        // dd($paket);
+        return view('paket.testIndex', ['title' => $paket->nama, 'paket' => $paket, 'user' => Auth::user()]);
+    }
     /**
      * Display a listing of the resource.
      */

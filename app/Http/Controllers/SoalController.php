@@ -15,7 +15,7 @@ class SoalController extends Controller
      */
     public function index(Paket $paket)
     {
-        return view('soal.index', ['title' => $paket->nama, 'paket' => $paket, 'soals' => Soal::where('paket_id', $paket->id)->orderBy('category_id')->get()]);
+        return view('soal.index', ['title' => $paket->nama, 'paket' => $paket, 'soals' => Soal::where('paket_id', $paket->id)->orderBy('kategori_id')->get()]);
     }
 
     /**
