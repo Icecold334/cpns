@@ -46,7 +46,7 @@
             </div>
             <div class="row">
                 <div class="col-12">
-                    <a href="/" class="btn btn-primary">Mulai Ujian</a>
+                    <a href="/paket/test/{{ $paket->uuid }}/play" class="btn btn-primary">Mulai Ujian</a>
                     <a href="/paket" class="btn btn-primary">Batal Ujian</a>
                 </div>
             </div>

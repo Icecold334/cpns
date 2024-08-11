@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Soal;
 use App\Models\Paket;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StorePaketRequest;
@@ -14,6 +15,11 @@ class PaketController extends Controller
     {
         // dd($paket);
         return view('paket.testIndex', ['title' => $paket->nama, 'paket' => $paket, 'user' => Auth::user()]);
+    }
+    public function test(Paket $paket)
+    {
+        // dd($paket);
+        return view('paket.test', ['title' => $paket->nama, 'paket' => $paket, 'user' => Auth::user(), 'soals' => Soal::where('paket_id', $paket->id)->get()->shuffle()]);
     }
     /**
      * Display a listing of the resource.

@@ -26,6 +26,7 @@ Route::get('panel', [PanelController::class, 'index'])->middleware(['auth', 'ver
 Route::resource('guru', GuruController::class)->middleware(['auth', 'verified']);
 Route::resource('siswa', SiswaController::class)->middleware(['auth', 'verified']);
 Route::get('paket/test/{paket}', [PaketController::class, 'testIndex'])->middleware(['auth', 'verified']);
+Route::get('paket/test/{paket}/play', [PaketController::class, 'test'])->middleware(['auth', 'verified'])->name('play');
 Route::resource('paket', PaketController::class)->middleware(['auth', 'verified']);
 Route::resource('paket.soal', SoalController::class)->middleware(['auth', 'verified']);
 

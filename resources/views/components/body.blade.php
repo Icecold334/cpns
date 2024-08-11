@@ -50,14 +50,14 @@
 
                 <!-- Main Content -->
                 <div id="content">
-                    @if (!request()->is('paket/test*'))
-                        <!-- Topbar -->
-                        @livewire('layout.navbar')
-                        <!-- End of Topbar -->
-                    @endif
+                    {{-- @if (!request()->is('paket/test*')) --}}
+                    <!-- Topbar -->
+                    @livewire('layout.navbar')
+                    <!-- End of Topbar -->
+                    {{-- @endif --}}
 
                     <!-- Begin Page Content -->
-                    <div class="container-fluid {{ request()->is('paket/test*') ? 'my-5 py-3' : '' }}">
+                    <div class="container-fluid {{ request()->is('paket/test*') ? 'py-2' : '' }}">
 
                         <!-- Page Heading -->
                         {{ $slot }}
