@@ -30,7 +30,7 @@
             href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         <!-- Custom styles for this template-->
-        <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+        <link href="/css/sb-admin-2.css" rel="stylesheet">
 
     </head>
 
@@ -39,11 +39,11 @@
         <!-- Page Wrapper -->
         <div id="wrapper">
 
-            <!-- Sidebar -->
             @if (!request()->is('paket/test*'))
+                <!-- Sidebar -->
                 @livewire('layout.sidebar')
+                <!-- End of Sidebar -->
             @endif
-            <!-- End of Sidebar -->
 
             <!-- Content Wrapper -->
             <div id="content-wrapper" class="d-flex flex-column">
@@ -57,7 +57,7 @@
                     {{-- @endif --}}
 
                     <!-- Begin Page Content -->
-                    <div class="container-fluid {{ request()->is('paket/test*') ? 'py-2' : '' }}">
+                    <div class="container-fluid">
 
                         <!-- Page Heading -->
                         {{ $slot }}
@@ -68,17 +68,18 @@
                 </div>
                 <!-- End of Main Content -->
 
-                @if (!request()->is('paket/test*'))
-                    <!-- Footer -->
-                    <footer class="sticky-footer  bg-white">
-                        <div class="container my-auto">
-                            <div class="copyright text-center my-auto">
-                                <span>Copyright &copy; {{ env('APP_NAME') }} 2020</span>
-                            </div>
+                {{-- @if (!request()->is('paket/test*')) --}}
+                <!-- Footer -->
+                <footer class="sticky-footer bg-white" style="margin-top: 11.4rem">
+                    <div class="container my-auto">
+                        <div class="copyright text-center my-auto">
+                            <span>Copyright &copy; {{ env('APP_NAME') }}
+                                {{ Carbon\Carbon::now()->isoFormat('Y') }}</span>
                         </div>
-                    </footer>
-                    <!-- End of Footer -->
-                @endif
+                    </div>
+                </footer>
+                <!-- End of Footer -->
+                {{-- @endif --}}
 
             </div>
             <!-- End of Content Wrapper -->
@@ -115,6 +116,10 @@
         @stack('html')
 
         <!-- Bootstrap core JavaScript-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+        {{-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous">
+        </script> --}}
         <script src="/vendor/jquery/jquery.min.js"></script>
         <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
@@ -123,9 +128,7 @@
 
         <!-- Custom scripts for all pages-->
         <script src="/js/sb-admin-2.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous">
-        </script>
+
         <script src="https://cdn.datatables.net/2.0.6/js/dataTables.js"></script>
         <script src="https://cdn.datatables.net/2.0.6/js/dataTables.bootstrap5.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
@@ -135,6 +138,8 @@
             integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous">
         </script>
         <script>
+            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+            const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
             $('input').attr('autocomplete', 'off');
             /* Fungsi formatRupiah */
             function rupiah(angka, prefix) {
