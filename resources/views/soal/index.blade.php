@@ -17,34 +17,51 @@
             </button>
             @push('html')
                 <div class="modal fade" id="info-soal" tabindex="-1" aria-labelledby="info-soalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-dialog modal-lg modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="info-soalLabel">Informasi Paket Soal</h1>
+                                <h1 class="modal-title fs-5 font-weight-bold text-black" id="info-soalLabel">Informasi Paket
+                                    Soal</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <table>
+                                <table class="table table-responsive-md">
                                     <tr>
-                                        <td>Nama Paket</td>
-                                        <td>:</td>
-                                        <td>{{ $paket->nama }}</td>
+                                        <th>Nama Paket</th>
+                                        <td colspan="2">{{ $paket->nama }}</td>
+                                        {{-- <td>:</td> --}}
                                     </tr>
                                     <tr>
-                                        <td>Penulis</td>
-                                        <td>:</td>
-                                        <td>{{ $paket->user->name }}</td>
+                                        <th>Penulis</th>
+                                        <td colspan="2">{{ $paket->user->name }}</td>
+                                        {{-- <td>:</td> --}}
                                     </tr>
                                     <tr>
-                                        <td>Jumlah Soal</td>
-                                        <td>:</td>
-                                        <td>{{ $paket->soal->count() }} Soal</td>
+                                        <th>Jumlah Soal</th>
+                                        <td colspan="2">{{ $paket->soal->count() }} Soal</td>
+                                        {{-- <td>:</td> --}}
                                     </tr>
                                     <tr>
-                                        <td>Durasi</td>
-                                        <td>:</td>
-                                        <td>120 menit</td>
+                                        <th colspan="3" class="text-center">Kategori</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-center">Tes Wawasan Kebangsaan</th>
+                                        <th class="text-center">Tes Intelegensia Umum</th>
+                                        <th class="text-center">Tes Karakteristik Pribadi</th>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center">{{ $paket->soal->where('kategori_id', 1)->count() }} Soal
+                                        </td>
+                                        <td class="text-center">{{ $paket->soal->where('kategori_id', 2)->count() }} Soal
+                                        </td>
+                                        <td class="text-center">{{ $paket->soal->where('kategori_id', 3)->count() }} Soal
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Durasi</th>
+                                        <td colspan="2">120 menit</td>
+                                        {{-- <td>:</td> --}}
                                     </tr>
                                 </table>
                             </div>

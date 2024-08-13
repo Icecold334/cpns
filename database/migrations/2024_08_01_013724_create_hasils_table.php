@@ -16,8 +16,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('paket_id')->constrained('pakets');
-            $table->integer('total_skor');
-            $table->timestamp('completed_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->string('urutan');
+            $table->integer('total_skor')->nullable();
+            $table->timestamp('completed_at')->nullable();
             $table->timestamps();
         });
     }

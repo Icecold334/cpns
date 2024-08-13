@@ -27,14 +27,12 @@
             </div>
         </div>
     </div>
-
     <div class="row">
         <div class="col-xl-12 d-flex">
             <div class="card mb-3 flex-fill">
-                <livewire:card-soal :soal="$soals[0]"></livewire:card-soal>
+                <livewire:card-soal :soals="$soals"></livewire:card-soal>
             </div>
         </div>
     </div>
-    <livewire:canvas-soal :paket="$paket"></livewire:canvas-soal>
-
+    <livewire:canvas-soal :soals="$soals"></livewire:canvas-soal>
 </x-body>

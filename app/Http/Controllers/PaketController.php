@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Soal;
+use App\Models\Hasil;
 use App\Models\Paket;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StorePaketRequest;
@@ -18,8 +19,27 @@ class PaketController extends Controller
     }
     public function test(Paket $paket)
     {
-        // dd($paket);
-        return view('paket.test', ['title' => $paket->nama, 'paket' => $paket, 'user' => Auth::user(), 'soals' => Soal::where('paket_id', $paket->id)->get()->shuffle()]);
+
+        if (Hasil::where('paket_id', $paket->id)->where('user_id', Auth::user()->id)->get()->count() == 0) {
+            $soalsSorted = Soal::where('paket_id', $paket->id)->get()->shuffle();
+            $urutan = [];
+            foreach ($soalsSorted as $soal) {
+                $urutan[] = $soal->id;
+            }
+            $urutanString = implode(',', $urutan);
+            $hasil = new Hasil();
+            $hasil->user_id = Auth::user()->id;
+            $hasil->paket_id = $paket->id;
+            $hasil->urutan = $urutanString;
+            $hasil->save();
+        } else {
+            $urutanArray = explode(',', Hasil::where('paket_id', $paket->id)->where('user_id', Auth::user()->id)->first()->urutan);
+            $soals = Soal::whereIn('id', $urutanArray)->get();
+            $soalsSorted = $soals->sortBy(function ($soal) use ($urutanArray) {
+                return array_search($soal->id, $urutanArray);
+            })->values();
+        }
+        return view('paket.test', ['title' => $paket->nama, 'paket' => $paket, 'user' => Auth::user(), 'soals' => $soalsSorted]);
     }
     /**
      * Display a listing of the resource.
