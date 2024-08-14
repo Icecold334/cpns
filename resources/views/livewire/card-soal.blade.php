@@ -8,16 +8,18 @@
         </div>
     @endif
     <p>{{ $soal->soal }}</p>
-
-    @foreach (App\Models\Jawaban::where('soal_id', $soal->id)->get()->shuffle() as $jawaban)
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="jawab" value="{{ $jawaban->id }}"
-                id="jawaban{{ intToAlphabet($jawaban->row, true) }}" wire:model.live="jawaban">
-            <label class="form-check-label" for="jawaban{{ intToAlphabet($jawaban->row, true) }}">
-                {{ intToAlphabet($loop->iteration, true) }}. {{ $jawaban->jawaban }}
-            </label>
-        </div>
-    @endforeach
+    <div>
+        @foreach ($shuffledJawaban as $jawab)
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="jawab" value="{{ $jawab->id }}"
+                    id="jawaban{{ intToAlphabet($jawab->row, true) }}" wire:model.live="jawaban"
+                    wire:key="jawab-{{ $jawab->id }}">
+                <label class="form-check-label" for="jawaban{{ intToAlphabet($jawab->row, true) }}">
+                    {{ intToAlphabet($loop->iteration, true) }}. {{ $jawab->jawaban }}
+                </label>
+            </div>
+        @endforeach
+    </div>
     <div class="d-flex align-items-center justify-content-start gap-3">
         {{-- <button class="btn btn-primary mt-3">Simpan & Lanjut</button> --}}
         <button class="btn btn-primary mt-3 d-flex align-items-center {{ $nomor == 1 ? 'disabled' : '' }}"

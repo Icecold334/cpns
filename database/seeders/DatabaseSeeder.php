@@ -37,5 +37,23 @@ class DatabaseSeeder extends Seeder
         Jawaban::factory()->create(['soal_id' => 2, 'row' => '3', 'jawaban' => 'Himawari', 'benar' => false]);
         Jawaban::factory()->create(['soal_id' => 2, 'row' => '4', 'jawaban' => 'Naruto', 'benar' => true]);
         Jawaban::factory()->create(['soal_id' => 2, 'row' => '5', 'jawaban' => 'Jokowi', 'benar' => false]);
+        Soal::factory()->create(['paket_id' => 1, 'kategori_id' => 1, 'soal' => 'Siapa Hokage ke-7?']);
+        Jawaban::factory()->create(['soal_id' => 3, 'row' => '1', 'jawaban' => 'Sakura', 'benar' => false]);
+        Jawaban::factory()->create(['soal_id' => 3, 'row' => '2', 'jawaban' => 'Jan Ethes', 'benar' => false]);
+        Jawaban::factory()->create(['soal_id' => 3, 'row' => '3', 'jawaban' => 'Himawari', 'benar' => false]);
+        Jawaban::factory()->create(['soal_id' => 3, 'row' => '4', 'jawaban' => 'Naruto', 'benar' => true]);
+        Jawaban::factory()->create(['soal_id' => 3, 'row' => '5', 'jawaban' => 'Jokowi', 'benar' => false]);
+        Soal::factory()->create(['paket_id' => 1, 'kategori_id' => 1, 'soal' => 'Siapa Hokage ke-7?']);
+        Jawaban::factory()->create(['soal_id' => 4, 'row' => '1', 'jawaban' => 'Sakura', 'benar' => false]);
+        Jawaban::factory()->create(['soal_id' => 4, 'row' => '2', 'jawaban' => 'Jan Ethes', 'benar' => false]);
+        Jawaban::factory()->create(['soal_id' => 4, 'row' => '3', 'jawaban' => 'Himawari', 'benar' => false]);
+        Jawaban::factory()->create(['soal_id' => 4, 'row' => '4', 'jawaban' => 'Naruto', 'benar' => true]);
+        Jawaban::factory()->create(['soal_id' => 4, 'row' => '5', 'jawaban' => 'Jokowi', 'benar' => false]);
+        Soal::factory()->create(['paket_id' => 1, 'kategori_id' => 2, 'soal' => 'Siapa Hokage ke-7?']);
+        Jawaban::factory()->create(['soal_id' => 5, 'row' => '1', 'jawaban' => 'Sakura', 'benar' => false]);
+        Jawaban::factory()->create(['soal_id' => 5, 'row' => '2', 'jawaban' => 'Jan Ethes', 'benar' => false]);
+        Jawaban::factory()->create(['soal_id' => 5, 'row' => '3', 'jawaban' => 'Himawari', 'benar' => false]);
+        Jawaban::factory()->create(['soal_id' => 5, 'row' => '4', 'jawaban' => 'Naruto', 'benar' => true]);
+        Jawaban::factory()->create(['soal_id' => 5, 'row' => '5', 'jawaban' => 'Jokowi', 'benar' => false]);
     }
 }
