@@ -17,11 +17,19 @@ class PaketController extends Controller
         // dd($paket);
         return view('paket.testIndex', ['title' => $paket->nama, 'paket' => $paket, 'user' => Auth::user()]);
     }
+    public function selesai(Paket $paket)
+    {
+        dd($paket);
+        return view('paket.testIndex', ['title' => $paket->nama, 'paket' => $paket, 'user' => Auth::user()]);
+    }
     public function test(Paket $paket)
     {
 
         if (Hasil::where('paket_id', $paket->id)->where('user_id', Auth::user()->id)->get()->count() == 0) {
-            $soalsSorted = Soal::where('paket_id', $paket->id)->get()->shuffle();
+            $twk = Soal::where('paket_id', $paket->id)->where('kategori_id', 1)->get()->shuffle();
+            $tiu = Soal::where('paket_id', $paket->id)->where('kategori_id', 2)->get()->shuffle();
+            $tkp = Soal::where('paket_id', $paket->id)->where('kategori_id', 3)->get()->shuffle();
+            $soalsSorted = $twk->merge($tiu)->merge($tkp);
             $urutan = [];
             foreach ($soalsSorted as $soal) {
                 $urutan[] = $soal->id;
@@ -46,7 +54,14 @@ class PaketController extends Controller
      */
     public function index()
     {
-        return view('paket.index', ['title' => 'Daftar Paket Soal', 'pakets' => Paket::all()]);
+        if (Auth::user()->role == 1) {
+            $pakets = Paket::all();
+        } elseif (Auth::user()->role == 2) {
+            $pakets = Paket::where('user_id', Auth::user()->id);
+        } else {
+            $pakets = Paket::all();
+        }
+        return view('paket.index', ['title' => 'Daftar Paket Soal', 'pakets' => $pakets]);
     }
 
     /**

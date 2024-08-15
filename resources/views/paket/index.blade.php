@@ -58,37 +58,19 @@
                                 @endpush
                             </td>
                         @else
-                            <td class="text-center">
-                                <a href="/paket/test/{{ $paket->uuid }}" class="btn badge bg-success text-white"><i
-                                        class="fa-solid fa-play"></i>
-                                    Kerjakan Soal</a>
-                                {{-- <button class="btn badge bg-success text-white" id="play{{ $paket->id }}"> <i
-                                        class="fa-solid fa-play"></i>
-                                    Kerjakan Soal</button> --}}
-                                {{-- @push('scripts')
-                                    <script>
-                                        $('#play{{ $paket->id }}').click(() => {
-                                            Swal.fire({
-                                                title: "Are you sure?",
-                                                text: "You won't be able to revert this!",
-                                                icon: "warning",
-                                                showCancelButton: true,
-                                                confirmButtonColor: "#3085d6",
-                                                cancelButtonColor: "#d33",
-                                                confirmButtonText: "Yes, delete it!"
-                                            }).then((result) => {
-                                                if (result.isConfirmed) {
-                                                    Swal.fire({
-                                                        title: "Deleted!",
-                                                        text: "Your file has been deleted.",
-                                                        icon: "success"
-                                                    });
-                                                }
-                                            });
-                                        });
-                                    </script>
-                                @endpush --}}
-                            </td>
+                            @if ($paket->hasil->where('user_id', Auth::user()->id)->where('total_skor', null)->first())
+                                <td class="text-center">
+                                    <a href="/paket/test/{{ $paket->uuid }}"
+                                        class="btn badge bg-success text-white"><i class="fa-solid fa-play"></i>
+                                        Kerjakan Ujian</a>
+                                </td>
+                            @else
+                                <td class="text-center">
+                                    <a href="/paket/test/{{ $paket->uuid }}" class="btn badge bg-info text-white"><i
+                                            class="fa-solid fa-circle-info"></i>
+                                        Hasil Ujian</a>
+                                </td>
+                            @endif
                         @endif
                     </tr>
                 @endforeach

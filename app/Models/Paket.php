@@ -35,4 +35,8 @@ class Paket extends Model
     {
         return $this->hasMany(Soal::class, 'paket_id');
     }
+    public function hasil(): HasMany
+    {
+        return $this->hasMany(Hasil::class, 'paket_id');
+    }
 }
