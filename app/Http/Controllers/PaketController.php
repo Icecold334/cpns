@@ -5,110 +5,141 @@ namespace App\Http\Controllers;
 use App\Models\Soal;
 use App\Models\Hasil;
 use App\Models\Paket;
+use App\Models\Respon;
+use App\Models\Jawaban;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StorePaketRequest;
 use App\Http\Requests\UpdatePaketRequest;
 
 class PaketController extends Controller
 {
-
     public function testIndex(Paket $paket)
     {
-        // dd($paket);
-        return view('paket.testIndex', ['title' => $paket->nama, 'paket' => $paket, 'user' => Auth::user()]);
+        return view('paket.testIndex', [
+            'title' => $paket->nama,
+            'paket' => $paket,
+            'user' => Auth::user(),
+        ]);
     }
+
     public function selesai(Paket $paket)
     {
-        dd($paket);
-        return view('paket.testIndex', ['title' => $paket->nama, 'paket' => $paket, 'user' => Auth::user()]);
+        $responses = Respon::where('user_id', Auth::id())
+            ->whereHas('soal.paket', function ($query) use ($paket) {
+                $query->where('uuid', $paket->uuid);
+            })
+            ->get();
+
+        $totalNilai = $responses->reduce(function ($total, $respon) {
+            $kategori = $respon->soal->kategori->nama;
+            $jawaban = Jawaban::find($respon->jawaban_id);
+
+            if (in_array($kategori, ['TIU', 'TWK']) && $jawaban->benar) {
+                return $total + 1;
+            } elseif ($kategori === 'TKP') {
+                return $total + $jawaban->poin;
+            }
+
+            return $total;
+        }, 0);
+
+        $totalPoin = $paket->soal->where('kategori_id', 1)->count() +
+            $paket->soal->where('kategori_id', 2)->count() +
+            ($paket->soal->where('kategori_id', 3)->count() * 5);
+
+        $nilai = floor(($totalNilai / $totalPoin) * 100);
+
+        Hasil::where('paket_id', $paket->id)
+            ->where('user_id', Auth::id())
+            ->update([
+                'total_skor' => $nilai,
+                'completed_at' => now(),
+            ]);
     }
+
     public function test(Paket $paket)
     {
+        $user = Auth::user();
+        $existingHasil = Hasil::where('paket_id', $paket->id)->where('user_id', $user->id)->first();
 
-        if (Hasil::where('paket_id', $paket->id)->where('user_id', Auth::user()->id)->get()->count() == 0) {
-            $twk = Soal::where('paket_id', $paket->id)->where('kategori_id', 1)->get()->shuffle();
-            $tiu = Soal::where('paket_id', $paket->id)->where('kategori_id', 2)->get()->shuffle();
-            $tkp = Soal::where('paket_id', $paket->id)->where('kategori_id', 3)->get()->shuffle();
-            $soalsSorted = $twk->merge($tiu)->merge($tkp);
-            $urutan = [];
-            foreach ($soalsSorted as $soal) {
-                $urutan[] = $soal->id;
-            }
-            $urutanString = implode(',', $urutan);
-            $hasil = new Hasil();
-            $hasil->user_id = Auth::user()->id;
-            $hasil->paket_id = $paket->id;
-            $hasil->urutan = $urutanString;
-            $hasil->save();
+        if (!$existingHasil) {
+            $soalsSorted = $this->shuffleSoals($paket);
+            $urutanString = implode(',', $soalsSorted->pluck('id')->toArray());
+
+            Hasil::create([
+                'user_id' => $user->id,
+                'paket_id' => $paket->id,
+                'urutan' => $urutanString,
+            ]);
         } else {
-            $urutanArray = explode(',', Hasil::where('paket_id', $paket->id)->where('user_id', Auth::user()->id)->first()->urutan);
-            $soals = Soal::whereIn('id', $urutanArray)->get();
-            $soalsSorted = $soals->sortBy(function ($soal) use ($urutanArray) {
+            $urutanArray = explode(',', $existingHasil->urutan);
+            $soalsSorted = $this->sortSoalsByOrder($urutanArray);
+        }
+
+        return view('paket.test', [
+            'title' => $paket->nama,
+            'paket' => $paket,
+            'user' => $user,
+            'soals' => $soalsSorted,
+        ]);
+    }
+
+    private function shuffleSoals(Paket $paket)
+    {
+        $twk = Soal::where('paket_id', $paket->id)->where('kategori_id', 1)->get()->shuffle();
+        $tiu = Soal::where('paket_id', $paket->id)->where('kategori_id', 2)->get()->shuffle();
+        $tkp = Soal::where('paket_id', $paket->id)->where('kategori_id', 3)->get()->shuffle();
+
+        return $twk->merge($tiu)->merge($tkp);
+    }
+
+    private function sortSoalsByOrder(array $urutanArray)
+    {
+        return Soal::whereIn('id', $urutanArray)->get()
+            ->sortBy(function ($soal) use ($urutanArray) {
                 return array_search($soal->id, $urutanArray);
             })->values();
-        }
-        return view('paket.test', ['title' => $paket->nama, 'paket' => $paket, 'user' => Auth::user(), 'soals' => $soalsSorted]);
-    }
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        if (Auth::user()->role == 1) {
-            $pakets = Paket::all();
-        } elseif (Auth::user()->role == 2) {
-            $pakets = Paket::where('user_id', Auth::user()->id);
-        } else {
-            $pakets = Paket::all();
-        }
-        return view('paket.index', ['title' => 'Daftar Paket Soal', 'pakets' => $pakets]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    public function index()
+    {
+        $pakets = Auth::user()->role == 2
+            ? Paket::where('user_id', Auth::id())->get()
+            : Paket::all();
+
+        return view('paket.index', [
+            'title' => 'Daftar Paket Soal',
+            'pakets' => $pakets,
+        ]);
+    }
+
     public function create()
     {
         return view('paket.create', ['title' => 'Tambah Paket Soal']);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StorePaketRequest $request)
     {
-        //
+        // Implementasi penyimpanan paket soal
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Paket $paket)
     {
-        //
+        // Implementasi tampilan detail paket soal
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Paket $paket)
     {
-        //
+        // Implementasi form edit paket soal
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdatePaketRequest $request, Paket $paket)
     {
-        //
+        // Implementasi update paket soal
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Paket $paket)
     {
-        //
+        // Implementasi penghapusan paket soal
     }
 }

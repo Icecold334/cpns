@@ -23,7 +23,8 @@ class DatabaseSeeder extends Seeder
         $kategori_tkp = Kategori::factory()->create(['nama' => 'TKP', 'deskripsi' => 'Tes Karakteristik Pribadi']);
 
         // Buat paket soal
-        $paket = Paket::factory()->create(['nama' => 'Paket Soal A', 'user_id' => 1]);
+        $paket = Paket::factory()->create(['nama' => 'Paket Soal A', 'durasi' => 3600, 'user_id' => 2]);
+        $paket2 = Paket::factory()->create(['nama' => 'Paket Soal B', 'durasi' => 2400, 'user_id' => 2]);
 
         // Soal-soal untuk kategori TIU
         $soal_tiu = [
@@ -368,6 +369,62 @@ class DatabaseSeeder extends Seeder
         foreach ($soal_tkp as $index => $data) {
             $soal = Soal::factory()->create([
                 'paket_id' => $paket->id,
+                'kategori_id' => $kategori_tkp->id,
+                'soal' => $data['soal']
+            ]);
+
+            foreach ($data['jawaban'] as $key => $jawaban) {
+                Jawaban::factory()->create([
+                    'soal_id' => $soal->id,
+                    'row' => $key + 1,
+                    'jawaban' => $jawaban[0], // Jawaban teks
+                    'benar' => true,
+                    'poin' => $jawaban[1] // Poin jawaban
+                ]);
+            }
+        }
+
+        // paket b
+        // Buat soal dan jawaban untuk kategori TIU
+        foreach ($soal_tiu as $index => $data) {
+            $soal = Soal::factory()->create([
+                'paket_id' => $paket2->id,
+                'kategori_id' => $kategori_tiu->id,
+                'soal' => $data['soal']
+            ]);
+
+            foreach ($data['jawaban'] as $key => $jawaban) {
+                Jawaban::factory()->create([
+                    'soal_id' => $soal->id,
+                    'row' => $key + 1,
+                    'jawaban' => $jawaban,
+                    'benar' => $key == 0 // Jawaban pertama benar
+                ]);
+            }
+        }
+
+        // Buat soal dan jawaban untuk kategori TWK
+        foreach ($soal_twk as $index => $data) {
+            $soal = Soal::factory()->create([
+                'paket_id' => $paket2->id,
+                'kategori_id' => $kategori_twk->id,
+                'soal' => $data['soal']
+            ]);
+
+            foreach ($data['jawaban'] as $key => $jawaban) {
+                Jawaban::factory()->create([
+                    'soal_id' => $soal->id,
+                    'row' => $key + 1,
+                    'jawaban' => $jawaban,
+                    'benar' => $key == 0 // Jawaban pertama benar
+                ]);
+            }
+        }
+
+        // Buat soal dan jawaban untuk kategori TKP
+        foreach ($soal_tkp as $index => $data) {
+            $soal = Soal::factory()->create([
+                'paket_id' => $paket2->id,
                 'kategori_id' => $kategori_tkp->id,
                 'soal' => $data['soal']
             ]);

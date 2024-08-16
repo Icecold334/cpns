@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('uuid')->default();
             $table->string('nama');
+            $table->integer('durasi');
             $table->foreignId('user_id')->constrained('users');
             $table->timestamps();
         });

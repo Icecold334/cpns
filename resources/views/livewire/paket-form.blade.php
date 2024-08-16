@@ -4,12 +4,25 @@
         @csrf
         <div class="row">
 
-            <div class="col-xl-6 col-md-12 col-sm-12">
+            <div class="col-xl-8 col-md-8 col-sm-6">
                 <div class="form-group mb-3">
                     <label for="nama" class="form-label">Nama Paket<span class="text-danger">*</span></label>
                     <input type="text" class="form-control  @error('nama') is-invalid @enderror" id="nama"
-                        placeholder="Nama Guru" wire:model.live="nama" autocomplete="off">
+                        placeholder="Nama Paket" wire:model.live="nama" autocomplete="off">
                     @error('nama')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+            </div>
+            <div class="col-xl-4 col-md-4 col-sm-6">
+                <div class="form-group mb-3">
+                    <label for="durasi" class="form-label">Durasi (jam:menit)<span
+                            class="text-danger">*</span></label>
+                    <input type="time" class="form-control @error('durasi') is-invalid @enderror"
+                        wire:model.live="durasi" />
+                    @error('durasi')
                         <div class="invalid-feedback">
                             {{ $message }}
                         </div>

@@ -20,7 +20,7 @@
                                 </tr>
                                 <tr>
                                     <td style="width: 20%">Durasi</td>
-                                    <td>120 menit</td>
+                                    <td>{{ floor($paket->durasi / 60) }} menit</td>
                                 </tr>
                             </table>
                         </div>

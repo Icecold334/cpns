@@ -7,7 +7,9 @@
                 <tr>
                     <th class="text-center" style="width: 5%">#</th>
                     <th class="text-center">Nama</th>
-                    <th class="text-center">Penulis</th>
+                    @if (Auth::user()->role != 3)
+                        <th class="text-center">Penulis</th>
+                    @endif
                     <th class="text-center">Jumlah Soal</th>
                     <th class="text-center" style="width: 10%"></th>
                 </tr>
@@ -17,7 +19,9 @@
                     <tr>
                         <td class="text-center">{{ $loop->iteration }}</td>
                         <td>{{ $paket->nama }}</td>
-                        <td>{{ $paket->user->name }}</td>
+                        @if (Auth::user()->role != 3)
+                            <td>{{ $paket->user->name }}</td>
+                        @endif
                         <td class="text-center">{{ $paket->soal->count() }}</td>
                         @if (Auth::user()->role != 3)
                             <td class="text-center">
@@ -58,18 +62,27 @@
                                 @endpush
                             </td>
                         @else
-                            @if ($paket->hasil->where('user_id', Auth::user()->id)->where('total_skor', null)->first())
+                            @if ($paket->hasil->where('user_id', Auth::user()->id)->first() === null)
                                 <td class="text-center">
-                                    <a href="/paket/test/{{ $paket->uuid }}"
-                                        class="btn badge bg-success text-white"><i class="fa-solid fa-play"></i>
-                                        Kerjakan Ujian</a>
+                                    <a href="/paket/test/{{ $paket->uuid }}" class="btn badge bg-success text-white">
+                                        <i class="fa-solid fa-play"></i> Kerjakan Ujian
+                                    </a>
                                 </td>
                             @else
-                                <td class="text-center">
-                                    <a href="/paket/test/{{ $paket->uuid }}" class="btn badge bg-info text-white"><i
-                                            class="fa-solid fa-circle-info"></i>
-                                        Hasil Ujian</a>
-                                </td>
+                                @if ($paket->hasil->where('user_id', Auth::user()->id)->where('total_skor', null)->first()->total_skor === null)
+                                    <td class="text-center">
+                                        <a href="/paket/test/{{ $paket->uuid }}"
+                                            class="btn badge bg-success text-white">
+                                            <i class="fa-solid fa-play"></i> Kerjakan Ujian
+                                        </a>
+                                    </td>
+                                @else
+                                    <td class="text-center">
+                                        <a href="/paket/test/{{ $paket->uuid }}" class="btn badge bg-info text-white">
+                                            <i class="fa-solid fa-circle-info"></i> Hasil Ujian
+                                        </a>
+                                    </td>
+                                @endif
                             @endif
                         @endif
                     </tr>
@@ -79,12 +92,13 @@
     </div>
     @push('scripts')
         <script>
+            let sort = {!! Auth::user()->role !!} != 3 ? {
+                orderable: false,
+                targets: 4
+            } : {};
             $("#pakets").DataTable({
                 "responsive": true,
-                columnDefs: [{
-                    orderable: false,
-                    targets: 4
-                }],
+                columnDefs: [sort],
                 paging: true,
                 lengthMenu: [5, 10, 20, {
                     label: "Semua",

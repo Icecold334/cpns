@@ -19,17 +19,28 @@ class CanvasSoal extends Component
 
     public function mount()
     {
-        $nomor = Session::get('last_no') == null ? (0) : (Session::get('last_no') - 1);
-        $this->activeSoalId = $this->soals[$nomor]->id;
+        $this->setActiveSoal();
         $this->loadJawaban();
+    }
+
+    private function setActiveSoal()
+    {
+        $lastNo = Session::get('last_no');
+
+        if (is_array($lastNo) && $lastNo[1] === $this->soals[0]->paket->uuid) {
+            $nomor = max(0, $lastNo[0] - 1);  // Ensure $nomor is not negative
+        } else {
+            $nomor = 0;
+        }
+
+        $this->activeSoalId = $this->soals[$nomor]->id ?? $this->soals[0]->id;
     }
 
     public function pilihSoal($id, $nomor)
     {
-
         $this->activeSoalId = $id;
         $this->show = true;
-        $this->soal_last = Session::put('last_no', $nomor);
+        $this->updateLastSoal($nomor);
         $this->dispatch('soal-pick', id: $id, nomor: $nomor);
     }
 
@@ -43,10 +54,14 @@ class CanvasSoal extends Component
 
     private function loadJawaban()
     {
-        // Ambil jawaban dari database
-        $this->jawaban = Respon::where('user_id', Auth::user()->id)
+        $this->jawaban = Respon::where('user_id', Auth::id())
             ->pluck('soal_id')
             ->toArray();
+    }
+
+    private function updateLastSoal($nomor)
+    {
+        Session::put('last_no', [$nomor, $this->soals[0]->paket->uuid]);
     }
 
     public function render()

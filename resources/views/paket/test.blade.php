@@ -37,13 +37,7 @@
                             </div>
                         </div>
                         <div class="col-xl-3 col-md-12 col-sm-12 d-flex flex-column">
-                            <div class="card mb-3 flex-grow-1 h-100">
-                                <div class="card-body d-flex justify-content-center align-items-center">
-                                    <div class="fs-1 py-3 text-center font-weight-bold">
-                                        01:59:32
-                                    </div>
-                                </div>
-                            </div>
+                            <livewire:card-timer :paket="$paket" :durasi="$paket->durasi"></livewire:card-timer>
                         </div>
                     </div>
                 </div>

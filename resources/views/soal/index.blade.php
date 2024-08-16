@@ -60,7 +60,7 @@
                                     </tr>
                                     <tr>
                                         <th>Durasi</th>
-                                        <td colspan="2">120 menit</td>
+                                        <td colspan="2">{{ floor($paket->durasi / 60) }} menit</td>
                                         {{-- <td>:</td> --}}
                                     </tr>
                                 </table>

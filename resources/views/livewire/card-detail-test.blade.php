@@ -3,8 +3,8 @@
         <table class="table table-borderless table-responsive m-0">
             <tr>
                 <td class="font-weight-bold text-center">Jumlah Soal</td>
-                <td class="font-weight-bold text-center text-success">Terjawab</td>
-                <td class="font-weight-bold text-center text-danger">Belum Terjawab</td>
+                <td class="font-weight-bold text-center ">Terjawab</td>
+                <td class="font-weight-bold text-center ">Belum Terjawab</td>
 
             </tr>
             <tr>

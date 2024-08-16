@@ -16,71 +16,80 @@ class CardSoal extends Component
     public $soal;
     public $jawaban = null;
     public $shuffledJawaban = [];
-    public $soal_last;
-    public $respon;
     public $nomor = 1;
-
 
     public function mount()
     {
-        $nomor = Session::get('last_no') == null ? (0) : (Session::get('last_no') - 1);
-        $this->soal = $this->soals[$nomor];
-        $this->nomor = $nomor + 1;
-        $this->shuffledJawaban = Jawaban::where('soal_id', $this->soal->id)->get()->shuffle();
-        if (Respon::where('soal_id', $this->soal->id)->where('user_id', Auth::user()->id)->count() != 0) {
-            $this->jawaban = Respon::where('soal_id', $this->soal->id)->where('user_id', Auth::user()->id)->first()->jawaban_id;
-        }
+        $this->loadCurrentSoal();
     }
+
+    private function loadCurrentSoal()
+    {
+        $lastNo = Session::get('last_no');
+        $index = is_array($lastNo) && $lastNo[1] === $this->soals[0]->paket->uuid
+            ? max(0, $lastNo[0] - 1)
+            : 0;
+
+        $this->setSoalData($this->soals[$index], $index + 1);
+    }
+
+    private function setSoalData(Soal $soal, $nomor)
+    {
+        $this->soal = $soal;
+        $this->nomor = $nomor;
+        $this->shuffledJawaban = $soal->jawaban()->get()->shuffle();
+        $this->jawaban = $this->getResponJawaban($soal->id);
+    }
+
+    private function getResponJawaban($soalId)
+    {
+        return Respon::where('soal_id', $soalId)
+            ->where('user_id', Auth::id())
+            ->value('jawaban_id');
+    }
+
     #[On('soal-pick')]
     public function fillSoal($id, $nomor)
     {
-        $this->soal = Soal::where('id', $id)->first();
-        $this->nomor = $nomor;
-        $this->shuffledJawaban = Jawaban::where('soal_id', $this->soal->id)->get()->shuffle();
-        $respon = Respon::where('soal_id', $this->soal->id)
-            ->where('user_id', Auth::id())
-            ->first();
-        $this->jawaban = $respon ? $respon->jawaban_id : null;
+        $soal = Soal::find($id);
+        $this->setSoalData($soal, $nomor);
     }
+
     public function before($no)
     {
-        $this->soal = $this->soals[$no - 2];
-        $this->nomor = $no - 1;
-        $this->shuffledJawaban = Jawaban::where('soal_id', $this->soal->id)->get()->shuffle();
-        $respon = Respon::where('soal_id', $this->soal->id)
-            ->where('user_id', Auth::id())
-            ->first();
-        $this->jawaban = $respon ? $respon->jawaban_id : null;
-        Session::put('last_no', $this->nomor);
-        $this->dispatch('active', id: $this->soal->id);
+        $this->navigateSoal($no - 2, $no - 1);
     }
+
     public function after($no)
     {
-        $this->soal = $this->soals[$no];
-        $this->nomor = $no + 1;
-        $this->shuffledJawaban = Jawaban::where('soal_id', $this->soal->id)->get()->shuffle();
-        $respon = Respon::where('soal_id', $this->soal->id)
-            ->where('user_id', Auth::id())
-            ->first();
-        $this->jawaban = $respon ? $respon->jawaban_id : null;
-        Session::put('last_no', $this->nomor);
-        $this->dispatch('active', id: $this->soals[$no]->id);
+        $this->navigateSoal($no, $no + 1);
+    }
+
+    private function navigateSoal($index, $nomor)
+    {
+        $soal = $this->soals[$index];
+        $this->setSoalData($soal, $nomor);
+        Session::put('last_no', [$this->nomor, $soal->paket->uuid]);
+        $this->dispatch('active', id: $soal->id);
     }
 
     public function updated($name, $value)
     {
-        if (Respon::where('soal_id', $this->soal->id)->where('user_id', Auth::user()->id)->count() != 0) {
-            Respon::where('soal_id', $this->soal->id)->where('user_id', Auth::user()->id)->update([
-                'jawaban_id' => $value,
-            ]);
-        } else {
-            Respon::create([
-                'user_id' => Auth::user()->id,
-                'soal_id' => $this->soal->id,
-                'jawaban_id' => $value,
-            ]);
-        }
+        $this->saveRespon($value);
         $this->dispatch('active', id: $this->soal->id);
+    }
+
+    private function saveRespon($jawabanId)
+    {
+        Respon::updateOrCreate(
+            [
+                'soal_id' => $this->soal->id,
+                'user_id' => Auth::id(),
+            ],
+            [
+                'jawaban_id' => $jawabanId,
+            ]
+        );
     }
 
     public function render()

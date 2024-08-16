@@ -10,11 +10,23 @@ class PaketForm extends Component
 {
     public $paket;
     public $nama;
+    public $durasi;
 
     public function save()
     {
+        // Retrieve the time from the request
+        $time = $this->durasi;
+
+        // Split the time into hours and minutes
+        list($hours, $minutes) = explode(':', $time);
+
+        // Convert hours and minutes to integers
+        $hours = (int)$hours;
+        $minutes = (int)$minutes;
+
         $paket = new Paket();
         $paket->nama = $this->nama;
+        $paket->durasi = ($hours * 3600) + ($minutes * 60);
         $paket->user_id = Auth::user()->id;
         $paket->save();
 
