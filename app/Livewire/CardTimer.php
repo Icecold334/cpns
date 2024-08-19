@@ -11,29 +11,30 @@ class CardTimer extends Component
     public $timeRemaining; // Timer in seconds
     public $durasi;
     public $paket;
-    public $interval = 60;
-    public $selesai;
-    protected $listeners = ['saveProgress'];
+
 
     public function mount()
     {
         $user = $this->paket->hasil->where('user_id', Auth::id())->first();
         $startTime = $user->start_time;
-        $lastTime = $user->last_activity;
-        if ($startTime && $lastTime) {
-            // Buat dua instance Carbon
-            $start = Carbon::createFromFormat('Y-m-d H:i:s', $startTime);
-            $last = Carbon::createFromFormat('Y-m-d H:i:s', $lastTime);
-            $selisih = (int)$start->diffInSeconds($last);
-            $durasi = $this->durasi - $selisih;
-            $this->timeRemaining = $durasi;
+        $endTime = $user->end_time;
+        if ($startTime && $endTime) {
+            $start = Carbon::parse($startTime);
+            $end = Carbon::parse($endTime);
+            $current = Carbon::now();
+            if ($current->between($start, $end)) {
+                $remainingTime = abs((int)$end->diffInSeconds($current));
+                $this->timeRemaining = $remainingTime;
+            } else {
+                dd('waktu abis');
+            }
         } else {
-            $this->timeRemaining == $this->durasi;
-        }
-
-        if ($this->timeRemaining < 0) {
-
-            return redirect()->route('ujian.selesai', ['paket' => $this->paket->uuid]);
+            $this->timeRemaining = $this->durasi;
+            $user = $this->paket->hasil->where('user_id', Auth::id())->first();
+            $user->update([
+                'start_time' => now(),
+                'end_time' => Carbon::parse(now())->addSeconds($this->durasi)
+            ]);
         }
     }
 
@@ -41,23 +42,12 @@ class CardTimer extends Component
     {
         if ($this->timeRemaining > 0) {
             $this->timeRemaining--;
-
-            // Simpan waktu tersisa ke database setiap interval tertentu
-            if ($this->timeRemaining % $this->interval === 0) {
-                $this->saveTime();
-            }
         } else {
-            return redirect()->route('ujian.selesai', ['paket' => $this->paket->uuid]);
+            dd('waktu abis');
         }
     }
 
-    public function saveTime()
-    {
-        $user = $this->paket->hasil->where('user_id', Auth::id())->first();
-        $user->update([
-            'last_activity' => now()
-        ]);
-    }
+
 
     public function render()
     {

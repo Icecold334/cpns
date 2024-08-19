@@ -6,18 +6,9 @@
     </div>
     @push('scripts')
         <script>
-            let saveInterval = 1000; // Save time every 5 seconds
-            let decrementInterval = 1000; // Decrement time every second
-
-            // Set interval to decrement time
             setInterval(function() {
                 @this.call('decrementTime');
-            }, decrementInterval);
-
-            // Set interval to save time every 5 seconds
-            setInterval(function() {
-                @this.call('saveTime');
-            }, saveInterval);
+            }, 1000);
         </script>
     @endpush
 </div>

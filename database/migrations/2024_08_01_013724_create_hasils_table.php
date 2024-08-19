@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('paket_id')->constrained('pakets');
             $table->string('urutan');
             $table->timestamp('start_time')->nullable();
-            $table->timestamp('last_activity')->nullable();
+            $table->timestamp('end_time')->nullable();
             $table->integer('total_skor')->nullable();
             $table->timestamp('completed_at')->nullable();
             $table->timestamps();
