@@ -23,10 +23,9 @@ class CardTimer extends Component
             $end = Carbon::parse($endTime);
             $current = Carbon::now();
             if ($current->between($start, $end)) {
-                $remainingTime = abs((int)$end->diffInSeconds($current));
-                $this->timeRemaining = $remainingTime;
+                $this->timeRemaining = abs((int)$end->diffInSeconds($current));
             } else {
-                dd('waktu abis');
+                redirect()->route('ujian.selesai', ['paket' => $this->paket->uuid]);
             }
         } else {
             $this->timeRemaining = $this->durasi;
@@ -43,7 +42,8 @@ class CardTimer extends Component
         if ($this->timeRemaining > 0) {
             $this->timeRemaining--;
         } else {
-            dd('waktu abis');
+            $this->dispatch('selesai');
+            // redirect()->route('ujian.selesai', ['paket' => $this->paket->uuid]);
         }
     }
 

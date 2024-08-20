@@ -69,16 +69,18 @@
                                     </a>
                                 </td>
                             @else
-                                @if ($paket->hasil->where('user_id', Auth::user()->id)->where('total_skor', null)->first()->total_skor === null)
+                                @if ($paket->hasil->where('user_id', Auth::user()->id)->first()->total_skor === null)
                                     <td class="text-center">
-                                        <a href="/paket/test/{{ $paket->uuid }}"
+                                        <a href="/paket/test/{{ $paket->uuid }}{{ $paket->hasil->where('user_id', Auth::user()->id)->first()->start_time != null ? '/play' : '' }}"
                                             class="btn badge bg-success text-white">
-                                            <i class="fa-solid fa-play"></i> Kerjakan Ujian
+                                            <i class="fa-solid fa-play"></i>
+                                            {{ $paket->hasil->where('user_id', Auth::user()->id)->first()->start_time === null ? 'Kerjakan Ujian' : 'Lanjutkan Ujian' }}
                                         </a>
                                     </td>
                                 @else
                                     <td class="text-center">
-                                        <a href="/paket/test/{{ $paket->uuid }}" class="btn badge bg-info text-white">
+                                        <a href="/paket/hasil/{{ $paket->uuid }}"
+                                            class="btn badge bg-info text-white">
                                             <i class="fa-solid fa-circle-info"></i> Hasil Ujian
                                         </a>
                                     </td>

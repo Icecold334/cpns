@@ -12,10 +12,10 @@
         <div class="row px-3">
             @foreach ($soals as $soal)
                 <div class="col-3 mb-3">
-                    <a href="#"
+                    <button
                         class="btn {{ in_array($soal->id, $jawaban) && $activeSoalId != $soal->id ? 'btn-success' : 'btn-outline-primary' }} {{ $activeSoalId === $soal->id ? 'active' : '' }} w-100 "
                         wire:loading.class="disabled" wire:click="pilihSoal({{ $soal->id }},{{ $loop->iteration }})"
-                        role="button" data-bs-toggle="button">{{ $loop->iteration }}</a>
+                        role="button" data-bs-toggle="button">{{ $loop->iteration }}</button>
                 </div>
             @endforeach
         </div>

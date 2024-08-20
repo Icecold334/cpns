@@ -19,6 +19,9 @@ return new class extends Migration
             $table->string('urutan');
             $table->timestamp('start_time')->nullable();
             $table->timestamp('end_time')->nullable();
+            $table->integer('twk')->nullable();
+            $table->integer('tiu')->nullable();
+            $table->integer('tkp')->nullable();
             $table->integer('total_skor')->nullable();
             $table->timestamp('completed_at')->nullable();
             $table->timestamps();

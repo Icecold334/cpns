@@ -12,17 +12,16 @@
     <div>
         @foreach ($shuffledJawaban as $jawab)
             <div class="form-check mb-2">
-                <input class="form-check-input" type="radio" name="jawab" value="{{ $jawab->id }}"
-                    id="jawaban{{ intToAlphabet($jawab->row, true) }}" wire:model.live="jawaban"
-                    wire:key="jawab-{{ $jawab->id }}">
+                <input class="form-check-input" wire:loading.attr="disabled" type="radio" name="jawab"
+                    value="{{ $jawab->id }}" id="jawaban{{ intToAlphabet($jawab->row, true) }}"
+                    wire:model.live="jawaban" wire:key="jawab-{{ $jawab->id }}">
                 <label class="form-check-label" for="jawaban{{ intToAlphabet($jawab->row, true) }}">
                     {{ intToAlphabet($loop->iteration, true) }}. {{ $jawab->jawaban }}
                 </label>
             </div>
         @endforeach
     </div>
-    <div class="d-flex align-items-center justify-content-start gap-3">
-        {{-- <button class="btn btn-primary mt-3">Simpan & Lanjut</button> --}}
+    <div class="d-flex align-items-center justify-content-start gap-3 ">
         <button class="btn btn-primary mt-3 d-flex align-items-center {{ $nomor == 1 ? 'disabled' : '' }}"
             type="button" wire:click="before({{ $nomor }})" wire:loading.class="disabled">
             <span role="status"><i class="fa-solid fa-chevron-left"></i> Sebelumnya </span>
@@ -38,11 +37,31 @@
             </div>
             <span role="status">Berikutnya <i class="fa-solid fa-chevron-right"></i></span>
         </button>
-        <button class="btn btn-primary mt-3 d-flex ms-auto" id="selesai">Selesai Ujian</button>
+        <button class="btn btn-primary mt-3  d-flex ms-auto" id="selesai">Selesai Ujian</button>
     </div>
 
     @push('scripts')
         <script>
+            document.addEventListener('selesai', function(e) {
+                let timerInterval;
+                Swal.fire({
+                    title: "Waktu Habis!",
+                    html: "Waktu habis",
+                    icon: 'info',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    willClose: () => {
+                        clearInterval(timerInterval);
+                    }
+                }).then((result) => {
+                    window.location = "{{ route('ujian.selesai', ['paket' => $soal->paket->uuid]) }}";
+                });
+            }, {
+                once: true
+            });
             document.getElementById('selesai').addEventListener('click', function() {
                 Swal.fire({
                     title: 'Selesaikan Ujian?',

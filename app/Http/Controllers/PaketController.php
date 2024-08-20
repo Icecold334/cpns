@@ -21,40 +21,67 @@ class PaketController extends Controller
             'user' => Auth::user(),
         ]);
     }
+    public function hasil(Paket $paket)
+    {
+        return view('paket.hasil', [
+            'title' => 'Hasil ' . $paket->nama,
+            'paket' => $paket,
+            'hasil' => $paket->hasil->where('paket_id', $paket->id)->first(),
+            'user' => Auth::user(),
+        ]);
+    }
 
     public function selesai(Paket $paket)
     {
-        $responses = Respon::where('user_id', Auth::id())
-            ->whereHas('soal.paket', function ($query) use ($paket) {
-                $query->where('uuid', $paket->uuid);
-            })
-            ->get();
+        $userId = Auth::id();
 
-        $totalNilai = $responses->reduce(function ($total, $respon) {
-            $kategori = $respon->soal->kategori->nama;
+        $tiuScore = 0;
+        $twkScore = 0;
+        $tkpScore = 0;
+
+        // Ambil semua respon dari user untuk paket soal tertentu
+        $responses = Respon::where('user_id', $userId)
+            ->whereHas('soal', function ($query) use ($paket) {
+                $query->where('paket_id', $paket->id);
+            })->get();
+
+        foreach ($responses as $respon) {
+            $soal = $respon->soal;
             $jawaban = Jawaban::find($respon->jawaban_id);
+            $kategori = $soal->kategori->nama;
 
-            if (in_array($kategori, ['TIU', 'TWK']) && $jawaban->benar) {
-                return $total + 1;
-            } elseif ($kategori === 'TKP') {
-                return $total + $jawaban->poin;
+            if ($kategori == 'TIU') {
+                if ($jawaban->benar) {
+                    $tiuScore++;
+                }
+            } elseif ($kategori == 'TWK') {
+                if ($jawaban->benar) {
+                    $twkScore++;
+                }
+            } elseif ($kategori == 'TKP') {
+                $tkpScore += $jawaban->poin;
             }
+        }
 
-            return $total;
-        }, 0);
 
         $totalPoin = $paket->soal->where('kategori_id', 1)->count() +
             $paket->soal->where('kategori_id', 2)->count() +
             ($paket->soal->where('kategori_id', 3)->count() * 5);
-
-        $nilai = floor(($totalNilai / $totalPoin) * 100);
-
+        $totalNilai = $twkScore + $tiuScore + $tkpScore;
+        $nilaiTwk = (int)floor(($twkScore / $paket->soal->where('kategori_id', 1)->count()) * 100);
+        $nilaiTiu = (int)floor(($tiuScore / $paket->soal->where('kategori_id', 2)->count()) * 100);
+        $nilaiTkp = (int)floor(($tkpScore / ($paket->soal->where('kategori_id', 3)->count() * 5)) * 100);
+        $nilai = (int)floor(($totalNilai / $totalPoin) * 100);
         Hasil::where('paket_id', $paket->id)
             ->where('user_id', Auth::id())
             ->update([
+                'twk' => $nilaiTwk,
+                'tiu' => $nilaiTiu,
+                'tkp' => $nilaiTkp,
                 'total_skor' => $nilai,
                 'completed_at' => now(),
             ]);
+        return redirect()->route('hasil', ['paket' => $paket->uuid]);
     }
 
     public function test(Paket $paket)
