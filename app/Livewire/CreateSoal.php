@@ -14,31 +14,41 @@ use Livewire\Features\SupportFileUploads\WithFileUploads;
 
 class CreateSoal extends Component
 {
-
     use WithFileUploads;
+
     public $paket;
     public $soal_array;
-    #[Validate('required', message: 'Nama wajib diisi!')]
+
+    #[Validate('required', message: 'Soal tidak boleh kosong!')]
     public $soal;
-    #[Validate('required', message: 'Pilih Kategori!')]
+
+    #[Validate('required', message: 'Kategori soal harus dipilih!')]
     public $kategori_id;
-    #[Validate('required', message: 'Nama wajib diisi!')]
+
+    #[Validate('required', message: 'Kategori wajib diisi!')]
     public $kategoris;
-    #[Validate('required', message: 'a!')]
+
+    #[Validate('required', message: 'Pilihan jawaban A tidak boleh kosong!')]
     public $a;
-    #[Validate('required', message: 'b!')]
+
+    #[Validate('required', message: 'Pilihan jawaban B tidak boleh kosong!')]
     public $b;
-    #[Validate('required', message: 'c!')]
+
+    #[Validate('required', message: 'Pilihan jawaban C tidak boleh kosong!')]
     public $c;
-    #[Validate('required', message: 'd!')]
+
+    #[Validate('required', message: 'Pilihan jawaban D tidak boleh kosong!')]
     public $d;
-    #[Validate('required', message: 'e!')]
+
+    #[Validate('required', message: 'Pilihan jawaban E tidak boleh kosong!')]
     public $e;
+
     #[Validate('nullable')]
-    #[Validate('image', message: 'Format file harus jpeg/png/jpg/gif!')]
+    #[Validate('image', message: 'Format file gambar harus jpeg/png/jpg/gif!')]
     #[Validate('max:2048', message: 'Ukuran file maksimal 2MB!')]
-    #[Validate('mimes:jpeg,png,jpg,gif', message: 'Format file harus jpeg/png/jpg/gif!')]
+    #[Validate('mimes:jpeg,png,jpg,gif', message: 'Format file gambar harus jpeg/png/jpg/gif!')]
     public $img;
+
     public $benar;
     public $jawaban_array;
     public $title_alert;
@@ -188,10 +198,21 @@ class CreateSoal extends Component
         $this->title_alert = 'Berhasil';
         $this->message_alert = 'Soal berhasil ditambahkan!';
         $this->icon_alert = 'success';
-
-        $this->resetExcept(['kategoris', 'paket', 'title_alert', 'message_alert', 'icon_alert']);
+        $this->resetInputFields();
     }
 
+    public function resetInputFields()
+    {
+        $this->soal = '';
+        $this->img = null;
+        $this->kategori_id = '';
+        $this->a = '';
+        $this->b = '';
+        $this->c = '';
+        $this->d = '';
+        $this->e = '';
+        $this->benar = '';
+    }
 
     public function render()
     {

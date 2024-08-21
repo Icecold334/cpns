@@ -49,11 +49,11 @@
                     <select class="custom-select @error('benar') is-invalid @enderror" aria-label="Pilih Kategori"
                         id="benar" name="benar" wire:model.live="benar">
                         <option value="">Pilih Jawaban</option>
-                        <option value="1" @selected($benar == 1)>Jawaban A</option>
-                        <option value="2" @selected($benar == 2)>Jawaban B</option>
-                        <option value="3" @selected($benar == 3)>Jawaban C</option>
-                        <option value="4" @selected($benar == 4)>Jawaban D</option>
-                        <option value="5" @selected($benar == 5)>Jawaban E</option>
+                        <option value="1">Jawaban A</option>
+                        <option value="2">Jawaban B</option>
+                        <option value="3">Jawaban C</option>
+                        <option value="4">Jawaban D</option>
+                        <option value="5">Jawaban E</option>
                     </select>
                     @error('benar')
                         <div id="benar" class="invalid-feedback">
