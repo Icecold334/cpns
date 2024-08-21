@@ -5,22 +5,25 @@ namespace App\Http\Controllers;
 use App\Models\Soal;
 use App\Http\Requests\StoreSoalRequest;
 use App\Http\Requests\UpdateSoalRequest;
+use App\Models\Jawaban;
+use App\Models\Paket;
 
 class SoalController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Paket $paket)
     {
-        return view('soal.index', ['title' => 'Daftar Soal']);
+        return view('soal.index', ['title' => $paket->nama, 'paket' => $paket, 'soals' => Soal::where('paket_id', $paket->id)->orderBy('kategori_id')->get()]);
     }
+
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Paket $paket)
     {
-        //
+        return view('soal.create', ['title' => 'Tambah Soal', 'paket' => $paket]);
     }
 
     /**
@@ -42,9 +45,9 @@ class SoalController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Soal $soal)
+    public function edit(Paket $paket, Soal $soal)
     {
-        //
+        return view('soal.edit', ['title' => 'Ubah Soal', 'paket' => $paket, 'soal' => $soal]);
     }
 
     /**
@@ -58,8 +61,10 @@ class SoalController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Soal $soal)
+    public function destroy(Paket $paket, Soal $soal)
     {
-        //
+        Jawaban::where('soal_id', $soal->id)->delete();
+        $soal->delete();
+        return redirect()->route('paket.soal.index', ['paket' => Paket::where('id', $paket->id)->first()->uuid])->with('icon', 'success')->with('title', 'Berhasil')->with('message', 'Soal berhasil dihapus!');
     }
 }

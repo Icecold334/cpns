@@ -30,7 +30,7 @@
             href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         <!-- Custom styles for this template-->
-        <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+        <link href="/css/sb-admin-2.css" rel="stylesheet">
 
     </head>
 
@@ -39,19 +39,22 @@
         <!-- Page Wrapper -->
         <div id="wrapper">
 
-            <!-- Sidebar -->
-            @livewire('layout.sidebar')
-            <!-- End of Sidebar -->
+            @if (!request()->is('paket/test*'))
+                <!-- Sidebar -->
+                @livewire('layout.sidebar')
+                <!-- End of Sidebar -->
+            @endif
 
             <!-- Content Wrapper -->
             <div id="content-wrapper" class="d-flex flex-column">
 
                 <!-- Main Content -->
                 <div id="content">
-
+                    {{-- @if (!request()->is('paket/test*')) --}}
                     <!-- Topbar -->
                     @livewire('layout.navbar')
                     <!-- End of Topbar -->
+                    {{-- @endif --}}
 
                     <!-- Begin Page Content -->
                     <div class="container-fluid">
@@ -65,15 +68,18 @@
                 </div>
                 <!-- End of Main Content -->
 
+                {{-- @if (!request()->is('paket/test*')) --}}
                 <!-- Footer -->
-                <footer class="sticky-footer bg-white">
+                <footer class="sticky-footer bg-white" style="margin-top: 11.4rem">
                     <div class="container my-auto">
                         <div class="copyright text-center my-auto">
-                            <span>Copyright &copy; {{ env('APP_NAME') }} 2020</span>
+                            <span>Copyright &copy; {{ env('APP_NAME') }}
+                                {{ Carbon\Carbon::now()->isoFormat('Y') }}</span>
                         </div>
                     </div>
                 </footer>
                 <!-- End of Footer -->
+                {{-- @endif --}}
 
             </div>
             <!-- End of Content Wrapper -->
@@ -82,7 +88,8 @@
         <!-- End of Page Wrapper -->
 
         <!-- Scroll to Top Button-->
-        <a class="scroll-to-top rounded" href="#page-top">
+        <a class="scroll-to-top
+                        rounded" href="#page-top">
             <i class="fas fa-angle-up"></i>
         </a>
 
@@ -97,7 +104,8 @@
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
-                    <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                    <div class="modal-body">Select "Logout" below if you are ready to end your current
+                        session.</div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
                         <a class="btn btn-primary" href="login.html">Logout</a>
@@ -105,8 +113,13 @@
                 </div>
             </div>
         </div>
+        @stack('html')
 
         <!-- Bootstrap core JavaScript-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+        {{-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous">
+        </script> --}}
         <script src="/vendor/jquery/jquery.min.js"></script>
         <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
@@ -115,9 +128,7 @@
 
         <!-- Custom scripts for all pages-->
         <script src="/js/sb-admin-2.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous">
-        </script>
+
         <script src="https://cdn.datatables.net/2.0.6/js/dataTables.js"></script>
         <script src="https://cdn.datatables.net/2.0.6/js/dataTables.bootstrap5.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
@@ -126,7 +137,15 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
             integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous">
         </script>
+
         <script>
+            $(document).ready(function() {
+                $(document).on('copy', function(e) {
+                    e.preventDefault();
+                });
+            });
+            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+            const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
             $('input').attr('autocomplete', 'off');
             /* Fungsi formatRupiah */
             function rupiah(angka, prefix) {

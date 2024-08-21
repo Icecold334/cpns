@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\PlotPaket;
-use App\Http\Requests\StorePlotPaketRequest;
-use App\Http\Requests\UpdatePlotPaketRequest;
+use App\Models\Jawaban;
+use App\Http\Requests\StoreJawabanRequest;
+use App\Http\Requests\UpdateJawabanRequest;
 
-class PlotPaketController extends Controller
+class JawabanController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +27,7 @@ class PlotPaketController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePlotPaketRequest $request)
+    public function store(StoreJawabanRequest $request)
     {
         //
     }
@@ -35,7 +35,7 @@ class PlotPaketController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(PlotPaket $plotPaket)
+    public function show(Jawaban $jawaban)
     {
         //
     }
@@ -43,7 +43,7 @@ class PlotPaketController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(PlotPaket $plotPaket)
+    public function edit(Jawaban $jawaban)
     {
         //
     }
@@ -51,7 +51,7 @@ class PlotPaketController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePlotPaketRequest $request, PlotPaket $plotPaket)
+    public function update(UpdateJawabanRequest $request, Jawaban $jawaban)
     {
         //
     }
@@ -59,7 +59,7 @@ class PlotPaketController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(PlotPaket $plotPaket)
+    public function destroy(Jawaban $jawaban)
     {
         //
     }

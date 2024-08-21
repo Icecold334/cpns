@@ -11,10 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('plot_pakets', function (Blueprint $table) {
+        Schema::create('soals', function (Blueprint $table) {
             $table->id();
-            $table->foreignid('id_paket')->references('id')->on('pakets');
-            $table->foreignid('id_siswa')->references('id')->on('users');
+            $table->string('uuid');
+            $table->foreignId('paket_id')->constrained('pakets');
+            $table->foreignId('kategori_id')->constrained('kategoris');
+            $table->string('soal');
+            $table->string('img')->nullable();
             $table->timestamps();
         });
     }
@@ -24,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('plot_pakets');
+        Schema::dropIfExists('soals');
     }
 };

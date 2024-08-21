@@ -34,10 +34,20 @@ class GuruForm extends Component
     {
         $ruleEmail = ['required', 'email', 'unique:users'];
 
-        $this->validate(['email' => $ruleEmail], [
+        $this->validate([
+            'email' => $ruleEmail,
+            'name' => ['required', 'min:3'],
+            'img' => ['nullable', 'image', 'max:2048', 'mimes:jpeg,png,jpg,gif'],
+        ], [
             'email.required' => 'Email wajib diisi!',
             'email.email' => 'Format email salah!',
             'email.unique' => 'Email sudah terdaftar!',
+            'name.required' => 'Nama wajib diisi!',
+            'name.min' => 'Nama terlalu singkat!!',
+            'img.nullable' => 'Foto wajib diupload!',
+            'img.image' => 'Format file harus jpeg/png/jpg/gif!',
+            'img.max' => 'Ukuran file maksimal 2MB!',
+            'img.mimes' => 'Format file harus jpeg/png/jpg/gif!',
         ]);
         User::create([
             'name' => $this->name,
@@ -56,10 +66,20 @@ class GuruForm extends Component
 
         $ruleEmail = $user->email == $this->email ? ['required', 'email'] : ['required', 'email', 'unique:users'];
 
-        $this->validate(['email' => $ruleEmail], [
+        $this->validate([
+            'email' => $ruleEmail,
+            'name' => ['required', 'min:3'],
+            'img' => ['nullable', 'image', 'max:2048', 'mimes:jpeg,png,jpg,gif'],
+        ], [
             'email.required' => 'Email wajib diisi!',
             'email.email' => 'Format email salah!',
             'email.unique' => 'Email sudah terdaftar!',
+            'name.required' => 'Nama wajib diisi!',
+            'name.min' => 'Nama terlalu singkat!!',
+            'img.nullable' => 'Foto wajib diupload!',
+            'img.image' => 'Format file harus jpeg/png/jpg/gif!',
+            'img.max' => 'Ukuran file maksimal 2MB!',
+            'img.mimes' => 'Format file harus jpeg/png/jpg/gif!',
         ]);
         $user->update([
             'name' => $this->name,

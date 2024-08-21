@@ -1,8 +1,10 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Testing\Fakes\Fake;
 
 return new class extends Migration
 {
@@ -13,11 +15,10 @@ return new class extends Migration
     {
         Schema::create('pakets', function (Blueprint $table) {
             $table->id();
-            $table->uuid();
-            $table->foreignid('id_guru')->references('id')->on('users');
-            $table->integer('qty');
+            $table->string('uuid')->default();
             $table->string('nama');
-            $table->softDeletes();
+            $table->integer('durasi');
+            $table->foreignId('user_id')->constrained('users');
             $table->timestamps();
         });
     }
