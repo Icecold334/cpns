@@ -12,7 +12,8 @@
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
         "laravel/ui": "^4.5",
-        "livewire/livewire": "^3.5"
+        "livewire/livewire": "^3.5",
+        "scssphp/scssphp": "^1.13"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

@@ -3,6 +3,7 @@
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\PaketController;
 use App\Http\Controllers\PanelController;
+use App\Http\Controllers\PengaturanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\SoalController;
@@ -23,7 +24,9 @@ Auth::routes(['verify' => true]);
 // })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('panel', [PanelController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+
 Route::resource('guru', GuruController::class)->middleware(['auth', 'verified']);
+
 Route::resource('siswa', SiswaController::class)->middleware(['auth', 'verified']);
 Route::get('paket/hasil/{paket}', [PaketController::class, 'hasil'])->middleware(['auth', 'verified'])->name('hasil');
 Route::get('paket/test/{paket}', [PaketController::class, 'testIndex'])->middleware(['auth', 'verified']);
@@ -31,6 +34,8 @@ Route::get('paket/test/{paket}/play', [PaketController::class, 'test'])->middlew
 Route::get('paket/test/{paket}/selesai', [PaketController::class, 'selesai'])->middleware(['auth', 'verified'])->name('ujian.selesai');
 Route::resource('paket', PaketController::class)->middleware(['auth', 'verified']);
 Route::resource('paket.soal', SoalController::class)->middleware(['auth', 'verified']);
+
+Route::get('pengaturan', [PengaturanController::class, 'index'])->middleware(['auth', 'verified'])->name('settings');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
