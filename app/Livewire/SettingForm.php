@@ -23,7 +23,7 @@ class SettingForm extends Component
 
     public function save()
     {
-        $scssFilePath = public_path('scss/sb-admin-2.scss');
+        $scssFilePath = public_path('scss/sb.scss');
         $scssContent = file_get_contents($scssFilePath);
         $newScssContent = str_replace('$primary: ' . $this->oldPrimary . ';', '$primary: ' . $this->primary . ';', $scssContent);
         file_put_contents($scssFilePath, $newScssContent);

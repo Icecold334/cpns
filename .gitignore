@@ -3,7 +3,7 @@
 /public/build
 /public/hot
 /public/css
-/public/scss/sb-admin-2.scss
+/public/scss
 /public/storage
 /storage/*.key
 /vendor
