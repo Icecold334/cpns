@@ -7,12 +7,14 @@ use App\Models\Kategori;
 use App\Models\Paket;
 use App\Models\Soal;
 use App\Models\Jawaban;
+use App\Models\Pengaturan;
 
 class DatabaseSeeder extends Seeder
 {
     public function run()
     {
         // Buat pengguna
+        Pengaturan::factory()->create(['nama' => 'Aplikasi`', 'primary' => '#4e73df',]);
         User::factory()->create(['name' => 'Fauzan Imam', 'email' => 'fauzanimam334@gmail.com', 'role' => 1, 'gender' => 0, 'password' => Hash::make('password123'), 'email_verified_at' => now(),]);
         User::factory()->create(['name' => 'Ini Guru', 'email' => 'guru@gmail.com', 'role' => 2, 'gender' => 0, 'password' => Hash::make('password123'), 'email_verified_at' => now(),]);
         User::factory()->create(['name' => 'Ini Siswa', 'email' => 'siswa@gmail.com', 'role' => 3, 'gender' => 0, 'password' => Hash::make('password123'), 'email_verified_at' => now(),]);

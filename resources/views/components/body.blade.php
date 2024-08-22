@@ -10,7 +10,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>{{ $title }} | {{ env('APP_NAME') }}</title>
+        <title>{{ $title }} | {{ App\Models\Pengaturan::first()->nama }}</title>
 
         <!-- Custom fonts for this template-->
         <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
@@ -73,7 +73,7 @@
                 <footer class="sticky-footer bg-white" style="margin-top: 11.4rem">
                     <div class="container my-auto">
                         <div class="copyright text-center my-auto">
-                            <span>Copyright &copy; {{ env('APP_NAME') }}
+                            <span>Copyright &copy; {{ App\Models\Pengaturan::first()->nama }}
                                 {{ Carbon\Carbon::now()->isoFormat('Y') }}</span>
                         </div>
                     </div>
