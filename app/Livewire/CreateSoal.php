@@ -51,9 +51,7 @@ class CreateSoal extends Component
 
     public $benar;
     public $jawaban_array;
-    public $title_alert;
-    public $message_alert;
-    public $icon_alert;
+
 
     public function mount()
     {
@@ -102,14 +100,14 @@ class CreateSoal extends Component
             $this->jawaban_array[3]->update(['jawaban' => $this->d, 'poin' => 4]);
             $this->jawaban_array[4]->update(['jawaban' => $this->e, 'poin' => 5]);
         }
-        return redirect()->route('paket.soal.edit', ['paket' => Paket::where('id', $this->soal_array->paket_id)->first()->uuid, 'soal' => $this->soal_array->uuid])->with('icon', 'success')->with('title', 'Berhasil')->with('message', 'Soal berhasil diubah!');
+        $this->dispatch('berhasil', icon: 'success', message: 'Soal berhasil diubah!');
+
+        // return redirect()->route('paket.soal.edit', ['paket' => Paket::where('id', $this->soal_array->paket_id)->first()->uuid, 'soal' => $this->soal_array->uuid])->with('icon', 'success')->with('title', 'Berhasil')->with('message', 'Soal berhasil diubah!');
     }
 
     public function save()
     {
-        $this->title_alert = null;
-        $this->message_alert = null;
-        $this->icon_alert = null;
+
         $this->validate();
         $soal = new Soal();
         $soal->paket_id = $this->paket->id;
@@ -195,9 +193,9 @@ class CreateSoal extends Component
             $jawaban->poin = $jawaban->row;
             $jawaban->save();
         }
-        $this->title_alert = 'Berhasil';
-        $this->message_alert = 'Soal berhasil ditambahkan!';
-        $this->icon_alert = 'success';
+        // dispatch
+
+        $this->dispatch('berhasil', icon: 'success', message: 'Soal berhasil ditambahkan!');
         $this->resetInputFields();
     }
 

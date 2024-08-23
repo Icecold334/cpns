@@ -9,9 +9,31 @@
             </h1>
         </div>
         <div
-            class="col-xl-6 col-md-12 col-sm-12  d-flex justify-content-xl-end justify-content-md-end justify-content-sm-start align-items-center">
-            <a href="{{ route('paket.soal.create', ['paket' => $paket->uuid]) }}" class="btn btn-outline-primary mx-3"><i
+            class="col-xl-6 col-md-12 col-sm-12  d-flex justify-content-xl-end justify-content-md-center justify-content-sm-center align-items-center">
+            <a href="{{ route('paket.soal.create', ['paket' => $paket->uuid]) }}" class="btn btn-outline-primary me-3"><i
                     class="fa-solid fa-circle-plus"></i> Tambah Soal</a>
+            <button type="button" class="btn btn-primary me-3" id="publish">
+                <i class="fa-solid fa-angles-up"></i> Publikasikan Paket Soal
+            </button>
+            @push('scripts')
+                <script>
+                    $('#publish').click(() => {
+                        Swal.fire({
+                            title: "Apa Kamu Yakin?",
+                            text: "Paket soal yang sudah dipublikasikan tidak bisa diubah",
+                            icon: "question",
+                            confirmButtonText: 'Ya',
+                            confirmButtonColor: "{{ App\Models\Pengaturan::first()->primary }}",
+                            cancelButtonText: 'Tidak',
+                            showCancelButton: true,
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                console.log('oke');
+                            }
+                        });
+                    });
+                </script>
+            @endpush
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#info-soal">
                 <i class="fa-solid fa-circle-info"></i> Informasi Paket Soal
             </button>
@@ -25,50 +47,59 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
-                            <div class="modal-body">
-                                <table class="table table-responsive-md">
-                                    <tr>
-                                        <th>Nama Paket</th>
-                                        <td colspan="2">{{ $paket->nama }}</td>
-                                        {{-- <td>:</td> --}}
-                                    </tr>
-                                    <tr>
-                                        <th>Penulis</th>
-                                        <td colspan="2">{{ $paket->user->name }}</td>
-                                        {{-- <td>:</td> --}}
-                                    </tr>
-                                    <tr>
-                                        <th>Jumlah Soal</th>
-                                        <td colspan="2">{{ $paket->soal->count() }} Soal</td>
-                                        {{-- <td>:</td> --}}
-                                    </tr>
-                                    <tr>
-                                        <th colspan="3" class="text-center">Kategori</th>
-                                    </tr>
-                                    <tr>
-                                        <th class="text-center">Tes Wawasan Kebangsaan</th>
-                                        <th class="text-center">Tes Intelegensia Umum</th>
-                                        <th class="text-center">Tes Karakteristik Pribadi</th>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-center">{{ $paket->soal->where('kategori_id', 1)->count() }} Soal
-                                        </td>
-                                        <td class="text-center">{{ $paket->soal->where('kategori_id', 2)->count() }} Soal
-                                        </td>
-                                        <td class="text-center">{{ $paket->soal->where('kategori_id', 3)->count() }} Soal
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>Durasi</th>
-                                        <td colspan="2">{{ floor($paket->durasi / 60) }} menit</td>
-                                        {{-- <td>:</td> --}}
-                                    </tr>
-                                </table>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Save changes</button>
-                            </div>
+                            <form action="{{ route('paket.update', ['paket' => $paket->uuid]) }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <div class="modal-body">
+                                    <table class="table table-responsive-md">
+                                        <tr>
+                                            <th>Nama Paket</th>
+                                            <td colspan="2">{{ $paket->nama }}</td>
+                                            {{-- <td>:</td> --}}
+                                        </tr>
+                                        <tr>
+                                            <th>Penulis</th>
+                                            <td colspan="2">{{ $paket->user->name }}</td>
+                                            {{-- <td>:</td> --}}
+                                        </tr>
+                                        <tr>
+                                            <th>Jumlah Soal</th>
+                                            <td colspan="2">{{ $paket->soal->count() }} Soal</td>
+                                            {{-- <td>:</td> --}}
+                                        </tr>
+                                        <tr>
+                                            <th colspan="3" class="text-center">Kategori</th>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-center">Tes Wawasan Kebangsaan</th>
+                                            <th class="text-center">Tes Intelegensia Umum</th>
+                                            <th class="text-center">Tes Karakteristik Pribadi</th>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center">{{ $paket->soal->where('kategori_id', 1)->count() }}
+                                                Soal
+                                            </td>
+                                            <td class="text-center">{{ $paket->soal->where('kategori_id', 2)->count() }}
+                                                Soal
+                                            </td>
+                                            <td class="text-center">{{ $paket->soal->where('kategori_id', 3)->count() }}
+                                                Soal
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Durasi</th>
+                                            <td colspan="2">{{ floor($paket->durasi / 60) }} menit</td>
+                                            {{-- <td>:</td> --}}
+                                        </tr>
+                                    </table>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Keluar</button>
+                                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                                </div>
+                            </form>
+
                         </div>
                     </div>
                 </div>

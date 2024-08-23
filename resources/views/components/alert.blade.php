@@ -1,25 +1,18 @@
 <script>
-    var timerInterval;
-    Swal.fire({
-        title: "{{ $title }}",
-        icon: "{{ $icon }}",
-        html: "{!! $message !!}",
+    const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
         showConfirmButton: false,
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-        timer: 2000,
-        timerProgressBar: false,
-        // didOpen: () => {
-        //     // Swal.showLoading();
-        //     const timer = Swal.getPopup().querySelector("b");
-        //     timerInterval = setInterval(() => {
-        //         timer.textContent = `${Swal.getTimerLeft()}`;
-        //     }, 100);
-        // },
-        willClose: () => {
-            clearInterval(timerInterval);
+        showCloseButton: true,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
         }
-    }).then((result) => {
-
+    });
+    Toast.fire({
+        icon: "{{ $icon }}",
+        title: "{{ $message }}"
     });
 </script>

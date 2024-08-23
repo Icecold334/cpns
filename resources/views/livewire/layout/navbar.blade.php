@@ -215,8 +215,8 @@
                 html: "Yakin keluar dari aplikasi?",
                 icon: "question",
                 showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
+                confirmButtonColor: "{{ App\Models\Pengaturan::first()->primary }}",
+                // cancelButtonColor: "#d33",
                 confirmButtonText: "Ya",
                 cancelButtonText: "Tidak"
             }).then((result) => {

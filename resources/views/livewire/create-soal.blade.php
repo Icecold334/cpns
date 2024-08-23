@@ -73,7 +73,7 @@
                     @enderror
                 </div>
             </div>
-            <div class="col-xl-12 col-md-12 col-sm-6">
+            <div class="col-xl-12 col-md-12 col-sm-12">
                 <div class="mb-3">
                     <label class="form-label">Pilihan Jawaban<span class="text-danger">*</span></label>
                     <div class="input-group mb-3">
@@ -144,12 +144,33 @@
                 </div>
             </div>
         </div>
-        @if ($title_alert != null)
-            <livewire:alert :message="$message_alert" :title="$title_alert" :icon="$icon_alert" />
-        @endif
+
         <button type="submit" class="btn btn-primary">Simpan</button>
 
     </form>
 
-
 </div>
+{{-- @push('script') --}}
+<script>
+    document.addEventListener('berhasil', function(e) {
+
+
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            showCloseButton: true,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+        Toast.fire({
+            icon: e.detail.icon,
+            title: e.detail.message,
+        });
+    });
+</script>
+{{-- @endpush --}}
