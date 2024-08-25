@@ -10,30 +10,32 @@
         </div>
         <div
             class="col-xl-6 col-md-12 col-sm-12  d-flex justify-content-xl-end justify-content-md-center justify-content-sm-center align-items-center">
-            <a href="{{ route('paket.soal.create', ['paket' => $paket->uuid]) }}" class="btn btn-outline-primary me-3"><i
-                    class="fa-solid fa-circle-plus"></i> Tambah Soal</a>
-            <button type="button" class="btn btn-primary me-3" id="publish">
-                <i class="fa-solid fa-angles-up"></i> Publikasikan Paket Soal
-            </button>
-            @push('scripts')
-                <script>
-                    $('#publish').click(() => {
-                        Swal.fire({
-                            title: "Apa Kamu Yakin?",
-                            text: "Paket soal yang sudah dipublikasikan tidak bisa diubah",
-                            icon: "question",
-                            confirmButtonText: 'Ya',
-                            confirmButtonColor: "{{ App\Models\Pengaturan::first()->primary }}",
-                            cancelButtonText: 'Tidak',
-                            showCancelButton: true,
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                console.log('oke');
-                            }
+            @if (!$paket->status)
+                <a href="{{ route('paket.soal.create', ['paket' => $paket->uuid]) }}" class="btn btn-primary me-3"><i
+                        class="fa-solid fa-circle-plus"></i> Tambah Soal</a>
+                <button type="button" class="btn btn-primary me-3" id="publish">
+                    <i class="fa-solid fa-angles-up"></i> Publikasikan Paket Soal
+                </button>
+                @push('scripts')
+                    <script>
+                        $('#publish').click(() => {
+                            Swal.fire({
+                                title: "Apa Kamu Yakin?",
+                                text: "Paket soal yang sudah dipublikasikan tidak bisa diubah",
+                                icon: "question",
+                                confirmButtonText: 'Ya',
+                                confirmButtonColor: "{{ App\Models\Pengaturan::first()->primary }}",
+                                cancelButtonText: 'Tidak',
+                                showCancelButton: true,
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = "{{ route('publish', ['paket' => $paket->uuid]) }}";
+                                }
+                            });
                         });
-                    });
-                </script>
-            @endpush
+                    </script>
+                @endpush
+            @endif
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#info-soal">
                 <i class="fa-solid fa-circle-info"></i> Informasi Paket Soal
             </button>
@@ -148,8 +150,7 @@
                                             text: "Yakin hapus soal?",
                                             icon: "question",
                                             showCancelButton: true,
-                                            confirmButtonColor: "#3085d6",
-                                            cancelButtonColor: "#d33",
+                                            confirmButtonColor: "{{ App\Models\Pengaturan::first()->primary }}",
                                             confirmButtonText: "Ya",
                                             cancelButtonText: "Tidak"
                                         }).then((result) => {
