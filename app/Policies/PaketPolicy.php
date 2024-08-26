@@ -29,7 +29,7 @@ class PaketPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->role == 2;
     }
 
     /**
@@ -45,7 +45,7 @@ class PaketPolicy
      */
     public function delete(User $user, Paket $paket): bool
     {
-        //
+        return $user->role == 1 || $paket->user->id == $user->id;
     }
 
     /**

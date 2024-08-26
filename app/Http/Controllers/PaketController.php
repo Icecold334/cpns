@@ -10,9 +10,19 @@ use App\Models\Jawaban;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StorePaketRequest;
 use App\Http\Requests\UpdatePaketRequest;
+use Illuminate\Support\Facades\Gate;
 
 class PaketController extends Controller
 {
+    public function publish(Paket $paket)
+    {
+        // update paket status to true
+        $paket->update(['status' => true]);
+        // redirect
+        return redirect()->route('paket.soal.index', ['paket' => $paket->uuid])->with('icon', 'success')->with('title', 'Berhasil')->with('message', 'Paket soal berhasil dipublikasikan!');
+    }
+
+
     public function testIndex(Paket $paket)
     {
         return view('paket.testIndex', [
@@ -67,11 +77,12 @@ class PaketController extends Controller
         $totalPoin = $paket->soal->where('kategori_id', 1)->count() +
             $paket->soal->where('kategori_id', 2)->count() +
             ($paket->soal->where('kategori_id', 3)->count() * 5);
-        $totalNilai = $twkScore + $tiuScore + $tkpScore;
         $nilaiTwk = (int)floor(($twkScore / $paket->soal->where('kategori_id', 1)->count()) * 100);
         $nilaiTiu = (int)floor(($tiuScore / $paket->soal->where('kategori_id', 2)->count()) * 100);
         $nilaiTkp = (int)floor(($tkpScore / ($paket->soal->where('kategori_id', 3)->count() * 5)) * 100);
-        $nilai = (int)floor(($totalNilai / $totalPoin) * 100);
+        $totalNilai = $nilaiTwk + $nilaiTiu + $nilaiTkp;
+        // $nilai = (int)floor(($totalNilai / $totalPoin) * 100);
+        $nilai = (int)floor(($totalNilai / 300) * 100);
         Hasil::where('paket_id', $paket->id)
             ->where('user_id', Auth::id())
             ->update([
@@ -130,9 +141,12 @@ class PaketController extends Controller
 
     public function index()
     {
-        $pakets = Auth::user()->role == 2
-            ? Paket::where('user_id', Auth::id())->get()
-            : Paket::all();
+        $pakets = Auth::user()->role == 1
+            ? Paket::all()
+            : (Auth::user()->role == 2
+                ? Paket::where('user_id', Auth::id())->get()
+                : Paket::where('status', true)->get());
+
 
         return view('paket.index', [
             'title' => 'Daftar Paket Soal',
@@ -142,6 +156,7 @@ class PaketController extends Controller
 
     public function create()
     {
+        Gate::authorize('create', Paket::class);
         return view('paket.create', ['title' => 'Tambah Paket Soal']);
     }
 

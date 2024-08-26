@@ -21,7 +21,7 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
         <!-- Sidebar - Brand -->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/panel">
             <div class="sidebar-brand-icon rotate-n-15">
                 <i class="fas fa-laugh-wink"></i>
             </div>
@@ -34,15 +34,16 @@
         <!-- Nav Item -->
         @if (!request()->routeIs('play'))
             <livewire:layout.components.sidelink title="Dashboard" href="/panel" :active="request()->is('panel')" />
-            @if (Auth::user()->role == 1)
+            @can('admin')
                 @livewire('layout.components.sidelink', ['title' => 'Guru', 'href' => '/guru', 'active' => request()->is('guru*'), 'icon' => '<i class="fa-solid fa-chalkboard-user"></i>'])
+            @endcan
+            @canany(['admin', 'guru'])
                 @livewire('layout.components.sidelink', ['title' => 'Siswa', 'href' => '/siswa', 'active' => request()->is('siswa*'), 'icon' => '<i class="fa-solid fa-users-rectangle"></i>'])
-            @endif
+            @endcanany
             @livewire('layout.components.sidelink', ['title' => 'Paket Soal', 'href' => '/paket', 'active' => request()->is('paket*'), 'icon' => '<i class="fa-solid fa-rectangle-list"></i>'])
-            @if (Auth::user()->role == 1)
+            {{-- @if (Auth::user()->role == 1)
                 @livewire('layout.components.sidelink', ['title' => 'Laporan', 'href' => '/laporan', 'active' => request()->is('laporan*'), 'icon' => '<i class="fa-solid fa-chart-pie"></i>'])
-            @endif
-        @else
+            @endif --}}
         @endif
 
 

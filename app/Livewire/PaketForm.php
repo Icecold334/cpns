@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\BaseKategori;
 use App\Models\Paket;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -10,7 +11,14 @@ class PaketForm extends Component
 {
     public $paket;
     public $nama;
+    public $bases;
+    public $base_id;
     public $durasi;
+
+    public function mount()
+    {
+        $this->bases = BaseKategori::all();
+    }
 
     public function save()
     {
@@ -26,6 +34,7 @@ class PaketForm extends Component
 
         $paket = new Paket();
         $paket->nama = $this->nama;
+        $paket->base_id = $this->base_id;
         $paket->durasi = ($hours * 3600) + ($minutes * 60);
         $paket->user_id = Auth::user()->id;
         $paket->save();

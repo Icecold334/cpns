@@ -18,7 +18,9 @@ return new class extends Migration
             $table->string('uuid')->default();
             $table->string('nama');
             $table->integer('durasi');
+            $table->boolean('status')->default(false);
             $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('base_id')->constrained('base_kategoris');
             $table->timestamps();
         });
     }

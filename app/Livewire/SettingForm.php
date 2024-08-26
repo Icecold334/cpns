@@ -3,7 +3,6 @@
 namespace App\Livewire;
 
 use App\Models\Pengaturan;
-use Exception;
 use Livewire\Component;
 use ScssPhp\ScssPhp\Compiler;
 
@@ -23,7 +22,7 @@ class SettingForm extends Component
 
     public function save()
     {
-        $scssFilePath = public_path('scss/sb-admin-2.scss');
+        $scssFilePath = public_path('scss/sb.scss');
         $scssContent = file_get_contents($scssFilePath);
         $newScssContent = str_replace('$primary: ' . $this->oldPrimary . ';', '$primary: ' . $this->primary . ';', $scssContent);
         file_put_contents($scssFilePath, $newScssContent);
@@ -36,7 +35,7 @@ class SettingForm extends Component
             'primary' => $this->primary,
         ]);
 
-        return redirect()->route('settings');
+        return redirect()->route('settings')->with('icon', 'success')->with('title', 'Berhasil')->with('message', 'Pengaturan berhasil disimpan!');;
     }
 
     public function render()

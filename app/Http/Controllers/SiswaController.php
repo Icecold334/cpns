@@ -22,6 +22,7 @@ class SiswaController extends Controller
      */
     public function create()
     {
+        Gate::authorize('admin');
         return view('siswa.create', ['title' => 'Tambah Siswa']);
     }
 
@@ -46,6 +47,7 @@ class SiswaController extends Controller
      */
     public function edit(User $siswa)
     {
+        Gate::allowIf(false);
         return view('siswa.edit', ['title' => "Ubah $siswa->name", 'user' => $siswa]);
     }
 

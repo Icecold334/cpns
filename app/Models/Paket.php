@@ -31,6 +31,10 @@ class Paket extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+    public function base(): BelongsTo
+    {
+        return $this->belongsTo(BaseKategori::class, 'base_id');
+    }
     public function soal(): HasMany
     {
         return $this->hasMany(Soal::class, 'paket_id');

@@ -1,7 +1,10 @@
 <x-body>
     <x-slot:title>{{ $title }}</x-slot>
 
-    <h1>Daftar Siswa <a href="{{ route('siswa.create') }}"><i class="fa-solid fa-circle-plus"></i></a></h1>
+    <h1>Daftar Siswa @can('admin')
+            <a href="{{ route('siswa.create') }}"><i class="fa-solid fa-circle-plus"></i></a>
+        @endcan
+    </h1>
     <div class="table-responsive">
         <table class="table" id="siswas">
             <thead>
@@ -23,9 +26,9 @@
                             <a href="/siswa/{{ $user->id }}" class="btn badge bg-info text-white px-1">
                                 <i class="fa-solid fa-circle-info"></i>
                             </a>
-                            <a href="/siswa/{{ $user->id }}/edit" class="btn badge bg-warning text-white px-1">
+                            {{-- <a href="/siswa/{{ $user->id }}/edit" class="btn badge bg-warning text-white px-1">
                                 <i class="fa-solid fa-pen-to-square"></i>
-                            </a>
+                            </a> --}}
                             <form class="d-inline" action="/siswa/{{ $user->id }}" method="POST"
                                 id="formDel{{ $user->id }}">
                                 @csrf
