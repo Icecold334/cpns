@@ -22,9 +22,9 @@
                             <a href="/guru/{{ $user->id }}" class="btn badge bg-info text-white px-1">
                                 <i class="fa-solid fa-circle-info"></i>
                             </a>
-                            <a href="/guru/{{ $user->id }}/edit" class="btn badge bg-warning text-white px-1">
+                            {{-- <a href="/guru/{{ $user->id }}/edit" class="btn badge bg-warning text-white px-1">
                                 <i class="fa-solid fa-pen-to-square"></i>
-                            </a>
+                            </a> --}}
                             <form class="d-inline" action="/guru/{{ $user->id }}" method="POST"
                                 id="formDel{{ $user->id }}">
                                 @csrf

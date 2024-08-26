@@ -1,13 +1,14 @@
 <?php
 
+use App\Models\Soal;
+use App\Models\User;
+use App\Models\Paket;
+use App\Models\Jawaban;
+use App\Models\Kategori;
+use App\Models\Pengaturan;
+use App\Models\BaseKategori;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User;
-use App\Models\Kategori;
-use App\Models\Paket;
-use App\Models\Soal;
-use App\Models\Jawaban;
-use App\Models\Pengaturan;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,16 +19,18 @@ class DatabaseSeeder extends Seeder
         User::factory()->create(['name' => 'Fauzan Imam', 'email' => 'fauzanimam334@gmail.com', 'role' => 1, 'gender' => 0, 'password' => Hash::make('password123'), 'email_verified_at' => now(),]);
         User::factory()->create(['name' => 'Ini Guru', 'email' => 'guru@gmail.com', 'role' => 2, 'gender' => 0, 'password' => Hash::make('password123'), 'email_verified_at' => now(),]);
         User::factory()->create(['name' => 'Ini Siswa', 'email' => 'siswa@gmail.com', 'role' => 3, 'gender' => 0, 'password' => Hash::make('password123'), 'email_verified_at' => now(),]);
-
+        // base
+        BaseKategori::factory()->create(['nama' => 'cpns', 'deskripsi' => 'cpns']);
+        BaseKategori::factory()->create(['nama' => 'tni/polri', 'deskripsi' => 'tni/polri']);
         // Buat kategori
-        $kategori_twk = Kategori::factory()->create(['nama' => 'TWK', 'deskripsi' => 'Tes Wawasan Kebangsaan']);
-        $kategori_tiu = Kategori::factory()->create(['nama' => 'TIU', 'deskripsi' => 'Tes Intelegensia Umum']);
-        $kategori_tkp = Kategori::factory()->create(['nama' => 'TKP', 'deskripsi' => 'Tes Karakteristik Pribadi']);
+        $kategori_twk = Kategori::factory()->create(['nama' => 'TWK', 'deskripsi' => 'Tes Wawasan Kebangsaan', 'base_id' => 1]);
+        $kategori_tiu = Kategori::factory()->create(['nama' => 'TIU', 'deskripsi' => 'Tes Intelegensia Umum', 'base_id' => 1]);
+        $kategori_tkp = Kategori::factory()->create(['nama' => 'TKP', 'deskripsi' => 'Tes Karakteristik Pribadi', 'base_id' => 1]);
+
 
         // Buat paket soal
-        $paket = Paket::factory()->create(['nama' => 'Paket Soal A', 'durasi' => 3600, 'user_id' => 2]);
-        $paket2 = Paket::factory()->create(['nama' => 'Paket Soal B', 'durasi' => 2400, 'user_id' => 2]);
-
+        $paket = Paket::factory()->create(['nama' => 'Paket Soal A', 'durasi' => 3600, 'user_id' => 2, 'base_id' => 1]);
+        $paket2 = Paket::factory()->create(['nama' => 'Paket Soal B', 'durasi' => 2400, 'user_id' => 2, 'base_id' => 1]);
         // Soal-soal untuk kategori TIU
         $soal_tiu = [
             ["soal" => "Berapa hasil dari 10 x 10?", "jawaban" => ['100', '90', '110', '120', '80']],

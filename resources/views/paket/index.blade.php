@@ -1,12 +1,16 @@
 <x-body>
     <x-slot:title>{{ $title }}</x-slot>
-    <h1>Daftar Paket Soal <a href="{{ route('paket.create') }}"><i class="fa-solid fa-circle-plus"></i></a></h1>
+    <h1>Daftar Paket Soal @can('create', App\Models\Paket::class)
+            <a href="{{ route('paket.create') }}"><i class="fa-solid fa-circle-plus"></i></a>
+        @endcan
+    </h1>
     <div class="table-responsive">
         <table class="table" id="pakets">
             <thead>
                 <tr>
                     <th class="text-center" style="width: 5%">#</th>
                     <th class="text-center">Nama</th>
+                    <th class="text-center">Kategori</th>
                     @if (Auth::user()->role != 3)
                         <th class="text-center">Penulis</th>
                     @endif
@@ -19,6 +23,7 @@
                     <tr>
                         <td class="text-center">{{ $loop->iteration }}</td>
                         <td>{{ $paket->nama }}</td>
+                        <td>{{ $paket->base->nama }}</td>
                         @if (Auth::user()->role != 3)
                             <td>{{ $paket->user->name }}</td>
                         @endif
@@ -28,38 +33,40 @@
                                 <a href="/paket/{{ $paket->uuid }}/soal" class="btn badge bg-info text-white px-1">
                                     <i class="fa-solid fa-circle-info"></i>
                                 </a>
-                                <a href="/paket/{{ $paket->uuid }}/edit" class="btn badge bg-warning text-white px-1">
+                                {{-- <a href="/paket/{{ $paket->uuid }}/edit" class="btn badge bg-warning text-white px-1">
                                     <i class="fa-solid fa-pen-to-square"></i>
-                                </a>
+                                </a> --}}
                                 <form class="d-inline" action="/paket/{{ $paket->uuid }}" method="POST"
                                     id="formDel{{ $paket->uuid }}">
                                     @csrf
                                     @method('DELETE')
                                 </form>
-                                <button class="btn badge bg-danger text-white px-1" id="delete{{ $paket->uuid }}">
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
-                                @push('scripts')
-                                    <script>
-                                        $('#delete{{ $paket->uuid }}').click(() => {
-                                            Swal.fire({
-                                                title: "Apa Kamu Yakin?",
-                                                text: "Yakin Hapus {{ $paket->nama }}?",
-                                                icon: "question",
-                                                showCancelButton: true,
-                                                confirmButtonColor: "#3085d6",
-                                                cancelButtonColor: "#d33",
-                                                confirmButtonText: "Ya",
-                                                cancelButtonText: "Tidak"
-                                            }).then((result) => {
-                                                if (result.isConfirmed) {
-                                                    let form = $('#formDel{{ $paket->uuid }}')
-                                                    form.submit();
-                                                }
+                                @can('delete', $paket)
+                                    <button class="btn badge bg-danger text-white px-1" id="delete{{ $paket->uuid }}">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                    @push('scripts')
+                                        <script>
+                                            $('#delete{{ $paket->uuid }}').click(() => {
+                                                Swal.fire({
+                                                    title: "Apa Kamu Yakin?",
+                                                    text: "Yakin Hapus {{ $paket->nama }}?",
+                                                    icon: "question",
+                                                    showCancelButton: true,
+                                                    confirmButtonColor: "#3085d6",
+                                                    cancelButtonColor: "#d33",
+                                                    confirmButtonText: "Ya",
+                                                    cancelButtonText: "Tidak"
+                                                }).then((result) => {
+                                                    if (result.isConfirmed) {
+                                                        let form = $('#formDel{{ $paket->uuid }}')
+                                                        form.submit();
+                                                    }
+                                                });
                                             });
-                                        });
-                                    </script>
-                                @endpush
+                                        </script>
+                                    @endpush
+                                @endcan
                             </td>
                         @else
                             @if ($paket->hasil->where('user_id', Auth::user()->id)->first() === null)
@@ -94,9 +101,9 @@
     </div>
     @push('scripts')
         <script>
-            let sort = {!! Auth::user()->role !!} != 3 ? {
+            let sort = {!! Auth::user()->role !!} != 2 ? {
                 orderable: false,
-                targets: 4
+                targets: 5
             } : {};
             $("#pakets").DataTable({
                 "responsive": true,

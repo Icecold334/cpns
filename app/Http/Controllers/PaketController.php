@@ -10,6 +10,7 @@ use App\Models\Jawaban;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StorePaketRequest;
 use App\Http\Requests\UpdatePaketRequest;
+use Illuminate\Support\Facades\Gate;
 
 class PaketController extends Controller
 {
@@ -155,6 +156,7 @@ class PaketController extends Controller
 
     public function create()
     {
+        Gate::authorize('create', Paket::class);
         return view('paket.create', ['title' => 'Tambah Paket Soal']);
     }
 

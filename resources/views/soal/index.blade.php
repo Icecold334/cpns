@@ -11,30 +11,32 @@
         <div
             class="col-xl-6 col-md-12 col-sm-12  d-flex justify-content-xl-end justify-content-md-center justify-content-sm-center align-items-center">
             @if (!$paket->status)
-                <a href="{{ route('paket.soal.create', ['paket' => $paket->uuid]) }}" class="btn btn-primary me-3"><i
-                        class="fa-solid fa-circle-plus"></i> Tambah Soal</a>
-                <button type="button" class="btn btn-primary me-3" id="publish">
-                    <i class="fa-solid fa-angles-up"></i> Publikasikan Paket Soal
-                </button>
-                @push('scripts')
-                    <script>
-                        $('#publish').click(() => {
-                            Swal.fire({
-                                title: "Apa Kamu Yakin?",
-                                text: "Paket soal yang sudah dipublikasikan tidak bisa diubah",
-                                icon: "question",
-                                confirmButtonText: 'Ya',
-                                confirmButtonColor: "{{ App\Models\Pengaturan::first()->primary }}",
-                                cancelButtonText: 'Tidak',
-                                showCancelButton: true,
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    window.location.href = "{{ route('publish', ['paket' => $paket->uuid]) }}";
-                                }
+                @can('create', [App\Models\Soal::class, $paket])
+                    <a href="{{ route('paket.soal.create', ['paket' => $paket->uuid]) }}" class="btn btn-primary me-3"><i
+                            class="fa-solid fa-circle-plus"></i> Tambah Soal</a>
+                    <button type="button" class="btn btn-primary me-3" id="publish">
+                        <i class="fa-solid fa-angles-up"></i> Publikasikan Paket Soal
+                    </button>
+                    @push('scripts')
+                        <script>
+                            $('#publish').click(() => {
+                                Swal.fire({
+                                    title: "Apa Kamu Yakin?",
+                                    text: "Paket soal yang sudah dipublikasikan tidak bisa diubah",
+                                    icon: "question",
+                                    confirmButtonText: 'Ya',
+                                    confirmButtonColor: "{{ App\Models\Pengaturan::first()->primary }}",
+                                    cancelButtonText: 'Tidak',
+                                    showCancelButton: true,
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.href = "{{ route('publish', ['paket' => $paket->uuid]) }}";
+                                    }
+                                });
                             });
-                        });
-                    </script>
-                @endpush
+                        </script>
+                    @endpush
+                @endcan
             @endif
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#info-soal">
                 <i class="fa-solid fa-circle-info"></i> Informasi Paket Soal
@@ -57,41 +59,45 @@
                                         <tr>
                                             <th>Nama Paket</th>
                                             <td colspan="2">{{ $paket->nama }}</td>
-                                            {{-- <td>:</td> --}}
                                         </tr>
-                                        <tr>
-                                            <th>Penulis</th>
-                                            <td colspan="2">{{ $paket->user->name }}</td>
-                                            {{-- <td>:</td> --}}
-                                        </tr>
+                                        @if (Auth::user()->role != 2)
+                                            <tr>
+                                                <th>Penulis</th>
+                                                <td colspan="2">{{ $paket->user->name }}</td>
+                                            </tr>
+                                        @endif
+
                                         <tr>
                                             <th>Jumlah Soal</th>
                                             <td colspan="2">{{ $paket->soal->count() }} Soal</td>
-                                            {{-- <td>:</td> --}}
                                         </tr>
                                         <tr>
-                                            <th colspan="3" class="text-center">Kategori</th>
+                                            <th colspan="3" class="text-center">Kategori : {{ $paket->base->nama }}</th>
                                         </tr>
-                                        <tr>
-                                            <th class="text-center">Tes Wawasan Kebangsaan</th>
-                                            <th class="text-center">Tes Intelegensia Umum</th>
-                                            <th class="text-center">Tes Karakteristik Pribadi</th>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-center">{{ $paket->soal->where('kategori_id', 1)->count() }}
-                                                Soal
-                                            </td>
-                                            <td class="text-center">{{ $paket->soal->where('kategori_id', 2)->count() }}
-                                                Soal
-                                            </td>
-                                            <td class="text-center">{{ $paket->soal->where('kategori_id', 3)->count() }}
-                                                Soal
-                                            </td>
-                                        </tr>
+                                        @if ($paket->base->id == 1)
+                                            <tr>
+                                                <th class="text-center">Tes Wawasan Kebangsaan</th>
+                                                <th class="text-center">Tes Intelegensia Umum</th>
+                                                <th class="text-center">Tes Karakteristik Pribadi</th>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-center">
+                                                    {{ $paket->soal->where('kategori_id', 1)->count() }}
+                                                    Soal
+                                                </td>
+                                                <td class="text-center">
+                                                    {{ $paket->soal->where('kategori_id', 2)->count() }}
+                                                    Soal
+                                                </td>
+                                                <td class="text-center">
+                                                    {{ $paket->soal->where('kategori_id', 3)->count() }}
+                                                    Soal
+                                                </td>
+                                            </tr>
+                                        @endif
                                         <tr>
                                             <th>Durasi</th>
                                             <td colspan="2">{{ floor($paket->durasi / 60) }} menit</td>
-                                            {{-- <td>:</td> --}}
                                         </tr>
                                     </table>
 

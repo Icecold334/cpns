@@ -188,10 +188,12 @@
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                     Profil
                 </a>
-                <a class="dropdown-item" href="/pengaturan">
-                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Pengaturan
-                </a>
+                @can('admin')
+                    <a class="dropdown-item" href="/pengaturan">
+                        <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Pengaturan
+                    </a>
+                @endcan
                 {{-- <a class="dropdown-item" href="#">
                     <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                     Activity Log

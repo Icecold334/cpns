@@ -7,6 +7,7 @@ use App\Http\Requests\StoreSoalRequest;
 use App\Http\Requests\UpdateSoalRequest;
 use App\Models\Jawaban;
 use App\Models\Paket;
+use Illuminate\Support\Facades\Gate;
 
 class SoalController extends Controller
 {
@@ -23,6 +24,7 @@ class SoalController extends Controller
      */
     public function create(Paket $paket)
     {
+        Gate::authorize('create', [Soal::class, $paket]);
         return view('soal.create', ['title' => 'Tambah Soal', 'paket' => $paket]);
     }
 
