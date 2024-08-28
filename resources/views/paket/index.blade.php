@@ -103,7 +103,7 @@
         <script>
             let sort = {!! Auth::user()->role !!} != 2 ? {
                 orderable: false,
-                targets: 5
+                targets: 4
             } : {};
             $("#pakets").DataTable({
                 "responsive": true,
