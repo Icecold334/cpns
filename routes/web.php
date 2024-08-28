@@ -13,6 +13,48 @@ use App\Http\Controllers\PengaturanController;
 use App\Models\Pengaturan;
 use Illuminate\Support\Facades\File;
 
+
+
+Route::get('/', function () {
+    return view('home.index', [
+        'option' => Pengaturan::first()
+    ]);
+});
+
+Auth::routes(['verify' => true]);
+
+// Route::get('/dashboard', function () {
+//     return view('livewire.layout.body');
+// })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('panel', [PanelController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::resource('guru', GuruController::class)->middleware(['admin', 'verified']);
+
+Route::resource('siswa', SiswaController::class)->middleware(['guru', 'verified']);
+
+Route::get('paket/publish/{paket}', [PaketController::class, 'publish'])->middleware(['guru', 'verified'])->name('publish');
+Route::get('paket/hasil/{paket}', [PaketController::class, 'hasil'])->middleware(['auth', 'verified'])->name('hasil');
+Route::get('paket/test/{paket}', [PaketController::class, 'testIndex'])->middleware(['siswa', 'verified']);
+Route::get('paket/test/{paket}/play', [PaketController::class, 'test'])->middleware(['siswa', 'verified'])->name('play');
+Route::get('paket/test/{paket}/selesai', [PaketController::class, 'selesai'])->middleware(['siswa', 'verified'])->name('ujian.selesai');
+Route::resource('paket', PaketController::class)->middleware(['auth', 'verified']);
+Route::resource('paket.soal', SoalController::class)->middleware(['auth', 'verified']);
+
+Route::get('pengaturan', [PengaturanController::class, 'index'])->middleware(['admin', 'verified'])->name('settings');
+Route::get('/profil', [ProfilController::class, 'index'])->middleware(['auth', 'verified'])->name('profil');
+
+Route::middleware('auth')->group(function () {
+    // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+
+
+
+
+
 Route::get('/logs', function () {
     // Path to the Laravel log file
     $logFile = storage_path('logs/laravel.log');
@@ -66,49 +108,6 @@ Route::get('/logs', function () {
         return "Log file not found.";
     }
 });
-
-Route::get('/', function () {
-    $option = Pengaturan::first();
-    return view('home.index', [
-        'title' => $option->nama
-    ]);
-});
-
-Auth::routes(['verify' => true]);
-
-// Route::get('/dashboard', function () {
-//     return view('livewire.layout.body');
-// })->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::get('panel', [PanelController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::resource('guru', GuruController::class)->middleware(['admin', 'verified']);
-
-Route::resource('siswa', SiswaController::class)->middleware(['guru', 'verified']);
-
-Route::get('paket/publish/{paket}', [PaketController::class, 'publish'])->middleware(['guru', 'verified'])->name('publish');
-Route::get('paket/hasil/{paket}', [PaketController::class, 'hasil'])->middleware(['auth', 'verified'])->name('hasil');
-Route::get('paket/test/{paket}', [PaketController::class, 'testIndex'])->middleware(['siswa', 'verified']);
-Route::get('paket/test/{paket}/play', [PaketController::class, 'test'])->middleware(['siswa', 'verified'])->name('play');
-Route::get('paket/test/{paket}/selesai', [PaketController::class, 'selesai'])->middleware(['siswa', 'verified'])->name('ujian.selesai');
-Route::resource('paket', PaketController::class)->middleware(['auth', 'verified']);
-Route::resource('paket.soal', SoalController::class)->middleware(['auth', 'verified']);
-
-Route::get('pengaturan', [PengaturanController::class, 'index'])->middleware(['admin', 'verified'])->name('settings');
-Route::get('/profil', [ProfilController::class, 'index'])->middleware(['auth', 'verified'])->name('profil');
-
-Route::middleware('auth')->group(function () {
-    // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
-
-
-
-
-
-
 
 
 require __DIR__ . '/auth.php';
