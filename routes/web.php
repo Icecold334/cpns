@@ -2,16 +2,62 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\GuruController;
-use App\Http\Controllers\SoalController;
-use App\Http\Controllers\PaketController;
-use App\Http\Controllers\PanelController;
-use App\Http\Controllers\SiswaController;
-use App\Http\Controllers\ProfilController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\PengaturanController;
+use App\Http\Controllers\{
+    GuruController,
+    SoalController,
+    PaketController,
+    PanelController,
+    SiswaController,
+    ProfilController,
+    ProfileController,
+    PengaturanController
+};
 use App\Models\Pengaturan;
 use Illuminate\Support\Facades\File;
+
+Auth::routes(['verify' => true]);
+
+
+
+Route::get('/', function () {
+    return view('home.index', [
+        'option' => Pengaturan::first()
+    ]);
+});
+
+
+
+Route::get('panel', [PanelController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::resource('guru', GuruController::class)->middleware(['admin', 'verified']);
+
+Route::resource('siswa', SiswaController::class)->middleware(['guru', 'verified']);
+
+Route::prefix('paket')->middleware(['auth', 'verified'])->group(function () {
+    Route::get('publish/{paket}', [PaketController::class, 'publish'])->middleware('guru')->name('publish');
+    Route::get('hasil/{paket}', [PaketController::class, 'hasil'])->name('hasil');
+    Route::middleware('siswa')->group(function () {
+        Route::get('test/{paket}', [PaketController::class, 'testIndex']);
+        Route::get('test/{paket}/play', [PaketController::class, 'test'])->name('play');
+        Route::get('test/{paket}/selesai', [PaketController::class, 'selesai'])->name('ujian.selesai');
+    });
+});
+Route::resource('paket', PaketController::class)->middleware(['auth', 'verified']);
+Route::resource('paket.soal', SoalController::class)->middleware(['auth', 'verified']);
+
+Route::get('pengaturan', [PengaturanController::class, 'index'])->middleware(['admin', 'verified'])->name('settings');
+Route::get('/profil', [ProfilController::class, 'index'])->middleware(['auth', 'verified'])->name('profil');
+
+Route::middleware('auth')->group(function () {
+    // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+
+
+
+
 
 Route::get('/logs', function () {
     // Path to the Laravel log file
@@ -66,49 +112,6 @@ Route::get('/logs', function () {
         return "Log file not found.";
     }
 });
-
-Route::get('/', function () {
-    $option = Pengaturan::first();
-    return view('home.index', [
-        'title' => $option->nama
-    ]);
-});
-
-Auth::routes(['verify' => true]);
-
-// Route::get('/dashboard', function () {
-//     return view('livewire.layout.body');
-// })->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::get('panel', [PanelController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::resource('guru', GuruController::class)->middleware(['admin', 'verified']);
-
-Route::resource('siswa', SiswaController::class)->middleware(['guru', 'verified']);
-
-Route::get('paket/publish/{paket}', [PaketController::class, 'publish'])->middleware(['guru', 'verified'])->name('publish');
-Route::get('paket/hasil/{paket}', [PaketController::class, 'hasil'])->middleware(['auth', 'verified'])->name('hasil');
-Route::get('paket/test/{paket}', [PaketController::class, 'testIndex'])->middleware(['siswa', 'verified']);
-Route::get('paket/test/{paket}/play', [PaketController::class, 'test'])->middleware(['siswa', 'verified'])->name('play');
-Route::get('paket/test/{paket}/selesai', [PaketController::class, 'selesai'])->middleware(['siswa', 'verified'])->name('ujian.selesai');
-Route::resource('paket', PaketController::class)->middleware(['auth', 'verified']);
-Route::resource('paket.soal', SoalController::class)->middleware(['auth', 'verified']);
-
-Route::get('pengaturan', [PengaturanController::class, 'index'])->middleware(['admin', 'verified'])->name('settings');
-Route::get('/profil', [ProfilController::class, 'index'])->middleware(['auth', 'verified'])->name('profil');
-
-Route::middleware('auth')->group(function () {
-    // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
-
-
-
-
-
-
 
 
 require __DIR__ . '/auth.php';

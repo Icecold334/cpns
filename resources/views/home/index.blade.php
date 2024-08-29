@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Modern Business - Start Bootstrap Template</title>
+    <title>Beranda - {{ $option->nama }}</title>
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="/home/assets/favicon.ico" />
     <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -40,7 +40,7 @@
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container px-5">
-                <h2><a class="navbar-brand" href="/">Start Bootstrap</a></h2>
+                <h2><a class="navbar-brand" href="/">{{ $option->nama }}</a></h2>
             </div>
         </nav>
         <!-- Header-->

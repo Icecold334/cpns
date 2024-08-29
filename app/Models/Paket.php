@@ -23,7 +23,6 @@ class Paket extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            // Mengisi kolom dengan string acak unik sebelum model disimpan
             $model->uuid = fake()->uuid();
         });
     }
