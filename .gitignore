@@ -1,6 +1,5 @@
 /.phpunit.cache
 /node_modules
-/public
 /public/hot
 /public/css
 /public/scss
