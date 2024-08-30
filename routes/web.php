@@ -16,23 +16,14 @@ use App\Models\Pengaturan;
 use Illuminate\Support\Facades\File;
 
 Auth::routes(['verify' => true]);
-
-
-
 Route::get('/', function () {
     return view('home.index', [
         'option' => Pengaturan::first()
     ]);
 });
-
-
-
 Route::get('panel', [PanelController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
-
 Route::resource('guru', GuruController::class)->middleware(['admin', 'verified']);
-
 Route::resource('siswa', SiswaController::class)->middleware(['guru', 'verified']);
-
 Route::prefix('paket')->middleware(['auth', 'verified'])->group(function () {
     Route::get('publish/{paket}', [PaketController::class, 'publish'])->middleware('guru')->name('publish');
     Route::get('hasil/{paket}', [PaketController::class, 'hasil'])->name('hasil');
@@ -44,14 +35,13 @@ Route::prefix('paket')->middleware(['auth', 'verified'])->group(function () {
 });
 Route::resource('paket', PaketController::class)->middleware(['auth', 'verified']);
 Route::resource('paket.soal', SoalController::class)->middleware(['auth', 'verified']);
-
 Route::get('pengaturan', [PengaturanController::class, 'index'])->middleware(['admin', 'verified'])->name('settings');
-Route::get('/profil', [ProfilController::class, 'index'])->middleware(['auth', 'verified'])->name('profil');
+// Route::get('profil', [ProfilController::class, 'index'])->middleware(['auth', 'verified'])->name('profil');
 
 Route::middleware('auth')->group(function () {
-    // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/profil', [ProfilController::class, 'index'])->name('profile.edit');
+    Route::patch('/profil', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profil', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 

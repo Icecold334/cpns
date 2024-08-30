@@ -49,15 +49,12 @@
                 <div class="row gx-5 align-items-center justify-content-center">
                     <div class="col-lg-8 col-xl-7 col-xxl-6">
                         <div class="my-5 text-center text-xl-start">
-                            <h1 class="display-5 fw-bolder text-white mb-2">A Bootstrap 5 template for modern businesses
-                            </h1>
-                            <p class="lead fw-normal text-white-50 mb-4">Quickly design and customize responsive
-                                mobile-first sites with Bootstrap, the world’s most popular front-end open source
-                                toolkit!</p>
-                            <div class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xl-start">
-                                <a class="btn btn-primary btn-lg px-4 me-sm-3" href="/login">Mulai Sekarang <i
-                                        class="fa-solid fa-arrow-right"></i></a>
-                            </div>
+                            <h1 class="display-5 fw-bolder text-white mb-2">{{ $option->judul }}</ </h1>
+                                <p class="lead fw-normal text-white-50 mb-4">{{ $option->subjudul }}</p>
+                                <div class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xl-start">
+                                    <a class="btn btn-primary btn-lg px-4 me-sm-3" href="/login">Mulai Sekarang <i
+                                            class="fa-solid fa-arrow-right"></i></a>
+                                </div>
                         </div>
                     </div>
                     <div class="col-xl-5 col-xxl-6 d-none d-xl-block text-center"><img class="img-fluid  rounded-3 my-5"
@@ -72,9 +69,7 @@
                 <!-- About Section -->
                 <div class="col-md-4 mb-3">
                     <img src="https://dummyimage.com/500x300/343a40/6c757d" alt="Logo" class="img-fluid mb-2">
-                    <h5 class="d-inline">BKN adalah lembaga pemerintah yang bertanggung jawab untuk mengelola
-                        kepegawaian negara di
-                        Indonesia.</h5>
+                    <h5 class="d-inline">{{ $option->deskripsi }}</h5>
                 </div>
                 <!-- Social Media Links -->
                 <div class="col-md-4 mb-3">
@@ -91,16 +86,14 @@
                 <!-- Contact Information -->
                 <div class="col-md-4 mb-3">
                     <h5 class="mb-3">Kontak</h5>
-                    <p><i class="bi bi-telephone"></i> 021-8093008</p>
-                    <p><i class="bi bi-telephone"></i> 021-80882815 (Humas BKN)</p>
-                    <p><i class="bi bi-envelope"></i> helpdesk.casn@bkn.go.id</p>
-                    <p><i class="bi bi-geo-alt"></i> Jl. Mayjen Sutoyo No.12, RT.9/RW.9 Cililitan, Kec. Kramat Jati,
-                        Kota Jakarta Timur 13640</p>
+                    <p><i class="bi bi-telephone"></i> {{ $option->notelp }}</p>
+                    <p><i class="bi bi-envelope"></i> {{ $option->email }}</p>
+                    <p><i class="bi bi-geo-alt"></i> {{ $option->alamat }}</p>
                 </div>
             </div>
             <div class="text-center py-4 ">
-                <p class="mb-0">&copy; 2024 <a href="https://www.bkn.go.id/" rel="nofollow noopener"
-                        class="text-decoration-none">Badan Kepegawaian Negara</a></p>
+                <p class="mb-0">&copy; {{ date('Y') }} <a href="/" rel="nofollow noopener"
+                        class="text-decoration-none">{{ $option->nama }}</a></p>
             </div>
         </div>
     </footer>

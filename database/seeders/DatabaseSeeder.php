@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // Buat pengguna
-        Pengaturan::factory()->create(['nama' => 'Aplikasi`', 'primary' => '#4e73df',]);
+        Pengaturan::factory()->create(['nama' => 'Aplikasi', 'primary' => '#4e73df', 'judul' => 'Ini Judul', 'subjudul' => 'ini subjudul', 'notelp' => '085648785256', 'email' => 'email@email.com', 'alamat' => 'Jl. In aja dulu', 'deskripsi' => 'ini teks deskripsi']);
         User::factory()->create(['name' => 'Fauzan Imam', 'email' => 'fauzanimam334@gmail.com', 'role' => 1, 'gender' => 0, 'password' => Hash::make('password123'), 'email_verified_at' => now(),]);
         User::factory()->create(['name' => 'Ini Guru', 'email' => 'guru@gmail.com', 'role' => 2, 'gender' => 0, 'password' => Hash::make('password123'), 'email_verified_at' => now(),]);
         User::factory()->create(['name' => 'Ini Siswa', 'email' => 'siswa@gmail.com', 'role' => 3, 'gender' => 0, 'password' => Hash::make('password123'), 'email_verified_at' => now(),]);
@@ -162,7 +162,8 @@ class DatabaseSeeder extends Seeder
                     ['Memberikan arahan yang jelas dan terperinci', 4],
                     ['Mendorong kerjasama dan komunikasi terbuka dalam tim', 5]
                 ]
-            ], [
+            ],
+            [
                 "soal" => "Dalam suatu proyek, Anda menemukan bahwa beberapa anggota tim sering berkonflik karena perbedaan pendapat. Konflik ini mulai mempengaruhi produktivitas tim secara keseluruhan. Bagaimana Anda menangani situasi ini?",
                 "jawaban" => [
                     ['Membiarkan mereka menyelesaikan konflik sendiri', 1],
@@ -171,7 +172,8 @@ class DatabaseSeeder extends Seeder
                     ['Meminta salah satu pihak untuk mengalah demi kelancaran proyek', 4],
                     ['Mendorong kerjasama dengan mengedepankan tujuan bersama', 5]
                 ]
-            ], [
+            ],
+            [
                 "soal" => "Anda sedang mengelola tim dengan proyek yang sangat kompleks. Salah satu anggota tim merasa kesulitan memahami tugas yang diberikan, dan ini mempengaruhi kemajuan proyek. Apa yang akan Anda lakukan untuk membantu anggota tim tersebut?",
                 "jawaban" => [
                     ['Menyarankan dia untuk mencari bantuan dari anggota tim lain', 1],
@@ -180,7 +182,8 @@ class DatabaseSeeder extends Seeder
                     ['Mendiskusikan kesulitannya dan menawarkan bantuan secara langsung', 4],
                     ['Memberikan pelatihan atau bimbingan yang dibutuhkan', 5]
                 ]
-            ], [
+            ],
+            [
                 "soal" => "Anda bekerja dalam sebuah tim proyek yang sangat kompetitif, dan setiap anggota tim harus memberikan kontribusi maksimal. Namun, salah satu anggota tim sering kali tidak menunjukkan performa yang diharapkan dan cenderung bergantung pada anggota lain. Bagaimana Anda menangani situasi ini?",
                 "jawaban" => [
                     ['Membiarkan anggota tim lain menutupi kekurangannya', 1],
@@ -192,7 +195,8 @@ class DatabaseSeeder extends Seeder
             ],
             ["soal" => "Bagaimana cara menghadapi konflik dalam tim kerja?", "jawaban" => [
                 [
-                    'Menunda hingga tenang', 1
+                    'Menunda hingga tenang',
+                    1
                 ],
                 ['Mencari bantuan mediator', 2],
                 ['Mendengarkan keluhan anggota', 3],
@@ -203,11 +207,13 @@ class DatabaseSeeder extends Seeder
                 ['Beristirahat secara teratur', 1],
                 ['Mengatur prioritas', 2],
                 [
-                    'Menghindari penundaan', 3
+                    'Menghindari penundaan',
+                    3
                 ],
                 ['Menyelesaikan tugas penting terlebih dahulu', 4],
                 [
-                    'Membuat jadwal harian', 5
+                    'Membuat jadwal harian',
+                    5
                 ]
             ]],
             ["soal" => "Bagaimana cara meningkatkan motivasi kerja?", "jawaban" => [
@@ -229,7 +235,8 @@ class DatabaseSeeder extends Seeder
                 ['Mencari solusi yang tepat', 2],
                 ['Berdiskusi untuk memahami lebih baik', 3],
                 [
-                    'Memperbaiki kesalahan', 4
+                    'Memperbaiki kesalahan',
+                    4
                 ],
                 ['Menerima dengan lapang dada', 5]
             ]],
@@ -265,7 +272,8 @@ class DatabaseSeeder extends Seeder
                 ['Mengatur waktu belajar', 1],
                 ['Berlatih soal-soal', 2],
                 [
-                    'Mencatat poin penting', 3
+                    'Mencatat poin penting',
+                    3
                 ],
                 ['Membaca ulang materi', 4],
                 ['Mencari bantuan dari orang lain', 5]
