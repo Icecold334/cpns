@@ -99,7 +99,6 @@ class PaketController extends Controller
     {
         $user = Auth::user();
         $existingHasil = Hasil::where('paket_id', $paket->id)->where('user_id', $user->id)->first();
-
         if (!$existingHasil) {
             $soalsSorted = $this->shuffleSoals($paket);
             $urutanString = implode(',', $soalsSorted->pluck('id')->toArray());
@@ -113,7 +112,6 @@ class PaketController extends Controller
             $urutanArray = explode(',', $existingHasil->urutan);
             $soalsSorted = $this->sortSoalsByOrder($urutanArray);
         }
-
         return view('paket.test', [
             'title' => $paket->nama,
             'paket' => $paket,
@@ -127,7 +125,6 @@ class PaketController extends Controller
         $twk = Soal::where('paket_id', $paket->id)->where('kategori_id', 1)->get()->shuffle();
         $tiu = Soal::where('paket_id', $paket->id)->where('kategori_id', 2)->get()->shuffle();
         $tkp = Soal::where('paket_id', $paket->id)->where('kategori_id', 3)->get()->shuffle();
-
         return $twk->merge($tiu)->merge($tkp);
     }
 

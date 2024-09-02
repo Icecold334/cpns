@@ -24,6 +24,9 @@ class DatabaseSeeder extends Seeder
         BaseKategori::factory()->create(['nama' => 'tni/polri-psiko', 'deskripsi' => 'tni/polri-psiko']);
         BaseKategori::factory()->create(['nama' => 'tni/polri-akademik', 'deskripsi' => 'tni/polri-akademik']);
         // Buat kategori
+        $kategori_twk = Kategori::factory()->create(['nama' => 'TWK', 'deskripsi' => 'Tes Wawasan Kebangsaan', 'base_id' => 1]);
+        $kategori_tiu = Kategori::factory()->create(['nama' => 'TIU', 'deskripsi' => 'Tes Intelegensia Umum', 'base_id' => 1]);
+        $kategori_tkp = Kategori::factory()->create(['nama' => 'TKP', 'deskripsi' => 'Tes Karakteristik Pribadi', 'base_id' => 1]);
         Kategori::factory()->create(['nama' => 'kepri-1', 'deskripsi' => 'kepribadian 1', 'base_id' => 2]);
         Kategori::factory()->create(['nama' => 'kepri-2', 'deskripsi' => 'kepribadian 2', 'base_id' => 2]);
         Kategori::factory()->create(['nama' => 'kecerdasan', 'deskripsi' => 'kecerdasan', 'base_id' => 2]);
@@ -35,9 +38,6 @@ class DatabaseSeeder extends Seeder
         Kategori::factory()->create(['nama' => 'PU', 'deskripsi' => 'PU', 'base_id' => 3]);
         Kategori::factory()->create(['nama' => 'B.Indonesia', 'deskripsi' => 'B.Indonesia', 'base_id' => 3]);
 
-        $kategori_twk = Kategori::factory()->create(['nama' => 'TWK', 'deskripsi' => 'Tes Wawasan Kebangsaan', 'base_id' => 1]);
-        $kategori_tiu = Kategori::factory()->create(['nama' => 'TIU', 'deskripsi' => 'Tes Intelegensia Umum', 'base_id' => 1]);
-        $kategori_tkp = Kategori::factory()->create(['nama' => 'TKP', 'deskripsi' => 'Tes Karakteristik Pribadi', 'base_id' => 1]);
 
 
         // Buat paket soal
