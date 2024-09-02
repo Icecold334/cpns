@@ -55,7 +55,7 @@ class CreateSoal extends Component
 
     public function mount()
     {
-        $this->kategoris = Kategori::all();
+        $this->kategoris = Kategori::where('base_id', $this->paket->id)->get();
         if ($this->soal_array != null) {
             $this->soal = $this->soal_array->soal;
             $this->img = $this->soal_array->img;
