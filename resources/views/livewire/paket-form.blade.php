@@ -1,5 +1,4 @@
 <div>
-
     <form wire:submit.prevent="@if ($paket == null) save @else update @endif" enctype="multipart/form-data">
         @csrf
         <div class="row">
@@ -36,10 +35,13 @@
             </div>
             <div class="col-xl-4 col-md-4 col-sm-6">
                 <div class="form-group mb-3">
-                    <label for="durasi" class="form-label">Durasi (jam:menit)<span
-                            class="text-danger">*</span></label>
-                    <input type="time" class="form-control @error('durasi') is-invalid @enderror"
-                        wire:model.live="durasi" />
+                    <label for="durasi" class="form-label">Durasi @if ($base_id == 2)
+                            / soal
+                        @endif
+                        <span class="text-danger">*</span></label>
+                    <input
+                        @if ($base_id == 2) type="number" min="0" max="60" step="1" placeholder="Durasi waktu untuk tiap soal" @else type="time" @endif
+                        class="form-control @error('durasi') is-invalid @enderror" wire:model.live="durasi" />
                     @error('durasi')
                         <div class="invalid-feedback">
                             {{ $message }}

@@ -7,7 +7,7 @@
         <div class="col-xl-8 col-md-12 col-sm-12">
             <div class="card">
                 <div class="card-body">
-                    <livewire:create-soal :uuid="$soal->uuid" :soal_array="$soal" />
+                    <livewire:create-soal :paket="$paket" :uuid="$soal->uuid" :soal_array="$soal" />
                 </div>
             </div>
         </div>
