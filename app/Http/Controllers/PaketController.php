@@ -54,6 +54,7 @@ class PaketController extends Controller
             ->whereHas('soal', function ($query) use ($paket) {
                 $query->where('paket_id', $paket->id);
             })->get();
+        dd($responses);
 
         foreach ($responses as $respon) {
             $soal = $respon->soal;
@@ -122,10 +123,14 @@ class PaketController extends Controller
 
     private function shuffleSoals(Paket $paket)
     {
-        $twk = Soal::where('paket_id', $paket->id)->where('kategori_id', 1)->get()->shuffle();
-        $tiu = Soal::where('paket_id', $paket->id)->where('kategori_id', 2)->get()->shuffle();
-        $tkp = Soal::where('paket_id', $paket->id)->where('kategori_id', 3)->get()->shuffle();
-        return $twk->merge($tiu)->merge($tkp);
+        if ($paket->base->id == 1) {
+            $twk = Soal::where('paket_id', $paket->id)->where('kategori_id', 1)->get()->shuffle();
+            $tiu = Soal::where('paket_id', $paket->id)->where('kategori_id', 2)->get()->shuffle();
+            $tkp = Soal::where('paket_id', $paket->id)->where('kategori_id', 3)->get()->shuffle();
+            return $twk->merge($tiu)->merge($tkp);
+        } else {
+            return Soal::where('paket_id', $paket->id)->get()->shuffle();
+        }
     }
 
     private function sortSoalsByOrder(array $urutanArray)

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Akses Ditolak</title>
     <style>
         @import url("https://fonts.googleapis.com/css?family=Share+Tech+Mono|Montserrat:700");
 
@@ -22,7 +22,7 @@
         }
 
         body {
-            background-image: linear-gradient(120deg, #4f0088 0%, #000000 100%);
+            background-image: linear-gradient(120deg, #3d3d3d 0%, #000000 100%);
             height: 100vh;
         }
 

@@ -30,7 +30,7 @@ class SoalPolicy
      */
     public function create(User $user, Paket $paket): bool
     {
-        return $paket->user->id == $user->id;
+        return $paket->user->id == $user->id && !$paket->status;
     }
 
     /**

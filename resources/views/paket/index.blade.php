@@ -13,8 +13,8 @@
                     <th class="text-center">Kategori</th>
                     @if (Auth::user()->role != 3)
                         <th class="text-center">Penulis</th>
+                        <th class="text-center">Status</th>
                     @endif
-                    <th class="text-center">Jumlah Soal</th>
                     <th class="text-center" style="width: 10%"></th>
                 </tr>
             </thead>
@@ -27,8 +27,12 @@
                         @if (Auth::user()->role != 3)
                             <td>{{ $paket->user->name }}</td>
                         @endif
-                        <td class="text-center">{{ $paket->soal->count() }}</td>
                         @if (Auth::user()->role != 3)
+                            <td class="text-center">
+                                <div class="btn text-white badge {{ $paket->status ? 'bg-success' : 'bg-secondary' }} ">
+                                    <i class="fa-solid {{ $paket->status ? 'fa-eye' : 'fa-eye-slash' }}"></i>
+                                </div>
+                            </td>
                             <td class="text-center">
                                 <a href="/paket/{{ $paket->uuid }}/soal" class="btn badge bg-info text-white px-1">
                                     <i class="fa-solid fa-circle-info"></i>
@@ -103,7 +107,7 @@
         <script>
             let sort = {!! Auth::user()->role !!} != 2 ? {
                 orderable: false,
-                targets: 4
+                targets: 3
             } : {};
             $("#pakets").DataTable({
                 "responsive": true,
