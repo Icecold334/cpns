@@ -56,12 +56,11 @@
 
             <!-- Content Wrapper -->
             <div id="content-wrapper" class="d-flex flex-column">
-
                 <!-- Main Content -->
                 <div id="content">
                     {{-- @if (!request()->is('paket/test*')) --}}
                     <!-- Topbar -->
-                    @livewire('layout.navbar')
+                    @livewire('layout.navbar', ['paket' => $paket])
                     <!-- End of Topbar -->
                     {{-- @endif --}}
 

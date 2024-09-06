@@ -1,5 +1,6 @@
 <x-body>
     <x-slot:title>{{ $title }}</x-slot>
+    <x-slot:paket>{!! $paket !!}</x-slot>
     @if ($paket->base->id != 2)
         <div class="accordion mb-3 shadow-lg" id="accordionPanelsStayOpenExample">
             <div class="accordion-item">

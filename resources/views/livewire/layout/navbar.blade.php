@@ -5,7 +5,7 @@
             <i class="fa fa-bars"></i>
         </button>
     @endif
-    @if (request()->routeIs('play'))
+    @if (request()->routeIs('play') && $paket['base_id'] != 2)
         <!-- Sidebar Toggle (Topbar) -->
         <button class="btn btn-primary ms-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#canvas"
             aria-controls="canvas"><i class="fa fa-bars"></i> Daftar Soal</button>
