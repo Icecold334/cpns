@@ -60,7 +60,7 @@
                 <div id="content">
                     {{-- @if (!request()->is('paket/test*')) --}}
                     <!-- Topbar -->
-                    @livewire('layout.navbar', ['paket' => $paket])
+                    @livewire('layout.navbar', ['paket' => request()->routeIs('play') ? $paket : ''])
                     <!-- End of Topbar -->
                     {{-- @endif --}}
 

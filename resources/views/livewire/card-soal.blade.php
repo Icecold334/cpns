@@ -9,18 +9,22 @@
         </div>
     @endif
     <p><span class="font-weight-bold">{{ $nomor }}.</span> {{ $soal->soal }}</p>
-    <div>
-        @foreach ($shuffledJawaban as $jawab)
-            <div class="form-check mb-2">
-                <input class="form-check-input" wire:loading.attr="disabled" type="radio" name="jawab"
-                    value="{{ $jawab->id }}" id="jawaban{{ intToAlphabet($jawab->row, true) }}"
-                    wire:model.live="jawaban" wire:key="jawab-{{ $jawab->id }}">
-                <label class="form-check-label" for="jawaban{{ intToAlphabet($jawab->row, true) }}">
-                    {{ intToAlphabet($loop->iteration, true) }}. {{ $jawab->jawaban }}
-                </label>
-            </div>
-        @endforeach
-    </div>
+
+
+    @foreach ($shuffledJawaban as $jawab)
+        <div class="form-check mb-2">
+
+
+            <input class="btn-check" wire:loading.attr="disabled" type="radio" name="jawab"
+                value="{{ $jawab->id }}" id="jawaban{{ intToAlphabet($jawab->row, true) }}" wire:model.live="jawaban"
+                wire:key="jawab-{{ $jawab->id }}">
+            <label class="btn btn-outline-primary " for="jawaban{{ intToAlphabet($jawab->row, true) }}">
+                {{ intToAlphabet($loop->iteration, true) }}. {{ $jawab->jawaban }}
+            </label>
+        </div>
+    @endforeach
+
+
     <div class="d-flex align-items-center justify-content-start gap-3 ">
         <button class="btn btn-primary mt-3 d-flex align-items-center {{ $nomor == 1 ? 'disabled' : '' }}"
             type="button" wire:click="before({{ $nomor }})" wire:loading.class="disabled">

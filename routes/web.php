@@ -16,11 +16,7 @@ use App\Models\Pengaturan;
 use Illuminate\Support\Facades\File;
 
 Auth::routes(['verify' => true]);
-Route::get('/', function () {
-    return view('home.index', [
-        'option' => Pengaturan::first()
-    ]);
-});
+Route::get('/', fn() => view('home.index', ['option' => Pengaturan::first()]));
 Route::get('panel', [PanelController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::resource('guru', GuruController::class)->middleware(['admin', 'verified']);
 Route::resource('siswa', SiswaController::class)->middleware(['guru', 'verified']);
@@ -50,18 +46,11 @@ Route::middleware('auth')->group(function () {
 
 
 Route::get('/logs', function () {
-    // Path to the Laravel log file
     $logFile = storage_path('logs/laravel.log');
-
-    // Check if the log file exists
     if (File::exists($logFile)) {
-        // Read the log file
         $logs = File::get($logFile);
-
-        // Optionally, limit the log output
+        // Limit output (optional)
         // $logs = collect(explode("\n", $logs))->take(-50)->implode("\n");
-
-        // Define terminal-like CSS styles
         $style = "
             body {
                 background-color: #1e1e1e;
@@ -81,22 +70,7 @@ Route::get('/logs', function () {
                 white-space: pre-wrap;
             }
         ";
-
-        // Display logs in a terminal-like format
-        $content = "
-            <html>
-            <head>
-                <title>Laravel Logs</title>
-                <style>{$style}</style>
-            </head>
-            <body>
-                <div class='log-container'>
-                    <pre>" . e($logs) . "</pre>
-                </div>
-            </body>
-            </html>
-        ";
-
+        $content = "<html><head><title>Laravel Logs</title><style>{$style}</style></head><body><div class='log-container'><pre>" . e($logs) . "</pre></div></body></html>";
         return response($content);
     } else {
         return "Log file not found.";
