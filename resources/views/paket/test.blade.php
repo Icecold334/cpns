@@ -2,8 +2,8 @@
     <x-slot:title>{{ $title }}</x-slot>
     <x-slot:paket>{!! $paket !!}</x-slot>
     @if ($paket->base->id != 2)
-        <livewire:per-paket :paket="$paket" :soals="$soals"></livewire:per-paket>
+        <livewire:per-paket :paket="$paket" :soals="$soals" />
     @else
-        <livewire:per-soal :paket="$paket" :soals="$soals"></livewire:per-soal>
+        <livewire:per-soal :paket="$paket" :soals="$soals" />
     @endif
 </x-body>
