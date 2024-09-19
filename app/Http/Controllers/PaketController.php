@@ -101,7 +101,8 @@ class PaketController extends Controller
         $user = Auth::user();
         $existingHasil = Hasil::where('paket_id', $paket->id)->where('user_id', $user->id)->first();
         if (!$existingHasil) {
-            $soalsSorted = $this->shuffleSoals($paket);
+            // $soalsSorted = $this->shuffleSoals($paket);
+            $soalsSorted = $this->getShuffledSoalByPaket($paket);
             $urutanString = implode(',', $soalsSorted->pluck('id')->toArray());
 
             Hasil::create([
@@ -119,6 +120,30 @@ class PaketController extends Controller
             'user' => $user,
             'soals' => $soalsSorted,
         ]);
+    }
+
+    private
+    function getShuffledSoalByPaket($paket)
+    {
+        $categories = [];
+        foreach ($paket->base->kategori as $kategori) {
+            $categories[] = $kategori->id;
+        }
+        $allSoal = collect();
+
+        foreach ($categories as $categoryId) {
+            $soal = $this->getShuffledSoalByKategori($paket->id, $categoryId);
+            $allSoal = $allSoal->merge($soal);
+        }
+        return $allSoal;
+    }
+
+    private function getShuffledSoalByKategori($paketId, $kategoriId)
+    {
+        return Soal::where('paket_id', $paketId)
+            ->where('kategori_id', $kategoriId)
+            ->get()
+            ->shuffle();
     }
 
     private function shuffleSoals(Paket $paket)

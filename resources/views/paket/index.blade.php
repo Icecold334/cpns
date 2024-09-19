@@ -18,11 +18,13 @@
                     <th class="text-center" style="width: 10%"></th>
                 </tr>
             </thead>
+
             <tbody>
                 @foreach ($pakets as $paket)
                     <tr>
                         <td class="text-center">{{ $loop->iteration }}</td>
                         <td>{{ $paket->nama }}</td>
+                        {{-- <td>{!! $paket->nama !!}</td> --}}
                         <td>{{ $paket->base->nama }}</td>
                         @if (Auth::user()->role != 3)
                             <td>{{ $paket->user->name }}</td>
@@ -146,4 +148,6 @@
             });
         </script>
     @endpush
+
+
 </x-body>

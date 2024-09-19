@@ -21,7 +21,7 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
         <!-- Sidebar - Brand -->
-        <a class="sidebar-brand d-inline-flex flex-column bg-primary shadow-lg align-items-center justify-content-center py-3 px-3"
+        <a class="sidebar-brand d-inline-flex flex-column bg-primary  align-items-center justify-content-center py-3 px-3"
             href="/panel" style="height: auto; width: auto;">
             <div class="sidebar-brand-icon">
                 <i class="fas fa-laugh-wink"></i>
@@ -33,8 +33,8 @@
 
 
 
-        <!-- Divider -->
-        <hr class="sidebar-divider my-0">
+        {{-- <!-- Divider -->
+        <hr class="sidebar-divider my-0"> --}}
 
         <!-- Nav Item -->
         @if (!request()->routeIs('play'))
