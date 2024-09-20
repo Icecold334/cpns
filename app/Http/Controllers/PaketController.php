@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Soal;
-use App\Models\Hasil;
-use App\Models\Paket;
-use App\Models\Respon;
-use App\Models\Jawaban;
+use App\Models\{Soal, Hasil, Paket, Respon, Jawaban};
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StorePaketRequest;
 use App\Http\Requests\UpdatePaketRequest;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Gate;
 
 class PaketController extends Controller
@@ -25,6 +22,8 @@ class PaketController extends Controller
 
     public function testIndex(Paket $paket)
     {
+        Session::forget('time');
+        Session::forget('last_no');
         return view('paket.testIndex', [
             'title' => $paket->nama,
             'paket' => $paket,
@@ -36,80 +35,103 @@ class PaketController extends Controller
         return view('paket.hasil', [
             'title' => 'Hasil ' . $paket->nama,
             'paket' => $paket,
-            'hasil' => $paket->hasil->where('paket_id', $paket->id)->first(),
+            'total' => floor(($paket->hasil->pluck('nilai')->sum() / ($paket->hasil->pluck('nilai')->count() * 100)) * 100),
+            'hasils' => $paket->hasil,
             'user' => Auth::user(),
         ]);
     }
 
     public function selesai(Paket $paket)
     {
+        Session::forget('time');
+        Session::forget('last_no');
         $userId = Auth::id();
-
-        $tiuScore = 0;
-        $twkScore = 0;
-        $tkpScore = 0;
-
-        // Ambil semua respon dari user untuk paket soal tertentu
-        $responses = Respon::where('user_id', $userId)
+        $responses = $this->getUserResponses($userId, $paket);
+        $scores = $this->calculateScores($responses);
+        $totalNilai = $this->calculateTotalNilai($paket, $scores);
+        $this->updateHasil($paket, $totalNilai);
+        return redirect()->route('hasil', ['paket' => $paket->uuid]);
+    }
+    private function getUserResponses($userId, Paket $paket)
+    {
+        return Respon::where('user_id', $userId)
             ->whereHas('soal', function ($query) use ($paket) {
                 $query->where('paket_id', $paket->id);
             })->get();
-        dd($responses);
+    }
 
+    private function calculateScores($responses)
+    {
+        $kategoris = [];
+        foreach ($responses as $response) {
+            $kategori = $response->jawaban->soal->kategori;
+            $kategoris[$kategori->id] = 0;
+        }
         foreach ($responses as $respon) {
             $soal = $respon->soal;
             $jawaban = Jawaban::find($respon->jawaban_id);
-            $kategori = $soal->kategori->nama;
-
-            if ($kategori == 'TIU') {
+            $kategori = $soal->kategori;
+            if ($kategori->byPoin) {
+                $kategoris[$respon->jawaban->soal->kategori->id]
+                    += $jawaban->poin;
+            } else {
                 if ($jawaban->benar) {
-                    $tiuScore++;
+                    $kategoris[$respon->jawaban->soal->kategori->id]++;
                 }
-            } elseif ($kategori == 'TWK') {
-                if ($jawaban->benar) {
-                    $twkScore++;
-                }
-            } elseif ($kategori == 'TKP') {
-                $tkpScore += $jawaban->poin;
             }
         }
-
-
-        $totalPoin = $paket->soal->where('kategori_id', 1)->count() +
-            $paket->soal->where('kategori_id', 2)->count() +
-            ($paket->soal->where('kategori_id', 3)->count() * 5);
-        $nilaiTwk = (int)floor(($twkScore / $paket->soal->where('kategori_id', 1)->count()) * 100);
-        $nilaiTiu = (int)floor(($tiuScore / $paket->soal->where('kategori_id', 2)->count()) * 100);
-        $nilaiTkp = (int)floor(($tkpScore / ($paket->soal->where('kategori_id', 3)->count() * 5)) * 100);
-        $totalNilai = $nilaiTwk + $nilaiTiu + $nilaiTkp;
-        // $nilai = (int)floor(($totalNilai / $totalPoin) * 100);
-        $nilai = (int)floor(($totalNilai / 300) * 100);
-        Hasil::where('paket_id', $paket->id)
-            ->where('user_id', Auth::id())
-            ->update([
-                'twk' => $nilaiTwk,
-                'tiu' => $nilaiTiu,
-                'tkp' => $nilaiTkp,
-                'total_skor' => $nilai,
-                'completed_at' => now(),
-            ]);
-        return redirect()->route('hasil', ['paket' => $paket->uuid]);
+        return $kategoris;
     }
+    private function calculateTotalNilai(Paket $paket, $scores)
+    {
+        $kategoris = $paket->base->kategori;
+
+
+        $totalNilai = [];
+        foreach ($scores as $key => $score) {
+
+
+            $kategori = $kategoris->find($key);
+
+            if ($kategori->byPoin) {
+                $totalNilai[$kategori->id] = (int)floor(($scores[$kategori->id] / ($paket->soal->where('kategori_id', $kategori->id)->count() * 5)) * 100);
+            } else {
+                $totalNilai[$kategori->id] = (int)floor(($scores[$kategori->id] / $paket->soal->where('kategori_id', $kategori->id)->count()) * 100);
+            }
+        }
+        return $totalNilai;
+        // return (int)floor(((array_sum($totalNilai)) / 300) * 100);
+    }
+    private function updateHasil(Paket $paket, $totalNilai)
+    {
+        $kategoris = [];
+        foreach ($paket->base->kategori as $key => $kategori) {
+            $kategoris[] = $kategori;
+        }
+        foreach ($kategoris as $kategori) {
+            Hasil::where('paket_id', $paket->id)
+                ->where('user_id', Auth::id())
+                ->where('kategori_id', $kategori->id)
+                ->update(['nilai' => $totalNilai[$kategori->id] ?? 0, 'completed_at' => now()]);
+        }
+    }
+
 
     public function test(Paket $paket)
     {
         $user = Auth::user();
         $existingHasil = Hasil::where('paket_id', $paket->id)->where('user_id', $user->id)->first();
         if (!$existingHasil) {
-            // $soalsSorted = $this->shuffleSoals($paket);
             $soalsSorted = $this->getShuffledSoalByPaket($paket);
             $urutanString = implode(',', $soalsSorted->pluck('id')->toArray());
-
-            Hasil::create([
-                'user_id' => $user->id,
-                'paket_id' => $paket->id,
-                'urutan' => $urutanString,
-            ]);
+            foreach ($paket->base->kategori as $kategori) {
+                Hasil::create([
+                    'user_id' => $user->id,
+                    'paket_id' => $paket->id,
+                    'kategori_id' => $kategori->id,
+                    'urutan' => $urutanString,
+                ]);
+            };
         } else {
             $urutanArray = explode(',', $existingHasil->urutan);
             $soalsSorted = $this->sortSoalsByOrder($urutanArray);

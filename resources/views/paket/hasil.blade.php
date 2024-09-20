@@ -1,7 +1,7 @@
 <x-body>
     <x-slot:title>{{ $title }}</x-slot>
     <h1><a href="/paket"><i class="fa-solid fa-circle-chevron-left"></i></a> Hasil
-        {{ $hasil->paket->nama }}
+        {{ $paket->nama }}
     </h1>
     <div class="row ">
         <div class="col-xl-12 col-md-12 col-sm-12">
@@ -38,21 +38,15 @@
                                     <td style="width: 20%">Email</td>
                                     <td>{{ $user->email }}</td>
                                 </tr>
-                                <tr>
-                                    <td style="width: 20%">Nilai TWK</td>
-                                    <td>{{ $hasil->twk }}</td>
-                                </tr>
-                                <tr>
-                                    <td style="width: 20%">Nilai TIU</td>
-                                    <td>{{ $hasil->tiu }}</td>
-                                </tr>
-                                <tr>
-                                    <td style="width: 20%">Nilai TKP</td>
-                                    <td>{{ $hasil->tkp }}</td>
-                                </tr>
+                                @foreach ($hasils as $hasil)
+                                    <tr>
+                                        <td style="width: 20%">Nilai {{ $hasil->kategori->nama }}</td>
+                                        <td>{{ $hasil->nilai }}</td>
+                                    </tr>
+                                @endforeach
                                 <tr>
                                     <td style="width: 20%">Nilai Total</td>
-                                    <td>{{ $hasil->total_skor }}</td>
+                                    <td>{{ $total }}</td>
                                 </tr>
                             </table>
                         </div>

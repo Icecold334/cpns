@@ -6,6 +6,7 @@ use App\Models\Soal;
 use App\Models\Respon;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class CardSoal2 extends Component
 {
@@ -15,6 +16,7 @@ class CardSoal2 extends Component
     public $belum;
     public $persen;
 
+    public $durasi;
     public $soals;
     public $soal;
     public $jawaban = null;
@@ -22,15 +24,26 @@ class CardSoal2 extends Component
     public $nomor = 1;
     public function mount()
     {
+
+        $this->durasi = Session::get('time') ?? $this->paket->durasi;
         $this->loadCurrentSoal();
         $this->loadStatus();
     }
 
     private function loadCurrentSoal()
     {
-        $index = 0;
-
+        $lastNo = Session::get('last_no');
+        $index = is_array($lastNo) && $lastNo[1] === $this->soals[0]->paket->uuid
+            ? max(0, $lastNo[0] - 1)
+            : 0;
+        // $index = 0;
         $this->setSoalData($this->soals[$index], $index + 1);
+    }
+
+    public function selesai()
+    {
+        // dd('oke');
+        redirect()->route('ujian.selesai', ['paket' => $this->paket->uuid]);
     }
 
     private function setSoalData(Soal $soal, $nomor)
@@ -89,7 +102,24 @@ class CardSoal2 extends Component
     {
         $soal = $this->soals[$index];
         $this->setSoalData($soal, $nomor);
+        Session::put('last_no', [$this->nomor, $soal->paket->uuid]);
         $this->loadStatus();
+    }
+
+    public function decrement()
+    {
+        $nomor = $this->nomor;
+        if ($this->durasi > 0) {
+            $this->durasi--;
+            Session::put('time', $this->durasi);
+        } else {
+            if ($nomor < $this->soals->count()) {
+                $this->durasi = $this->paket->durasi;
+                $this->navigateSoal($nomor, $nomor + 1);
+            } else {
+                $this->selesai();
+            }
+        }
     }
     public function render()
     {

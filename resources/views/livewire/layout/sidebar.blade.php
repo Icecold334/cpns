@@ -39,6 +39,7 @@
         <!-- Nav Item -->
         @if (!request()->routeIs('play'))
             <livewire:layout.components.sidelink title="Dashboard" href="/panel" :active="request()->is('panel')" />
+            @livewire('layout.components.sidelink', ['title' => 'Kategori', 'href' => '/kategori', 'active' => request()->is('kategori*'), 'icon' => '<i class="fa-solid fa-font-awesome"></i>'])
             @can('admin')
                 @livewire('layout.components.sidelink', ['title' => 'Guru', 'href' => '/guru', 'active' => request()->is('guru*'), 'icon' => '<i class="fa-solid fa-chalkboard-user"></i>'])
             @endcan

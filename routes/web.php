@@ -10,7 +10,8 @@ use App\Http\Controllers\{
     SiswaController,
     ProfilController,
     ProfileController,
-    PengaturanController
+    PengaturanController,
+    KategoriController
 };
 use App\Models\Pengaturan;
 use Illuminate\Support\Facades\File;
@@ -30,6 +31,7 @@ Route::prefix('paket')->middleware(['auth', 'verified'])->group(function () {
     });
 });
 Route::resource('paket', PaketController::class)->middleware(['auth', 'verified']);
+Route::resource('kategori', KategoriController::class)->middleware(['auth', 'verified']);
 Route::resource('paket.soal', SoalController::class)->middleware(['auth', 'verified']);
 Route::get('pengaturan', [PengaturanController::class, 'index'])->middleware(['admin', 'verified'])->name('settings');
 // Route::get('profil', [ProfilController::class, 'index'])->middleware(['auth', 'verified'])->name('profil');

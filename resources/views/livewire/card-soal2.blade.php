@@ -1,7 +1,7 @@
 <div class="card shadow">
     <div class="card-header text-center">
         <h1>Paket Soal C</h1>
-        <div class="badge bg-primary fs-1">{{ $paket->durasi }}</div>
+        <div class="badge bg-primary fs-1">{{ $durasi }}</div>
     </div>
     <div class="card-body">
         <p class="font-weight-bold text-center">{{ $soal->soal }}</p>
@@ -19,6 +19,10 @@
                         </label>
                     </div>
                 @endforeach
+                @if ($nomor == $soals->count() && $jawaban)
+                    <button class="btn btn-primary mt-3 ms-3" type="button" wire:click="selesai"
+                        wire:loading.class="disabled">Selesai</button>
+                @endif
                 @if ($jawaban && $nomor != $soals->count())
                     <button class="btn btn-primary mt-3 ms-3 {{ $nomor == $soals->count() ? 'disabled' : '' }}"
                         type="button" wire:click="after({{ $nomor }})" wire:loading.class="disabled">Soal
@@ -29,11 +33,19 @@
 
         <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="0" style="height: 2rem"
             aria-valuemin="0" aria-valuemax="100">
-            <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: {{ $persen }}%">
+
+            <div class="progress-bar" style="width: {{ $persen }}%">
                 <span class="fs-5 font-weight-bold">{{ $persen }}%</span>
             </div>
         </div>
     </div>
 
 
+    @push('scripts')
+        <script>
+            setInterval(function() {
+                @this.call('decrement');
+            }, 1000);
+        </script>
+    @endpush
 </div>

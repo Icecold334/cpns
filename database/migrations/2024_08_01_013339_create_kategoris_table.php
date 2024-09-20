@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama');
             $table->string('deskripsi');
+            $table->boolean('byPoin')->default(false);
             $table->foreignId('base_id')->constrained('base_kategoris');
             $table->timestamps();
         });

@@ -82,7 +82,7 @@
                                     </a>
                                 </td>
                             @else
-                                @if ($paket->hasil->where('user_id', Auth::user()->id)->first()->total_skor === null)
+                                @if ($paket->hasil->where('user_id', Auth::user()->id)->first()->nilai === null)
                                     <td class="text-center">
                                         <a href="/paket/test/{{ $paket->uuid }}{{ $paket->hasil->where('user_id', Auth::user()->id)->first()->start_time != null ? '/play' : '' }}"
                                             class="btn badge bg-success text-white">
