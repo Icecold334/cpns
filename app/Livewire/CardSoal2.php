@@ -29,6 +29,21 @@ class CardSoal2 extends Component
         $this->loadCurrentSoal();
         $this->loadStatus();
     }
+    public function loadStatus()
+    {
+        // Menghitung total soal dalam paket
+        $this->total = $this->paket->soal->count();
+
+        // Mendapatkan array ID soal yang telah dijawab oleh user
+        $this->terjawab = count(Respon::where('user_id', Auth::user()->id)
+            ->whereIn('soal_id', $this->paket->soal->pluck('id')->toArray())
+            ->pluck('soal_id')
+            ->toArray());
+
+        // Menghitung soal yang belum dijawab
+        $this->belum = $this->total - $this->terjawab;
+        $this->persen = (($this->nomor - 1) / $this->total) * 100;
+    }
 
     private function loadCurrentSoal()
     {
@@ -42,8 +57,12 @@ class CardSoal2 extends Component
 
     public function selesai()
     {
-        // dd('oke');
-        redirect()->route('ujian.selesai', ['paket' => $this->paket->uuid]);
+        if ($this->nomor == $this->paket->soal->count()) {
+            $this->persen = 100;
+        }
+        $this->dispatch('redirect-with-delay', [
+            'url' => route('ujian.selesai', ['paket' => $this->paket->uuid]),
+        ]);
     }
 
     private function setSoalData(Soal $soal, $nomor)
@@ -77,21 +96,7 @@ class CardSoal2 extends Component
         );
         $this->loadStatus();
     }
-    public function loadStatus()
-    {
-        // Menghitung total soal dalam paket
-        $this->total = $this->paket->soal->count();
 
-        // Mendapatkan array ID soal yang telah dijawab oleh user
-        $this->terjawab = count(Respon::where('user_id', Auth::user()->id)
-            ->whereIn('soal_id', $this->paket->soal->pluck('id')->toArray())
-            ->pluck('soal_id')
-            ->toArray());
-
-        // Menghitung soal yang belum dijawab
-        $this->belum = $this->total - $this->terjawab;
-        $this->persen = ($this->terjawab / $this->total) * 100;
-    }
 
     public function after($no)
     {
@@ -101,6 +106,7 @@ class CardSoal2 extends Component
     private function navigateSoal($index, $nomor)
     {
         $soal = $this->soals[$index];
+        $this->durasi = $this->paket->durasi;
         $this->setSoalData($soal, $nomor);
         Session::put('last_no', [$this->nomor, $soal->paket->uuid]);
         $this->loadStatus();
@@ -113,11 +119,14 @@ class CardSoal2 extends Component
             $this->durasi--;
             Session::put('time', $this->durasi);
         } else {
-            if ($nomor < $this->soals->count()) {
+            if ($nomor != $this->soals->count()) {
                 $this->durasi = $this->paket->durasi;
                 $this->navigateSoal($nomor, $nomor + 1);
             } else {
-                $this->selesai();
+                $this->persen = 100;
+                $this->dispatch('redirect-with-delay', [
+                    'url' => route('ujian.selesai', ['paket' => $this->paket->uuid]),
+                ]);
             }
         }
     }

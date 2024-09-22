@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('kategoris', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
-            $table->string('deskripsi');
+            $table->string('deskripsi')->nullable();
             $table->boolean('byPoin')->default(false);
             $table->foreignId('base_id')->constrained('base_kategoris');
             $table->timestamps();

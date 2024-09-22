@@ -1,5 +1,5 @@
 <div class="card shadow">
-    <div class="card-header text-center">
+    <div class="card-header text-center bg-white">
         <h1>Paket Soal C</h1>
         <div class="badge bg-primary fs-1">{{ $durasi }}</div>
     </div>
@@ -40,12 +40,24 @@
         </div>
     </div>
 
+    @if (!($durasi == 0 && $nomor == $paket->soal->count()))
+        <div wire:poll.1000ms="decrement"></div>
+    @else
+        <div wire:init="decrement"></div>
+    @endif
 
     @push('scripts')
+        <script></script>
         <script>
-            setInterval(function() {
-                @this.call('decrement');
-            }, 1000);
+            document.addEventListener('redirect-with-delay', function(event) {
+
+                // Ambil URL dan delay dari event yang dikirim oleh Livewire
+                let url = event.detail[0].url;
+                // Set delay untuk redirect
+                setTimeout(function() {
+                    window.location.href = url;
+                }, 1000);
+            });
         </script>
     @endpush
 </div>

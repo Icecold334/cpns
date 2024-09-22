@@ -58,7 +58,7 @@ class GuruForm extends Component
             'password' => Hash::make('password123'),
 
         ]);
-        return redirect()->to('/guru')->with('icon', 's`uccess')->with('title', 'Berhasil')->with('message', $this->name . ' berhasil ditambahkan!');
+        return redirect()->to('/guru')->with('icon', 'success')->with('title', 'Berhasil')->with('message', $this->name . ' berhasil ditambahkan!');
     }
     public function update()
     {

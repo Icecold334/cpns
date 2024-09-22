@@ -1,10 +1,45 @@
 <x-body>
     <x-slot:title>{{ $title }}</x-slot>
+    <div class="row">
 
-    <h1>Daftar Kategori @can('admin')
-            <a href="{{ route('kategori.create') }}"><i class="fa-solid fa-circle-plus"></i></a>
-        @endcan
-    </h1>
+        <div class="col-xl-6 col-md-12 col-sm-12">
+            <h1 class=""><a href="{{ route('paket.index') }}"><i class="fa-solid fa-circle-chevron-left"></i></a>
+                {{ $title }}
+            </h1>
+        </div>
+        <div
+            class="col-xl-6 col-md-12 col-sm-12  d-flex justify-content-xl-end justify-content-md-center justify-content-sm-center align-items-center">
+            <button type="button" class="btn btn-primary me-3" data-bs-toggle="modal" data-bs-target="#addKategori">
+                <i class="fa-solid fa-circle-plus"></i>
+                Tambah Kategori
+            </button>
+            @push('html')
+                <div class="modal fade" id="addKategori" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <livewire:kategori-form />
+                        </div>
+                    </div>
+                </div>
+            @endpush
+            <button type="button" class="btn btn-primary me-3" data-bs-toggle="modal" data-bs-target="#addSub">
+                <i class="fa-solid fa-circle-plus"></i>
+                Tambah Sub Kategori
+            </button>
+            @push('html')
+                <div class="modal fade" id="addSub" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <livewire:sub-kategori-form />
+                        </div>
+                    </div>
+                </div>
+            @endpush
+        </div>
+    </div>
+
     <div class="table-responsive">
         <table class="table" id="bases">
             <thead>
@@ -18,10 +53,10 @@
             <tbody>
                 @foreach ($bases as $base)
                     <tr>
-                        <td class="text-start">{{ $loop->iteration }}.</td>
+                        <td class="font-weight-bold table-active text-start">{{ $loop->iteration }}.</td>
                         <td class="font-weight-bold table-active">{{ $base->nama }}</td>
-                        <td>{{ $base->deskripsi }}</td>
-                        <td class="text-center">
+                        <td class="font-weight-bold table-active">{{ $base->deskripsi }}</td>
+                        <td class="text-center font-weight-bold table-active">
                             <a href="/base/{{ $base->id }}" class="btn badge bg-info text-white px-1">
                                 <i class="fa-solid fa-circle-info"></i>
                             </a>
