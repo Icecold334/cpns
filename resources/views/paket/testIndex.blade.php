@@ -11,7 +11,7 @@
                         <div class="card-body">
                             <table class="table">
                                 <tr>
-                                    <td style="width: 20%">Nama Peserta</td>
+                                    <td style="width: 20%">Nama Paket</td>
                                     <td>{{ $paket->nama }}</td>
                                 </tr>
                                 <tr>

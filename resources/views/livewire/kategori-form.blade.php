@@ -21,8 +21,8 @@
                 </div>
                 <div class="form-group mb-3">
                     <label for="deskripsi" class="form-label">Deskripsi</label>
-                    <textarea class="form-control @error('deskripsi') is-invalid @enderror" wire:model.live="deskripsi" id="deskripsi"
-                        rows="3"></textarea>
+                    <textarea class="form-control @error('deskripsi') is-invalid @enderror" placeholder="Deskripsi Kategori"
+                        wire:model.live="deskripsi" id="deskripsi" rows="3"></textarea>
                     @error('deskripsi')
                         <div class="invalid-feedback">
                             {{ $message }}

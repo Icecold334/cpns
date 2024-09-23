@@ -13,9 +13,7 @@ class PaketController extends Controller
 {
     public function publish(Paket $paket)
     {
-        // update paket status to true
-        $paket->update(['status' => true]);
-        // redirect
+        $test = $paket->update(['status' => true]);
         return redirect()->route('paket.soal.index', ['paket' => $paket->uuid])->with('icon', 'success')->with('title', 'Berhasil')->with('message', 'Paket soal berhasil dipublikasikan!');
     }
 

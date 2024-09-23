@@ -92,9 +92,10 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <th>Durasi {{ $paket->base->id == 2 ? '/ soal' : '' }}</th>
+
+                                            <th>Durasi {{ !$paket->flat ? '/ Soal' : '' }}</th>
                                             <td colspan="2">
-                                                @if ($paket->base->id == 2)
+                                                @if (!$paket->flat)
                                                     {{ $paket->durasi }} detik
                                                 @else
                                                     {{ floor($paket->durasi / 60) }} menit
@@ -106,7 +107,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Keluar</button>
-                                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                                    {{-- <button type="submit" class="btn btn-primary">Simpan Perubahan</button> --}}
                                 </div>
                             </form>
 
@@ -132,8 +133,9 @@
                     <tr>
                         <td class="text-center">{{ $loop->iteration }}</td>
                         <td>{{ Str::words($soal->soal, 4, '...') }}</td>
-                        <td class="{{ $soal->kategori->id == 3 ? 'text-center' : '' }}">
-                            {{ $soal->kategori->id != 3 ? Str::words($soal->jawaban->where('benar', true)->first()->jawaban, 4, '...') : '-' }}
+                        {{-- <td class="{{ $soal->kategori->id == 3 ? 'text-center' : '' }}"> --}}
+                        <td class="{{ $soal->kategori->byPoin ? 'text-center' : '' }}">
+                            {{ !$soal->kategori->byPoin ? Str::words($soal->jawaban->where('benar', true)->first()->jawaban, 4, '...') : '-' }}
                         </td>
                         <td>{{ $soal->kategori->deskripsi }}</td>
                         <td class="text-center">

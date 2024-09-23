@@ -2,6 +2,9 @@
 
     <form wire:submit.prevent="{{ $soal_array == null ? 'save' : 'update' }}" enctype="multipart/form-data">
         @csrf
+        @if ($kategori_id != null)
+            <div class="d-none" wire:init="fillType({{ $kategori_id }})"></div>
+        @endif
         <div class="row">
             <div class="col-xl-12 col-md-12 col-sm-12">
                 <div class="form-group mb-3">
@@ -25,14 +28,14 @@
                 </div>
             </div>
             <div
-                class="{{ $kategori_id == null || $kategori_id == 3 ? 'col-xl-12 col-md-12 col-sm-12' : 'col-xl-8 col-md-8 col-sm-12' }} ">
+                class="{{ $kategori_id == null || ($kategori && $kategori->byPoin) ? 'col-xl-12 col-md-12 col-sm-12' : 'col-xl-8 col-md-8 col-sm-12' }} ">
                 <div class="form-group mb-3">
-                    <label for="kategori_id" class="form-label">Kategori<span class="text-danger">*</span></label>
+                    <label for="kategori_id" class="form-label">Sub Kategori<span class="text-danger">*</span></label>
                     <select class="custom-select @error('kategori_id')  is-invalid @enderror"
                         wire:model.live="kategori_id" aria-label="Pilih Kategori" id="kategori_id" name="kategori_id">
-                        <option value="">Pilih Kategori</option>
-                        @foreach ($kategoris as $kategori)
-                            <option value="{{ $kategori->id }}" @selected($kategori->id == $kategori_id)>{{ $kategori->deskripsi }}
+                        <option value="">Pilih Sub Kategori</option>
+                        @foreach ($kategoris as $kat)
+                            <option value="{{ $kat->id }}" @selected($kat->id == $kategori_id)>{{ $kat->deskripsi }}
                             </option>
                         @endforeach
                     </select>
@@ -43,25 +46,27 @@
                     @enderror
                 </div>
             </div>
-            <div class="{{ $kategori_id == null || $kategori_id == 3 ? 'd-none' : '' }} col-xl-4 col-md-4 col-sm-12">
-                <div class="form-group mb-3">
-                    <label for="benar" class="form-label">Jawaban Benar<span class="text-danger">*</span></label>
-                    <select class="custom-select @error('benar') is-invalid @enderror" aria-label="Pilih Kategori"
-                        id="benar" name="benar" wire:model.live="benar">
-                        <option value="">Pilih Jawaban</option>
-                        <option value="1">Jawaban A</option>
-                        <option value="2">Jawaban B</option>
-                        <option value="3">Jawaban C</option>
-                        <option value="4">Jawaban D</option>
-                        <option value="5">Jawaban E</option>
-                    </select>
-                    @error('benar')
-                        <div id="benar" class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                    @enderror
+            @if ($kategori_id != null)
+                <div class="{{ $kategori && $kategori->byPoin ? 'd-none' : '' }} col-xl-4 col-md-4 col-sm-12">
+                    <div class="form-group mb-3">
+                        <label for="benar" class="form-label">Jawaban Benar<span class="text-danger">*</span></label>
+                        <select class="custom-select @error('benar') is-invalid @enderror" aria-label="Pilih Kategori"
+                            id="benar" name="benar" wire:model.live="benar">
+                            <option value="">Pilih Jawaban</option>
+                            <option value="1">Jawaban A</option>
+                            <option value="2">Jawaban B</option>
+                            <option value="3">Jawaban C</option>
+                            <option value="4">Jawaban D</option>
+                            <option value="5">Jawaban E</option>
+                        </select>
+                        @error('benar')
+                            <div id="benar" class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
                 </div>
-            </div>
+            @endif
             <div class="col-xl-12 col-md-12 col-sm-12">
                 <div class="form-group mb-3">
                     <label for="soal" class="form-label">Soal<span class="text-danger">*</span></label>
@@ -150,7 +155,6 @@
     </form>
 
 </div>
-{{-- @push('script') --}}
 <script>
     document.addEventListener('berhasil', function(e) {
 
@@ -173,4 +177,3 @@
         });
     });
 </script>
-{{-- @endpush --}}

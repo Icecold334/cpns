@@ -12,7 +12,7 @@
                 <div class="form-group mb-3">
                     <label for="nama" class="form-label">Nama Sub Kategori<span class="text-danger">*</span></label>
                     <input type="text" class="form-control  @error('nama') is-invalid @enderror" id="nama"
-                        placeholder="Nama Kategori" wire:model.live="nama" autocomplete="off">
+                        placeholder="Nama Sub Kategori" wire:model.live="nama" autocomplete="off">
                     @error('nama')
                         <div class="invalid-feedback">
                             {{ $message }}
@@ -39,8 +39,9 @@
                     <label for="poin" class="form-label">Konsep Jawaban<span class="text-danger">*</span></label>
                     <select class="custom-select @error('poin')  is-invalid @enderror" wire:model.live="poin"
                         aria-label="Pilih Kategori" id="poin" name="poin">
-                        <option value="0">Terdapat satu jawaban benar</option>
-                        <option value="1">Setiap opsi jawaban memiliki</option>
+                        <option value="">Pilih Opsi</option>
+                        <option value="0">Terdapat satu opsi jawaban benar</option>
+                        <option value="1">Setiap opsi jawaban memiliki poin</option>
                     </select>
                     @error('poin')
                         <div id="poin" class="invalid-feedback">
@@ -50,8 +51,8 @@
                 </div>
                 <div class="form-group mb-3">
                     <label for="deskripsi" class="form-label">Deskripsi</label>
-                    <textarea class="form-control @error('deskripsi') is-invalid @enderror" wire:model.live="deskripsi" id="deskripsi"
-                        rows="3"></textarea>
+                    <textarea class="form-control @error('deskripsi') is-invalid @enderror" wire:model.live="deskripsi"
+                        placeholder="Deskripsi Sub Kategori" id="deskripsi" rows="3"></textarea>
                     @error('deskripsi')
                         <div class="invalid-feedback">
                             {{ $message }}

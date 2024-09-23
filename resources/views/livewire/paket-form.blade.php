@@ -33,14 +33,28 @@
                     @enderror
                 </div>
             </div>
-            <div class="col-xl-4 col-md-4 col-sm-6">
+            <div class="col-xl-8 col-md-8 col-sm-6">
                 <div class="form-group mb-3">
-                    <label for="durasi" class="form-label">Durasi @if ($base_id == 2)
-                            / soal
-                        @endif
-                        <span class="text-danger">*</span></label>
+                    <label for="flat" class="form-label">Konsep Durasi<span class="text-danger">*</span></label>
+                    <select class="custom-select @error('flat')  is-invalid @enderror" wire:model.live="flat"
+                        aria-label="Pilih Kategori" id="flat" name="flat">
+                        <option value="">Pilih Kategori</option>
+                        <option value="1">Durasi untuk satu paket</option>
+                        <option value="0">Durasi untuk satu soal</option>
+                    </select>
+                    @error('flat')
+                        <div id="flat" class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+            </div>
+            <div class="{{ $flat == null ? 'd-none' : '' }} col-xl-4 col-md-4 col-sm-6">
+                <div class="form-group mb-3">
+                    <label for="durasi" class="form-label">Durasi{{ !$flat ? ' / soal' : '' }}<span
+                            class="text-danger">*</span></label>
                     <input
-                        @if ($base_id == 2) type="number" min="0" max="60" step="1" placeholder="Durasi waktu untuk tiap soal" @else type="time" @endif
+                        @if (!$flat) type="number" min="0" max="60" step="1" placeholder="Durasi waktu untuk tiap soal" @else type="time" @endif
                         class="form-control @error('durasi') is-invalid @enderror" wire:model.live="durasi" />
                     @error('durasi')
                         <div class="invalid-feedback">

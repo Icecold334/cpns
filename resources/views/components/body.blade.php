@@ -76,18 +76,19 @@
                 </div>
                 <!-- End of Main Content -->
 
-                {{-- @if (!request()->is('paket/test*')) --}}
-                <!-- Footer -->
-                <footer class="sticky-footer bg-white" style="margin-top: 11.4rem">
-                    <div class="container my-auto">
-                        <div class="copyright text-center my-auto">
-                            <span>Copyright &copy; {{ App\Models\Pengaturan::first()->nama }}
-                                {{ Carbon\Carbon::now()->isoFormat('Y') }}</span>
+                @if (request()->routeIs('play'))
+                    <!-- Footer -->
+                    <footer class="sticky-footer bg-white"
+                        @if (true) style="margin-top: 11.4rem" @endif>
+                        <div class="container my-auto">
+                            <div class="copyright text-center my-auto">
+                                <span>Copyright &copy; {{ App\Models\Pengaturan::first()->nama }}
+                                    {{ Carbon\Carbon::now()->isoFormat('Y') }}</span>
+                            </div>
                         </div>
-                    </div>
-                </footer>
-                <!-- End of Footer -->
-                {{-- @endif --}}
+                    </footer>
+                    <!-- End of Footer -->
+                @endif
 
             </div>
             <!-- End of Content Wrapper -->

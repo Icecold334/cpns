@@ -17,6 +17,7 @@ class SubKategoriForm extends Component
     // #[Validate('required', message: 'Nama Kategori wajib diisi!')]
     // #[Validate('min:3', message: 'Nama Kategori terlalu singkat!')]
     public $deskripsi;
+    #[Validate('required', message: 'Konsep jawaban wajib dipilih!')]
     public $poin;
     #[Validate('required', message: 'Kategori wajib dipilih!')]
     public $base_id;

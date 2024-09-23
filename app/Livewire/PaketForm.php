@@ -13,6 +13,7 @@ class PaketForm extends Component
     public $nama;
     public $bases;
     public $base_id;
+    public $flat;
     public $durasi;
 
     public function mount()
@@ -36,6 +37,7 @@ class PaketForm extends Component
         $paket = new Paket();
         $paket->nama = $this->nama;
         $paket->base_id = $this->base_id;
+        $paket->flat = $this->flat;
         $paket->durasi = str_contains($this->durasi, ':') ? ($hours * 3600) + ($minutes * 60) : $this->durasi;
         $paket->user_id = Auth::user()->id;
         $paket->save();
