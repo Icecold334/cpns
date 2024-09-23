@@ -5,7 +5,7 @@
             <i class="fa fa-bars"></i>
         </button>
     @endif
-    @if (request()->routeIs('play'))
+    @if (request()->routeIs('play') && $paket['base_id'] != 2)
         <!-- Sidebar Toggle (Topbar) -->
         <button class="btn btn-primary ms-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#canvas"
             aria-controls="canvas"><i class="fa fa-bars"></i> Daftar Soal</button>
@@ -184,10 +184,12 @@
             </a>
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="/profil">
-                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Profil
-                </a>
+                @if (!Request::routeIs('play'))
+                    <a class="dropdown-item" href="/profil">
+                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Profil
+                    </a>
+                @endif
                 @can('admin')
                     <a class="dropdown-item" href="/pengaturan">
                         <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -198,7 +200,9 @@
                     <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                     Activity Log
                 </a> --}}
-                <div class="dropdown-divider"></div>
+                @if (!Request::routeIs('play'))
+                    <div class="dropdown-divider"></div>
+                @endif
                 <button class="dropdown-item" id="logout">
                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                     Keluar

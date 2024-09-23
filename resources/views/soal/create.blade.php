@@ -7,11 +7,11 @@
         <div class="col-xl-8 col-md-12 col-sm-12">
             <div class="card">
                 <div class="card-body">
-                    @if ($paket->base->id == 1)
-                        <livewire:create-soal :paket="$paket" />
-                    @else
-                        <h1>blum ada</h1>
-                    @endif
+                    {{-- @if ($paket->base->id == 1) --}}
+                    <livewire:create-soal :paket="$paket" />
+                    {{-- @else --}}
+                    {{-- <h1>blum ada</h1> --}}
+                    {{-- @endif --}}
                 </div>
             </div>
         </div>

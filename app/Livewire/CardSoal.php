@@ -43,9 +43,7 @@ class CardSoal extends Component
 
     private function getResponJawaban($soalId)
     {
-        return Respon::where('soal_id', $soalId)
-            ->where('user_id', Auth::id())
-            ->value('jawaban_id');
+        return Respon::where('soal_id', $soalId)->where('user_id', Auth::id())->value('jawaban_id');
     }
 
     #[On('soal-pick')]

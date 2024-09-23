@@ -15,22 +15,41 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // Buat pengguna
-        Pengaturan::factory()->create(['nama' => 'Aplikasi`', 'primary' => '#4e73df',]);
-        User::factory()->create(['name' => 'Fauzan Imam', 'email' => 'fauzanimam334@gmail.com', 'role' => 1, 'gender' => 0, 'password' => Hash::make('password123'), 'email_verified_at' => now(),]);
-        User::factory()->create(['name' => 'Ini Guru', 'email' => 'guru@gmail.com', 'role' => 2, 'gender' => 0, 'password' => Hash::make('password123'), 'email_verified_at' => now(),]);
-        User::factory()->create(['name' => 'Ini Siswa', 'email' => 'siswa@gmail.com', 'role' => 3, 'gender' => 0, 'password' => Hash::make('password123'), 'email_verified_at' => now(),]);
+        Pengaturan::factory()->create(['nama' => 'Aplikasi', 'primary' => '#4e73df', 'judul' => 'Ini Judul', 'subjudul' => 'ini subjudul', 'notelp' => '085648785256', 'email' => 'email@email.com', 'alamat' => 'Jl. In aja dulu', 'deskripsi' => 'ini teks deskripsi']);
+        User::factory()->create(['name' => 'Fauzan Imam', 'email' => 'fauzanimam334@gmail.com', 'role' => 1, 'gender' => 0, 'password' => Hash::make('a'), 'email_verified_at' => now(),]);
+        User::factory()->create(['name' => 'Ini Guru', 'email' => 'guru@gmail.com', 'role' => 2, 'gender' => 0, 'password' => Hash::make('a'), 'email_verified_at' => now(),]);
+        User::factory()->create(['name' => 'Ini Siswa', 'email' => 'siswa@gmail.com', 'role' => 3, 'gender' => 0, 'password' => Hash::make('a'), 'email_verified_at' => now(),]);
         // base
         BaseKategori::factory()->create(['nama' => 'cpns', 'deskripsi' => 'cpns']);
-        BaseKategori::factory()->create(['nama' => 'tni/polri', 'deskripsi' => 'tni/polri']);
+        BaseKategori::factory()->create(['nama' => 'tni/polri-psiko', 'deskripsi' => 'tni/polri-psiko']);
+        BaseKategori::factory()->create(['nama' => 'tni/polri-akademik', 'deskripsi' => 'tni/polri-akademik']);
         // Buat kategori
         $kategori_twk = Kategori::factory()->create(['nama' => 'TWK', 'deskripsi' => 'Tes Wawasan Kebangsaan', 'base_id' => 1]);
         $kategori_tiu = Kategori::factory()->create(['nama' => 'TIU', 'deskripsi' => 'Tes Intelegensia Umum', 'base_id' => 1]);
-        $kategori_tkp = Kategori::factory()->create(['nama' => 'TKP', 'deskripsi' => 'Tes Karakteristik Pribadi', 'base_id' => 1]);
+        $kategori_tkp = Kategori::factory()->create(['nama' => 'TKP', 'deskripsi' => 'Tes Karakteristik Pribadi', 'base_id' => 1, 'byPoin' => true]);
+        Kategori::factory()->create(['nama' => 'kepri-1', 'deskripsi' => 'kepribadian 1', 'base_id' => 2]);
+        Kategori::factory()->create(['nama' => 'kepri-2', 'deskripsi' => 'kepribadian 2', 'base_id' => 2]);
+        Kategori::factory()->create(['nama' => 'kecerdasan', 'deskripsi' => 'kecerdasan', 'base_id' => 2]);
+        Kategori::factory()->create(['nama' => 'kecermatan', 'deskripsi' => 'kecermatan', 'base_id' => 2]);
+
+        Kategori::factory()->create(['nama' => 'Matematika', 'deskripsi' => 'matematika', 'base_id' => 3]);
+        Kategori::factory()->create(['nama' => 'PKN', 'deskripsi' => 'PKN', 'base_id' => 3]);
+        Kategori::factory()->create(['nama' => 'B.Inggris', 'deskripsi' => 'B.Inggris', 'base_id' => 3]);
+        Kategori::factory()->create(['nama' => 'PU', 'deskripsi' => 'PU', 'base_id' => 3]);
+        Kategori::factory()->create(['nama' => 'B.Indonesia', 'deskripsi' => 'B.Indonesia', 'base_id' => 3]);
+
 
 
         // Buat paket soal
         $paket = Paket::factory()->create(['nama' => 'Paket Soal A', 'durasi' => 3600, 'user_id' => 2, 'base_id' => 1]);
         $paket2 = Paket::factory()->create(['nama' => 'Paket Soal B', 'durasi' => 2400, 'user_id' => 2, 'base_id' => 1]);
+        Paket::factory()->create(['nama' => 'Paket Soal C', 'durasi' => 5, 'user_id' => 2, 'base_id' => 2, 'status' => 1, 'flat' => false]);
+        Soal::factory()->create(['uuid' => fake()->uuid(), 'paket_id' => 3, 'kategori_id' => 4, 'soal' => 'asdads']);
+        Jawaban::factory()->create(['soal_id' => 1, 'row' => 1, 'jawaban' => 'a', 'benar' => 0, 'poin' => 0]);
+        Jawaban::factory()->create(['soal_id' => 1, 'row' => 2, 'jawaban' => 'b', 'benar' => 1, 'poin' => 0]);
+        Jawaban::factory()->create(['soal_id' => 1, 'row' => 3, 'jawaban' => 'c', 'benar' => 0, 'poin' => 0]);
+        Jawaban::factory()->create(['soal_id' => 1, 'row' => 4, 'jawaban' => 'd', 'benar' => 0, 'poin' => 0]);
+        Jawaban::factory()->create(['soal_id' => 1, 'row' => 5, 'jawaban' => 'e', 'benar' => 0, 'poin' => 0]);
         // Soal-soal untuk kategori TIU
         $soal_tiu = [
             ["soal" => "Berapa hasil dari 10 x 10?", "jawaban" => ['100', '90', '110', '120', '80']],
@@ -162,7 +181,8 @@ class DatabaseSeeder extends Seeder
                     ['Memberikan arahan yang jelas dan terperinci', 4],
                     ['Mendorong kerjasama dan komunikasi terbuka dalam tim', 5]
                 ]
-            ], [
+            ],
+            [
                 "soal" => "Dalam suatu proyek, Anda menemukan bahwa beberapa anggota tim sering berkonflik karena perbedaan pendapat. Konflik ini mulai mempengaruhi produktivitas tim secara keseluruhan. Bagaimana Anda menangani situasi ini?",
                 "jawaban" => [
                     ['Membiarkan mereka menyelesaikan konflik sendiri', 1],
@@ -171,7 +191,8 @@ class DatabaseSeeder extends Seeder
                     ['Meminta salah satu pihak untuk mengalah demi kelancaran proyek', 4],
                     ['Mendorong kerjasama dengan mengedepankan tujuan bersama', 5]
                 ]
-            ], [
+            ],
+            [
                 "soal" => "Anda sedang mengelola tim dengan proyek yang sangat kompleks. Salah satu anggota tim merasa kesulitan memahami tugas yang diberikan, dan ini mempengaruhi kemajuan proyek. Apa yang akan Anda lakukan untuk membantu anggota tim tersebut?",
                 "jawaban" => [
                     ['Menyarankan dia untuk mencari bantuan dari anggota tim lain', 1],
@@ -180,7 +201,8 @@ class DatabaseSeeder extends Seeder
                     ['Mendiskusikan kesulitannya dan menawarkan bantuan secara langsung', 4],
                     ['Memberikan pelatihan atau bimbingan yang dibutuhkan', 5]
                 ]
-            ], [
+            ],
+            [
                 "soal" => "Anda bekerja dalam sebuah tim proyek yang sangat kompetitif, dan setiap anggota tim harus memberikan kontribusi maksimal. Namun, salah satu anggota tim sering kali tidak menunjukkan performa yang diharapkan dan cenderung bergantung pada anggota lain. Bagaimana Anda menangani situasi ini?",
                 "jawaban" => [
                     ['Membiarkan anggota tim lain menutupi kekurangannya', 1],
@@ -192,7 +214,8 @@ class DatabaseSeeder extends Seeder
             ],
             ["soal" => "Bagaimana cara menghadapi konflik dalam tim kerja?", "jawaban" => [
                 [
-                    'Menunda hingga tenang', 1
+                    'Menunda hingga tenang',
+                    1
                 ],
                 ['Mencari bantuan mediator', 2],
                 ['Mendengarkan keluhan anggota', 3],
@@ -203,11 +226,13 @@ class DatabaseSeeder extends Seeder
                 ['Beristirahat secara teratur', 1],
                 ['Mengatur prioritas', 2],
                 [
-                    'Menghindari penundaan', 3
+                    'Menghindari penundaan',
+                    3
                 ],
                 ['Menyelesaikan tugas penting terlebih dahulu', 4],
                 [
-                    'Membuat jadwal harian', 5
+                    'Membuat jadwal harian',
+                    5
                 ]
             ]],
             ["soal" => "Bagaimana cara meningkatkan motivasi kerja?", "jawaban" => [
@@ -229,7 +254,8 @@ class DatabaseSeeder extends Seeder
                 ['Mencari solusi yang tepat', 2],
                 ['Berdiskusi untuk memahami lebih baik', 3],
                 [
-                    'Memperbaiki kesalahan', 4
+                    'Memperbaiki kesalahan',
+                    4
                 ],
                 ['Menerima dengan lapang dada', 5]
             ]],
@@ -265,7 +291,8 @@ class DatabaseSeeder extends Seeder
                 ['Mengatur waktu belajar', 1],
                 ['Berlatih soal-soal', 2],
                 [
-                    'Mencatat poin penting', 3
+                    'Mencatat poin penting',
+                    3
                 ],
                 ['Membaca ulang materi', 4],
                 ['Mencari bantuan dari orang lain', 5]

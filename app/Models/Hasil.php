@@ -20,4 +20,8 @@ class Hasil extends Model
     {
         return $this->belongsTo(Paket::class, 'paket_id');
     }
+    public function kategori(): BelongsTo
+    {
+        return $this->belongsTo(Kategori::class, 'kategori_id');
+    }
 }

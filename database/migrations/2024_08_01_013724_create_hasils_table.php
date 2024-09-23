@@ -16,12 +16,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('paket_id')->constrained('pakets');
+            $table->foreignId('kategori_id')->nullable()->constrained('kategoris');
             $table->string('urutan');
             $table->timestamp('start_time')->nullable();
             $table->timestamp('end_time')->nullable();
-            $table->integer('twk')->nullable();
-            $table->integer('tiu')->nullable();
-            $table->integer('tkp')->nullable();
+            $table->integer('nilai')->nullable();
             $table->integer('total_skor')->nullable();
             $table->timestamp('completed_at')->nullable();
             $table->timestamps();

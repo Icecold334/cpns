@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class CardTimer extends Component
 {
-    public $timeRemaining; // Timer in seconds
+    public $timeRemaining;
     public $durasi;
     public $paket;
 
@@ -43,7 +43,7 @@ class CardTimer extends Component
             $this->timeRemaining--;
         } else {
             $this->dispatch('selesai');
-            // redirect()->route('ujian.selesai', ['paket' => $this->paket->uuid]);
+            redirect()->route('ujian.selesai', ['paket' => $this->paket->uuid]);
         }
     }
 

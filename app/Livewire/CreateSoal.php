@@ -24,6 +24,7 @@ class CreateSoal extends Component
 
     #[Validate('required', message: 'Kategori soal harus dipilih!')]
     public $kategori_id;
+    public $kategori;
 
     #[Validate('required', message: 'Kategori wajib diisi!')]
     public $kategoris;
@@ -55,7 +56,8 @@ class CreateSoal extends Component
 
     public function mount()
     {
-        $this->kategoris = Kategori::all();
+
+        $this->kategoris = Kategori::where('base_id', $this->paket->base->id)->get();
         if ($this->soal_array != null) {
             $this->soal = $this->soal_array->soal;
             $this->img = $this->soal_array->img;
@@ -84,21 +86,25 @@ class CreateSoal extends Component
             'kategori_id' => $this->kategori_id,
             'img' => $img
         ]);
-        if ($this->kategori_id != 3) {
+        if (!$this->kategori->byPoin) {
             Jawaban::where('soal_id', $this->soal_array->id)->where('row', '=', $this->benar)->update(['benar' => 1]);
             Jawaban::where('soal_id', $this->soal_array->id)->where('row', '!=', $this->benar)->update(['benar' => 0]);
-            $this->jawaban_array[0]->update(['jawaban' => $this->a, 'poin' => 0]);
-            $this->jawaban_array[1]->update(['jawaban' => $this->b, 'poin' => 0]);
-            $this->jawaban_array[2]->update(['jawaban' => $this->c, 'poin' => 0]);
-            $this->jawaban_array[3]->update(['jawaban' => $this->d, 'poin' => 0]);
-            $this->jawaban_array[4]->update(['jawaban' => $this->e, 'poin' => 0]);
+            $jawabanArray = [$this->a, $this->b, $this->c, $this->d, $this->e];
+            foreach ($this->jawaban_array as $index => $jawaban) {
+                $jawaban->update([
+                    'jawaban' => $jawabanArray[$index],
+                    'poin' => 0,
+                ]);
+            }
         } else {
             Jawaban::where('soal_id', $this->soal_array->id)->update(['benar' => 1]);
-            $this->jawaban_array[0]->update(['jawaban' => $this->a, 'poin' => 1]);
-            $this->jawaban_array[1]->update(['jawaban' => $this->b, 'poin' => 2]);
-            $this->jawaban_array[2]->update(['jawaban' => $this->c, 'poin' => 3]);
-            $this->jawaban_array[3]->update(['jawaban' => $this->d, 'poin' => 4]);
-            $this->jawaban_array[4]->update(['jawaban' => $this->e, 'poin' => 5]);
+            $jawabanArray = [$this->a, $this->b, $this->c, $this->d, $this->e];
+            foreach ($this->jawaban_array as $index => $jawaban) {
+                $jawaban->update([
+                    'jawaban' => $jawabanArray[$index],
+                    'poin' => $index + 1,
+                ]);
+            }
         }
         $this->dispatch('berhasil', icon: 'success', message: 'Soal berhasil diubah!');
 
@@ -115,86 +121,27 @@ class CreateSoal extends Component
         $soal->soal = $this->soal;
         $soal->img = $this->img != null ? str_replace('public', 'storage', $this->img->store('public/soal')) : null;
         $soal->save();
-        if ($this->kategori_id != 3) {
-            // a
-            $jawaban = new Jawaban();
-            $jawaban->soal_id = $soal->id;
-            $jawaban->row = 1;
-            $jawaban->jawaban = $this->a;
-            $jawaban->benar = $this->benar == 1 ? 1 : 0;
-            $jawaban->save();
-            // b
-            $jawaban = new Jawaban();
-            $jawaban->soal_id = $soal->id;
-            $jawaban->row = 2;
-            $jawaban->jawaban = $this->b;
-            $jawaban->benar = $this->benar == 2 ? 1 : 0;
-            $jawaban->save();
-            // c
-            $jawaban = new Jawaban();
-            $jawaban->soal_id = $soal->id;
-            $jawaban->row = 3;
-            $jawaban->jawaban = $this->c;
-            $jawaban->benar = $this->benar == 3 ? 1 : 0;
-            $jawaban->save();
-            // d
-            $jawaban = new Jawaban();
-            $jawaban->soal_id = $soal->id;
-            $jawaban->row = 4;
-            $jawaban->jawaban = $this->d;
-            $jawaban->benar = $this->benar == 4 ? 1 : 0;
-            $jawaban->save();
-            // e
-            $jawaban = new Jawaban();
-            $jawaban->soal_id = $soal->id;
-            $jawaban->row = 5;
-            $jawaban->jawaban = $this->e;
-            $jawaban->benar = $this->benar == 5 ? 1 : 0;
-            $jawaban->save();
-        } else {
-            // a
-            $jawaban = new Jawaban();
-            $jawaban->soal_id = $soal->id;
-            $jawaban->row = 1;
-            $jawaban->jawaban = $this->a;
-            $jawaban->benar = 1;
-            $jawaban->poin = $jawaban->row;
-            $jawaban->save();
-            // b
-            $jawaban = new Jawaban();
-            $jawaban->soal_id = $soal->id;
-            $jawaban->row = 2;
-            $jawaban->jawaban = $this->b;
-            $jawaban->benar = 1;
-            $jawaban->poin = $jawaban->row;
-            $jawaban->save();
-            // c
-            $jawaban = new Jawaban();
-            $jawaban->soal_id = $soal->id;
-            $jawaban->row = 3;
-            $jawaban->jawaban = $this->c;
-            $jawaban->benar = 1;
-            $jawaban->poin = $jawaban->row;
-            $jawaban->save();
-            // d
-            $jawaban = new Jawaban();
-            $jawaban->soal_id = $soal->id;
-            $jawaban->row = 4;
-            $jawaban->jawaban = $this->d;
-            $jawaban->benar = 1;
-            $jawaban->poin = $jawaban->row;
-            $jawaban->save();
-            // e
-            $jawaban = new Jawaban();
-            $jawaban->soal_id = $soal->id;
-            $jawaban->row = 5;
-            $jawaban->jawaban = $this->e;
-            $jawaban->benar = 1;
-            $jawaban->poin = $jawaban->row;
-            $jawaban->save();
+        $jawabanData = [
+            1 => $this->a,
+            2 => $this->b,
+            3 => $this->c,
+            4 => $this->d,
+            5 => $this->e,
+        ];
+        foreach ($jawabanData as $row => $jawaban) {
+            $data = [
+                'soal_id' => $soal->id,
+                'row' => $row,
+                'jawaban' => $jawaban,
+            ];
+            if (!$this->kategori->byPoin) {
+                $data['benar'] = $this->benar == $row ? 1 : 0;
+            } else {
+                $data['benar'] = 1;
+                $data['poin'] = $row;
+            }
+            Jawaban::create($data);
         }
-        // dispatch
-
         $this->dispatch('berhasil', icon: 'success', message: 'Soal berhasil ditambahkan!');
         $this->resetInputFields();
     }
@@ -210,6 +157,11 @@ class CreateSoal extends Component
         $this->d = '';
         $this->e = '';
         $this->benar = '';
+    }
+
+    public function fillType($id)
+    {
+        return $this->kategori = Kategori::find($id);
     }
 
     public function render()

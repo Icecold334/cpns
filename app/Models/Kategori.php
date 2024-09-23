@@ -17,6 +17,10 @@ class Kategori extends Model
     {
         return $this->hasMany(Soal::class, 'kategori_id');
     }
+    public function hasil(): HasMany
+    {
+        return $this->hasMany(Hasil::class, 'kategori_id');
+    }
     public function base(): BelongsTo
     {
         return $this->belongsTo(BaseKategori::class, 'base_id');

@@ -11,7 +11,7 @@
                         <div class="card-body">
                             <table class="table">
                                 <tr>
-                                    <td style="width: 20%">Nama Peserta</td>
+                                    <td style="width: 20%">Nama Paket</td>
                                     <td>{{ $paket->nama }}</td>
                                 </tr>
                                 <tr>
@@ -19,8 +19,9 @@
                                     <td>{{ $paket->soal->count() }}</td>
                                 </tr>
                                 <tr>
-                                    <td style="width: 20%">Durasi</td>
-                                    <td>{{ floor($paket->durasi / 60) }} menit</td>
+                                    <td style="width: 20%">Durasi {{ $paket->flat ? '' : '/ Soal' }}</td>
+                                    <td> {{ $paket->flat ? floor($paket->durasi / 60) : $paket->durasi }}
+                                        {{ $paket->flat ? 'Menit' : 'Detik' }}</td>
                                 </tr>
                             </table>
                         </div>

@@ -10,29 +10,17 @@ use App\Http\Controllers\{
     SiswaController,
     ProfilController,
     ProfileController,
-    PengaturanController
+    PengaturanController,
+    KategoriController
 };
 use App\Models\Pengaturan;
 use Illuminate\Support\Facades\File;
 
 Auth::routes(['verify' => true]);
-
-
-
-Route::get('/', function () {
-    return view('home.index', [
-        'option' => Pengaturan::first()
-    ]);
-});
-
-
-
+Route::get('/', fn() => view('home.index', ['option' => Pengaturan::first()]));
 Route::get('panel', [PanelController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
-
 Route::resource('guru', GuruController::class)->middleware(['admin', 'verified']);
-
 Route::resource('siswa', SiswaController::class)->middleware(['guru', 'verified']);
-
 Route::prefix('paket')->middleware(['auth', 'verified'])->group(function () {
     Route::get('publish/{paket}', [PaketController::class, 'publish'])->middleware('guru')->name('publish');
     Route::get('hasil/{paket}', [PaketController::class, 'hasil'])->name('hasil');
@@ -43,15 +31,15 @@ Route::prefix('paket')->middleware(['auth', 'verified'])->group(function () {
     });
 });
 Route::resource('paket', PaketController::class)->middleware(['auth', 'verified']);
+Route::resource('kategori', KategoriController::class)->middleware(['auth', 'verified']);
 Route::resource('paket.soal', SoalController::class)->middleware(['auth', 'verified']);
-
 Route::get('pengaturan', [PengaturanController::class, 'index'])->middleware(['admin', 'verified'])->name('settings');
-Route::get('/profil', [ProfilController::class, 'index'])->middleware(['auth', 'verified'])->name('profil');
+// Route::get('profil', [ProfilController::class, 'index'])->middleware(['auth', 'verified'])->name('profil');
 
 Route::middleware('auth')->group(function () {
-    // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/profil', [ProfilController::class, 'index'])->name('profile.edit');
+    Route::patch('/profil', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profil', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 
@@ -60,18 +48,11 @@ Route::middleware('auth')->group(function () {
 
 
 Route::get('/logs', function () {
-    // Path to the Laravel log file
     $logFile = storage_path('logs/laravel.log');
-
-    // Check if the log file exists
     if (File::exists($logFile)) {
-        // Read the log file
         $logs = File::get($logFile);
-
-        // Optionally, limit the log output
+        // Limit output (optional)
         // $logs = collect(explode("\n", $logs))->take(-50)->implode("\n");
-
-        // Define terminal-like CSS styles
         $style = "
             body {
                 background-color: #1e1e1e;
@@ -91,22 +72,7 @@ Route::get('/logs', function () {
                 white-space: pre-wrap;
             }
         ";
-
-        // Display logs in a terminal-like format
-        $content = "
-            <html>
-            <head>
-                <title>Laravel Logs</title>
-                <style>{$style}</style>
-            </head>
-            <body>
-                <div class='log-container'>
-                    <pre>" . e($logs) . "</pre>
-                </div>
-            </body>
-            </html>
-        ";
-
+        $content = "<html><head><title>Laravel Logs</title><style>{$style}</style></head><body><div class='log-container'><pre>" . e($logs) . "</pre></div></body></html>";
         return response($content);
     } else {
         return "Log file not found.";
