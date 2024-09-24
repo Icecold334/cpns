@@ -15,6 +15,7 @@ class GuruController extends Controller
      */
     public function index()
     {
+
         return view('guru.index', ['title' => 'Daftar Guru', 'gurus' => User::where('role', 2)->get()]);
     }
 
@@ -64,6 +65,8 @@ class GuruController extends Controller
     public function destroy(User $guru)
     {
         Gate::allowIf(Auth::user()->role == 1);
+
+
         $guru->delete();
         return redirect()->route('guru.index')->with('icon', 'success')->with('title', 'Berhasil')->with('message', $guru->name . ' berhasil dihapus!');
     }

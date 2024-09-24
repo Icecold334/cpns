@@ -17,6 +17,7 @@ use App\Models\Pengaturan;
 use Illuminate\Support\Facades\File;
 
 Auth::routes(['verify' => true]);
+Route::get('/wind', fn() => view('wind',));
 Route::get('/', fn() => view('home.index', ['option' => Pengaturan::first()]));
 Route::get('panel', [PanelController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::resource('guru', GuruController::class)->middleware(['admin', 'verified']);
