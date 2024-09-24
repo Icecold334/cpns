@@ -9,22 +9,16 @@
             <div class=" font-semibold text-slate-800">Daftar Kategori</div>
         </div>
         <div class="hidden md:flex items-center space-x-4 text-3xl sm:text-4xl md:text-5xl ">
-            <button type="button" data-modal-target="kategori" data-modal-toggle="kategori"
-                class="text-white bg-primary-600 hover:bg-primary-950 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2  focus:outline-none dark:focus:ring-pribg-950">
-                <i class="fa-solid fa-circle-plus"></i>
-                Tambah Kategori
-            </button>
-            @push('html')
-                <x-modal title='Tambah Kategori' id='kategori'>test</x-modal>
-            @endpush
-            <button type="button"
-                class="text-white bg-primary-600 hover:bg-primary-950 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-primary-950 focus:outline-none dark:focus:ring-pribg-950">
-                <i class="fa-solid fa-circle-plus"></i>
-                Tambah Sub Kategori
-            </button>
-            @push('html')
-                <x-modal title='Tambah Kategori' id='kategori'>test</x-modal>
-            @endpush
+            <x-button :button="true" data-modal-target="kategori" data-modal-toggle="kategori">
+                <i class="fa-solid fa-circle-plus"></i> Tambah Kategori
+            </x-button>
+            <x-modal title='Tambah Kategori' id='kategori'>
+                <livewire:kategori-form />
+            </x-modal>
+            <x-button :button="true" data-modal-target="sub-kategori" data-modal-toggle="sub-kategori">
+                <i class="fa-solid fa-circle-plus"></i> Tambah Sub Kategori
+            </x-button>
+            <x-modal title='Tambah Sub Kategori' id='sub-kategori'>dafda</x-modal>
         </div>
     </div>
 
@@ -69,5 +63,6 @@
         </div>
     </div> --}}
 
+    {{-- <x-button :button="true">componen</x-button> --}}
 
 </x-body>
