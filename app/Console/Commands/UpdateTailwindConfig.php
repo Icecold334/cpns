@@ -72,11 +72,15 @@ export default {
     safelist: [
         {
             pattern:
-                /bg-(primary|secondary|success|danger|warning|info|light|dark)-[0-9]{3}/,
+                /bg-(primary|secondary|success|danger|warning|info|light|dark,red,green)-(50|100|150|200|250|300|350|400|450|500|550|600|650|700|750|800|850|900|950)/,
         },
         {
             pattern:
-                /text-(primary|secondary|success|danger|warning|info|light|dark)-[0-9]{3}/,
+                /text-(primary|secondary|success|danger|warning|info|light|dark,red,green)-(50|100|150|200|250|300|350|400|450|500|550|600|650|700|750|800|850|900|950)/,
+        },
+        {
+            pattern:
+                /ring-(primary|secondary|success|danger|warning|info|light|dark,red,green)-(50|100|150|200|250|300|350|400|450|500|550|600|650|700|750|800|850|900|950)/,
         },
     ],
     theme: {

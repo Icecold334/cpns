@@ -1,14 +1,14 @@
 <x-body>
     <x-slot:title>{{ $title }}</x-slot>
 
-    <div class="flex justify-between">
+    <div class="flex justify-between mb-5 ">
         <div class="flex items-center space-x-4 text-3xl sm:text-4xl md:text-5xl ">
             <a href="{{ route('paket.index') }}"
                 class=" text-primary-600 hover:text-primary-950 transition duration-200 "><i
                     class="fa-solid fa-circle-chevron-left "></i></a>
             <div class=" font-semibold text-slate-800">Daftar Kategori</div>
         </div>
-        <div class="hidden md:flex items-center space-x-4 text-3xl sm:text-4xl md:text-5xl ">
+        <div class="hidden xl:flex items-center space-x-4 text-3xl sm:text-4xl md:text-5xl ">
             <x-button :button="true" data-modal-target="kategori" data-modal-toggle="kategori">
                 <i class="fa-solid fa-circle-plus"></i> Tambah Kategori
             </x-button>
@@ -22,7 +22,67 @@
         </div>
     </div>
 
-    {{-- <div class="row">
+
+    <x-table id="filter-table">
+        <thead>
+            <tr>
+                <th><i class="fa-solid fa-sort"></i></th>
+                <th>Kategori <i class="fa-solid fa-sort"></i></th>
+                <th>Deskripsi <i class="fa-solid fa-sort"></i></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($bases as $base)
+                <tr class="bg-gray-300">
+                    <td>{{ $loop->iteration }}.</td>
+                    <td>{{ $base->nama }}</td>
+                    <td>{{ $base->deskripsi }}</td>
+                    <td><x-badge :badge="false" color="info" href="/hapus/3">Hapus</x-badge> </td>
+                </tr>
+                @foreach ($base->kategori as $kategori)
+                    <tr>
+                        <td>{{ $loop->parent->iteration }}.{{ $loop->iteration }}</td>
+                        <td>{{ $kategori->nama }}</td>
+                        <td>{{ $kategori->deskripsi }}</td>
+                        <td><x-badge :badge="false" color="info" href="/hapus/3">Hapus</x-badge> </td>
+                    </tr>
+                @endforeach
+            @endforeach
+        </tbody>
+    </x-table>
+    {{-- <table id="filter-table" class="min-w-full ">
+        <thead>
+            <tr>
+                <th><i class="fa-solid fa-sort"></i></th>
+                <th>Name <i class="fa-solid fa-sort"></i></th>
+                <th>Position <i class="fa-solid fa-sort"></i></th>
+                <th>Office <i class="fa-solid fa-sort"></i></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @for ($i = 1; $i <= 50; $i++)
+                <tr>
+                    <td>{{ $i }}</td>
+                    <td>Tiger Nixon</td>
+                    <td>System Architect</td>
+                    <td>Edinburgh</td>
+                    <td><x-button :button='true'>Hapus</x-button></td>
+                </tr>
+            @endfor
+        </tbody>
+    </table> --}}
+
+    <!-- Include the compiled JavaScript -->
+
+    @push('scripts')
+        <script type="module">
+            table('#filter-table')
+        </script>
+    @endpush
+    {{-- 
+    <div class="row">
 
 
         <div class="col-xl-6 col-md-12 col-sm-12">
@@ -61,8 +121,9 @@
                 </div>
             @endpush
         </div>
+
     </div> --}}
 
-    {{-- <x-button :button="true">componen</x-button> --}}
+
 
 </x-body>

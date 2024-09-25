@@ -14,18 +14,41 @@ export default {
     safelist: [
         {
             pattern:
-                /bg-(primary|secondary|success|danger|warning|info|light|dark)-[0-9]{3}/,
+                /bg-(primary|secondary|success|danger|warning|info|light|dark|red|green|gray)-(50|100|150|200|250|300|350|400|450|500|550|600|650|700|750|800|850|900|950)/,
         },
         {
             pattern:
-                /text-(primary|secondary|success|danger|warning|info|light|dark)-[0-9]{3}/,
+                /text-(primary|secondary|success|danger|warning|info|light|dark|red|green|gray)-(50|100|150|200|250|300|350|400|450|500|550|600|650|700|750|800|850|900|950)/,
         },
         {
             pattern:
-                /ring-(primary|secondary|success|danger|warning|info|light|dark)-[0-9]{3}/,
+                /ring-(primary|secondary|success|danger|warning|info|light|dark|red|green|gray)-(50|100|150|200|250|300|350|400|450|500|550|600|650|700|750|800|850|900|950)/,
+        },
+        {
+            pattern: /font-(normal|medium|semibold|bold|bolder)/,
+        },
+        {
+            pattern: /text-(sm|lg|xl|2xl|3xl|5xl)/,
+        },
+        {
+            pattern: /m-(auto|[0-9]{1,2}|[0-9]{1,2}rem)/,
+        },
+        {
+            pattern: /p-(auto|[0-9]{1,2}|[0-9]{1,2}rem)/,
+        },
+        {
+            pattern: /px-(auto|[0-9]{1,2}|[0-9]{1,2}rem)/,
+        },
+        {
+            pattern: /py-(auto|[0-9]{1,2}|[0-9]{1,2}rem)/,
+        },
+        {
+            pattern: /mx-(auto|[0-9]{1,2}|[0-9]{1,2}rem)/,
+        },
+        {
+            pattern: /my-(auto|[0-9]{1,2}|[0-9]{1,2}rem)/,
         },
     ],
-
     theme: {
         extend: {
             colors: {
@@ -173,5 +196,10 @@ export default {
         },
     },
 
-    plugins: [forms, require("flowbite/plugin")],
+    plugins: [
+        forms,
+        require("flowbite/plugin")({
+            datatables: true,
+        }),
+    ],
 };
