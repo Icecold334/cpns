@@ -6,18 +6,9 @@
         <div class="flex ">
             <div class="w-full">
                 <div class="">
-                    <x-form-input type="select" label="Nama Kategori" id="nama" placeholder="Nama Kategori"
-                        autocomplete="off">
-                        <option value="">pilih</option>
-                    </x-form-input>
-                    <label for="nama" class="form-label">Nama Kategori<span class="text-danger">*</span></label>
-                    <input type="text" class="form-control  @error('nama') is-invalid @enderror" id="nama"
-                        placeholder="Nama Kategori" wire:model.live="nama" autocomplete="off">
-                    @error('nama')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                    @enderror
+
+                    <x-form-input type="text" label="Nama Kategori" id="nama" wire:model.live="nama"
+                        placeholder="Nama Kategori" autocomplete="off" :error="$errors->first('nama')"> </x-form-input>
                 </div>
                 <div class="">
                     <x-form-input type="text" label="Nama Kategori">
