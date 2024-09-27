@@ -34,6 +34,17 @@
     @if ($error)
         <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">{{ $error }}</p>
     @endif
+@elseif ($type === 'textarea')
+    <label for="{{ $id }}"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ $label }}</label>
+    <div
+        class="w-full  border border-{{ !$error ? 'gray-200' : 'red-500' }} rounded-lg  px-2 py-1 shadow-xl bg-white rounded-b-lg dark:bg-gray-800">
+        <textarea id="{{ $id }}"
+            {{ $attributes->merge(['class' => !$error ? 'block w-full px-0 text-sm text-gray-800 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400' : 'block w-full px-0 text-sm text-red-600 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400']) }}></textarea>
+    </div>
+    @if ($error)
+        <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">{{ $error }}</p>
+    @endif
 @else
     <label for="{{ $id }}"
         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ $label }}</label>
