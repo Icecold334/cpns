@@ -1,5 +1,5 @@
 @if ($button)
-    <button type="button" {{ $attributes->merge(['class' => $class]) }}>
+    <button {{ $attributes->merge(['class' => $class]) }}>
         {{ $slot }}
     </button>
 @else

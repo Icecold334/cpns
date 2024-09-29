@@ -1,4 +1,4 @@
-<script>
+<script type="module">
     const Toast = Swal.mixin({
         toast: true,
         position: "top-end",

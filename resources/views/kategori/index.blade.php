@@ -3,9 +3,9 @@
 
     <div class="flex justify-between mb-10 ">
         <div class="flex items-center space-x-4 text-3xl sm:text-4xl md:text-5xl ">
-            <a href="{{ route('paket.index') }}"
+            {{-- <a href="{{ route('paket.index') }}"
                 class=" text-primary-600 hover:text-primary-950 transition duration-200 "><i
-                    class="fa-solid fa-circle-chevron-left "></i></a>
+                    class="fa-solid fa-circle-chevron-left "></i></a> --}}
             <div class=" font-semibold text-slate-800">Daftar Kategori</div>
         </div>
         <div class="hidden xl:flex items-center space-x-4 text-3xl sm:text-4xl md:text-5xl ">
@@ -19,7 +19,7 @@
                 <i class="fa-solid fa-circle-plus"></i> Tambah Sub Kategori
             </x-button>
             <x-modal title='Tambah Sub Kategori' id='sub-kategori'>
-                dafda
+                <livewire:sub-kategori-form />
             </x-modal>
         </div>
     </div>
@@ -40,7 +40,11 @@
                     <td>{{ $loop->iteration }}.</td>
                     <td>{{ $base->nama }}</td>
                     <td>{{ $base->deskripsi }}</td>
-                    <td><x-badge :badge="false" color="info" href="/hapus/{{ $base->id }}">Hapus</x-badge>
+                    <td><x-badge :badge="true" color="warning" data-modal-target="kategori{{ $base->id }}"
+                            data-modal-toggle="kategori{{ $base->id }}">Ubah</x-badge>
+                        <x-modal title='Ubah Kategori' id='kategori{{ $base->id }}'>
+                            <livewire:kategori-form :id="$base->id" />
+                        </x-modal>
                     </td>
                 </tr>
                 @foreach ($base->kategori as $kategori)
@@ -48,7 +52,13 @@
                         <td>{{ $loop->parent->iteration }}.{{ $loop->iteration }}</td>
                         <td>{{ $kategori->nama }}</td>
                         <td>{{ $kategori->deskripsi }}</td>
-                        <td><x-badge :badge="false" color="info" href="/hapus/{{ $kategori->id }}">Hapus</x-badge>
+                        <td>
+                            <x-badge :badge="true" color="warning"
+                                data-modal-target="subkategori{{ $kategori->id }}"
+                                data-modal-toggle="subkategori{{ $kategori->id }}">Ubah</x-badge>
+                            <x-modal title='Ubah Kategori' id='subkategori{{ $kategori->id }}'>
+                                <livewire:sub-kategori-form :id="$kategori->id" />
+                            </x-modal>
                         </td>
                     </tr>
                 @endforeach
@@ -61,6 +71,4 @@
             table('#filter-table')
         </script>
     @endpush
-
-
 </x-body>

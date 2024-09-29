@@ -23,6 +23,9 @@
     </div>
     @stack('html')
 </body>
+@session('title')
+    <x-alert title="{{ session('title') }}" message="{{ session('message') }}" icon="{{ session('icon') }}"></x-alert>
+@endsession
 @stack('scripts')
 
 </html>

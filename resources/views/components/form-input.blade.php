@@ -10,7 +10,7 @@
         {{ $slot }}
     </select>
     @if ($error)
-        <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">{{ $error }}</p>
+        <p class="mt-1 text-sm text-red-600 dark:text-red-500"><span class="font-medium">{{ $error }}</p>
     @endif
 @elseif ($type === 'checkbox')
     <div class="flex items-center mb-4">
@@ -32,7 +32,7 @@
     <input id="{{ $id }}" type="file" name="{{ $name }}"
         {{ $attributes->merge(['class' => !$error ? 'block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400' : 'block w-full text-sm text-red-600 border border-red-500 rounded-lg cursor-pointer bg-red-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400']) }}>
     @if ($error)
-        <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">{{ $error }}</p>
+        <p class="mt-1 text-sm text-red-600 dark:text-red-500"><span class="font-medium">{{ $error }}</p>
     @endif
 @elseif ($type === 'textarea')
     <label for="{{ $id }}"
@@ -43,7 +43,7 @@
             {{ $attributes->merge(['class' => !$error ? 'block w-full px-0 text-sm text-gray-800 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400' : 'block w-full px-0 text-sm text-red-600 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400']) }}></textarea>
     </div>
     @if ($error)
-        <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">{{ $error }}</p>
+        <p class="mt-1 text-sm text-red-600 dark:text-red-500"><span class="font-medium">{{ $error }}</p>
     @endif
 @else
     <label for="{{ $id }}"
@@ -51,6 +51,6 @@
     <input type="{{ $type }}" id="{{ $id }}" name="{{ $name }}"
         {{ $attributes->merge(['class' => $baseClass]) }}>
     @if ($error)
-        <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">{{ $error }}</p>
+        <p class="mt-1 text-sm text-red-600 dark:text-red-500"><span class="font-medium">{{ $error }}</p>
     @endif
 @endif
