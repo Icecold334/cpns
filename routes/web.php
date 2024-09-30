@@ -32,6 +32,7 @@ Route::prefix('paket')->middleware(['auth', 'verified'])->group(function () {
     });
 });
 Route::resource('paket', PaketController::class)->middleware(['auth', 'verified']);
+Route::delete('kategori/base/{base}', [KategoriController::class, 'destroyBase'])->name('base.destroy');
 Route::resource('kategori', KategoriController::class)->middleware(['auth', 'verified']);
 Route::resource('paket.soal', SoalController::class)->middleware(['auth', 'verified']);
 Route::get('pengaturan', [PengaturanController::class, 'index'])->middleware(['admin', 'verified'])->name('settings');

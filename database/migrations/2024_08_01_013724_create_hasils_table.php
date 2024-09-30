@@ -14,9 +14,9 @@ return new class extends Migration
     {
         Schema::create('hasils', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('paket_id')->constrained('pakets');
-            $table->foreignId('kategori_id')->nullable()->constrained('kategoris');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('paket_id')->constrained('pakets')->onDelete('cascade');
+            $table->foreignId('kategori_id')->nullable()->constrained('kategoris')->onDelete('cascade');
             $table->string('urutan');
             $table->timestamp('start_time')->nullable();
             $table->timestamp('end_time')->nullable();

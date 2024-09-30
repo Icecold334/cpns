@@ -1,5 +1,5 @@
 @if ($badge)
-    <span {{ $attributes->merge(['class' => $class]) }}>{{ $slot }} </span>
+    <span {{ $attributes->merge(['class' => $classs]) }}>{{ $slot }} </span>
 @else
-    <a {{ $attributes->merge(['class' => $class]) }}>{{ $slot }}</a>
+    <a {{ $attributes->merge(['class' => $classs]) }}>{{ $slot }}</a>
 @endif

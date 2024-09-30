@@ -23,6 +23,19 @@ const label = {
     first: "<<",
     last: ">>",
 };
+const render = (_data, table, type) => {
+    if (type === "print") {
+        return table;
+    }
+    const tHead = table.childNodes[0];
+    tHead.childNodes[0].attributes = {
+        class: "text-gray-950 text-sm text-center bg-gray-300",
+    };
+    table.childNodes[1].attributes = {
+        class: "text-gray-950 font-semibold",
+    };
+    return table;
+};
 
 window.table = function (selector) {
     return new DataTable(selector, {
@@ -30,18 +43,6 @@ window.table = function (selector) {
         searchable: true,
         sortable: true,
         labels: label,
-        tableRender: (_data, table, type) => {
-            if (type === "print") {
-                return table;
-            }
-            const tHead = table.childNodes[0];
-            tHead.childNodes[0].attributes = {
-                class: "text-gray-950 text-sm text-center bg-gray-300",
-            };
-            table.childNodes[1].attributes = {
-                class: "text-gray-950 font-semibold",
-            };
-            return table;
-        },
+        tableRender: render,
     });
 };

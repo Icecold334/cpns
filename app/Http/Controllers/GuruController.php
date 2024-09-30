@@ -65,8 +65,6 @@ class GuruController extends Controller
     public function destroy(User $guru)
     {
         Gate::allowIf(Auth::user()->role == 1);
-
-
         $guru->delete();
         return redirect()->route('guru.index')->with('icon', 'success')->with('title', 'Berhasil')->with('message', $guru->name . ' berhasil dihapus!');
     }

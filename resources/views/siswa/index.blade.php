@@ -1,111 +1,85 @@
 <x-body>
     <x-slot:title>{{ $title }}</x-slot>
+    <div class="flex justify-between mb-10 ">
+        <div class="flex items-center space-x-4 text-3xl sm:text-4xl md:text-5xl ">
+            {{-- <a href="{{ route('paket.index') }}"
+                class=" text-primary-600 hover:text-primary-950 transition duration-200 "><i
+                    class="fa-solid fa-circle-chevron-left "></i></a> --}}
+            <div class=" font-semibold text-slate-800">Daftar Siswa</div>
+        </div>
+        <div class="hidden xl:flex items-center space-x-4 text-3xl sm:text-4xl md:text-5xl ">
+            <x-button :button="true" data-modal-target="siswaModal" data-modal-toggle="siswaModal">
+                <i class="fa-solid fa-circle-plus"></i> Tambah Siswa
+            </x-button>
+            <x-modal title='Tambah Guru' id='siswaModal'>
+                <livewire:siswa-form />
+            </x-modal>
+        </div>
+    </div>
 
-    <h1>Daftar Siswa @can('admin')
-            <a href="{{ route('siswa.create') }}"><i class="fa-solid fa-circle-plus"></i></a>
-        @endcan
-    </h1>
-    <div class="table-responsive">
-        <table class="table" id="siswas">
-            <thead>
+
+    <x-table id="siswa">
+        <thead>
+            <tr>
+                <th><i class="fa-solid fa-sort"></i></th>
+                <th>Nama <i class="fa-solid fa-sort"></i></th>
+                <th>Email <i class="fa-solid fa-sort"></i></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($siswas as $siswa)
                 <tr>
-                    <th class="text-center" style="width: 5%">#</th>
-                    <th class="text-center">Nama</th>
-                    <th class="text-center">Email</th>
-                    <th class="text-center" style="width: 10%"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($siswas as $user)
-                    <tr>
-                        <td class="text-center">{{ $loop->iteration }}</td>
-                        <td>{{ $user->name }}</td>
-                        {{-- <td class="text-center">{{ $user->phone ?? '-' }}</td> --}}
-                        <td class="text-center">{{ $user->email }}</td>
-                        <td class="text-center">
-                            <a href="/siswa/{{ $user->id }}" class="btn badge bg-info text-white px-1">
-                                <i class="fa-solid fa-circle-info"></i>
-                            </a>
-                            {{-- <a href="/siswa/{{ $user->id }}/edit" class="btn badge bg-warning text-white px-1">
-                                <i class="fa-solid fa-pen-to-square"></i>
-                            </a> --}}
-                            @can('admin')
-                                <form class="d-inline" action="/siswa/{{ $user->id }}" method="POST"
-                                    id="formDel{{ $user->id }}">
-                                    @csrf
-                                    @method('DELETE')
-                                </form>
-                                <button class="btn badge bg-danger text-white px-1" id="delete{{ $user->id }}">
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
-                                @push('scripts')
-                                    <script>
-                                        $('#delete{{ $user->id }}').click(() => {
+                    <td>{{ $loop->iteration }}.</td>
+                    <td>{{ $siswa->name }}</td>
+                    <td>{{ $siswa->email }}</td>
+                    <td>
+                        <div class="flex">
+                            <x-badge :badge="true" class="mx-3" color="warning"
+                                data-modal-target="siswa{{ $siswa->id }}"
+                                data-modal-toggle="siswa{{ $siswa->id }}">Ubah</x-badge>
+
+                            <x-badge :badge="true" color="danger" id="delete{{ $siswa->id }}">Hapus</x-badge>
+                            <form id="delete-form-{{ $siswa->id }}"
+                                action="{{ route('siswa.destroy', ['siswa' => $siswa->id]) }}" method="POST"
+                                style="display: none;">
+                                @csrf
+                                @method('DELETE')
+                            </form>
+                            @push('scripts')
+                                <script type="module">
+                                    $(document).ready(function() {
+                                        $('#delete{{ $siswa->id }}').click(() => {
                                             Swal.fire({
-                                                title: "Apa Kamu Yakin?",
-                                                text: "Yakin Hapus Siswa {{ $user->name }}?",
-                                                icon: "question",
+                                                title: 'Apa Anda Yakin?',
+                                                text: "Anda akan menghapus siswa {{ $siswa->name }}!",
+                                                icon: 'question',
                                                 showCancelButton: true,
-                                                confirmButtonColor: "#3085d6",
-                                                cancelButtonColor: "#d33",
-                                                confirmButtonText: "Ya",
-                                                cancelButtonText: "Tidak"
+                                                confirmButtonColor: '#3085d6',
+                                                cancelButtonColor: '#d33',
+                                                confirmButtonText: 'Hapus',
+                                                cancelButtonText: 'Batal'
                                             }).then((result) => {
                                                 if (result.isConfirmed) {
-                                                    let form = $('#formDel{{ $user->id }}')
-                                                    form.submit();
+                                                    document.getElementById('delete-form-{{ $siswa->id }}').submit();
                                                 }
                                             });
                                         });
-                                    </script>
-                                @endpush
-                            @endcan
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
+                                    });
+                                </script>
+                            @endpush
+                        </div>
+                        <x-modal title='Ubah Kategori' id='siswa{{ $siswa->id }}'>
+                            <livewire:siswa-form :id="$siswa->id" />
+                        </x-modal>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </x-table>
     @push('scripts')
-        <script>
-            $("#siswas").DataTable({
-                "responsive": true,
-                columnDefs: [{
-                    orderable: false,
-                    targets: 3
-                }],
-                paging: true,
-                lengthMenu: [5, 10, 20, {
-                    label: "Semua",
-                    value: -1
-                }],
-                pageLength: 10,
-                language: {
-                    decimal: "",
-                    searchPlaceholder: "Cari Data",
-                    emptyTable: "Tabel kosong",
-                    info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
-                    infoEmpty: "Menampilkan 0 sampai 0 dari 0 data",
-                    infoFiltered: "(filtered from _MAX_ total entries)",
-                    infoPostFix: "",
-                    thousands: ",",
-                    lengthMenu: "Tampilkan _MENU_ data",
-                    loadingRecords: "Loading...",
-                    processing: "",
-                    search: "Cari:",
-                    zeroRecords: "Data tidak ditemukan",
-                    paginate: {
-                        first: "<<",
-                        last: ">>",
-                        next: ">",
-                        previous: "<",
-                    },
-                    aria: {
-                        orderable: "Order by this column",
-                        orderableReverse: "Reverse order this column",
-                    },
-                },
-            });
+        <script type="module">
+            table('#siswa')
         </script>
     @endpush
 </x-body>

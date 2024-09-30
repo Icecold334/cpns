@@ -1,7 +1,7 @@
 @if ($button)
-    <button {{ $attributes->merge(['class' => $class]) }}>
+    <button {{ $attributes->merge(['class' => $classs]) }}>
         {{ $slot }}
     </button>
 @else
-    <a {{ $attributes->merge(['class' => $class]) }}>{{ $slot }}</a>
+    <a {{ $attributes->merge(['class' => $classs]) }}>{{ $slot }}</a>
 @endif

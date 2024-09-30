@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nama');
             $table->string('deskripsi')->nullable();
             $table->boolean('byPoin')->default(false);
-            $table->foreignId('base_id')->constrained('base_kategoris');
+            $table->foreignId('base_id')->constrained('base_kategoris')->onDelete('cascade');;
             $table->timestamps();
         });
     }

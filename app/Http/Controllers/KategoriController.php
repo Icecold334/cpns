@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kategori;
+use App\Models\BaseKategori;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+
 use App\Http\Requests\StoreKategoriRequest;
 use App\Http\Requests\UpdateKategoriRequest;
-use App\Models\BaseKategori;
 
 class KategoriController extends Controller
 {
@@ -65,6 +68,14 @@ class KategoriController extends Controller
      */
     public function destroy(Kategori $kategori)
     {
-        //
+        Gate::allowIf(Auth::user()->role == 1);
+        $kategori->delete();
+        return redirect()->route('kategori.index')->with('icon', 'success')->with('title', 'Berhasil')->with('message', 'Sub kategori berhasil dihapus!');
+    }
+    public function destroyBase(BaseKategori $base)
+    {
+        Gate::allowIf(Auth::user()->role == 1);
+        $base->delete();
+        return redirect()->route('kategori.index')->with('icon', 'success')->with('title', 'Berhasil')->with('message', 'Kategori berhasil dihapus!');
     }
 }

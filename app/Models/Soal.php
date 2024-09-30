@@ -15,6 +15,7 @@ class Soal extends Model
     {
         return 'uuid';
     }
+
     protected static function boot()
     {
         parent::boot();
@@ -23,6 +24,10 @@ class Soal extends Model
             // Mengisi kolom dengan string acak unik sebelum model disimpan
             $model->uuid = fake()->uuid();
         });
+
+        // static::deleting(function ($soal) {
+        //     $soal->jawaban()->delete();
+        // });
     }
     public function paket(): BelongsTo
     {

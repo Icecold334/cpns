@@ -12,6 +12,8 @@ export default {
         "./node_modules/flowbite/**/*.js",
     ],
     safelist: [
+        "cursor-pointer",
+        "cursor-default",
         {
             pattern:
                 /bg-(primary|secondary|success|danger|warning|info|light|dark|red|green|gray)-(50|100|150|200|250|300|350|400|450|500|550|600|650|700|750|800|850|900|950)/,

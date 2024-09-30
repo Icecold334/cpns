@@ -25,6 +25,10 @@ class Paket extends Model
         static::creating(function ($model) {
             $model->uuid = fake()->uuid();
         });
+        // static::deleting(function ($paket) {
+        //     $paket->hasil()->delete();
+        //     $paket->soal()->delete();
+        // });
     }
     public function user(): BelongsTo
     {
