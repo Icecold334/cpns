@@ -80,7 +80,7 @@
                 @foreach ($base->kategori as $kategori)
                     <tr>
                         <td>{{ $loop->parent->iteration }}.{{ $loop->iteration }}</td>
-                        <td>--- {{ $kategori->nama }}</td>
+                        <td>{{ $kategori->nama }}</td>
                         <td>{{ $kategori->deskripsi }}</td>
                         <td>
                             <x-badge :badge="true" class="me-3" color="warning"

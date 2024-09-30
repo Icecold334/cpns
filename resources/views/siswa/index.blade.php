@@ -11,7 +11,7 @@
             <x-button :button="true" data-modal-target="siswaModal" data-modal-toggle="siswaModal">
                 <i class="fa-solid fa-circle-plus"></i> Tambah Siswa
             </x-button>
-            <x-modal title='Tambah Guru' id='siswaModal'>
+            <x-modal title='Tambah Siswa' id='siswaModal'>
                 <livewire:siswa-form />
             </x-modal>
         </div>
