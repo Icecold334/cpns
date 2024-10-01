@@ -12,7 +12,7 @@
                 @canany(['admin', 'guru'])
                     <x-side-item title='Siswa' href='/siswa'><i class="fa-solid fa-users-rectangle"></i></x-side-item>
                 @endcanany
-                <x-side-item title='Soal' href='/paket'><i class="fa-solid fa-rectangle-list"></i></x-side-item>
+                <x-side-item title='Paket Ujian' href='/paket'><i class="fa-solid fa-rectangle-list"></i></x-side-item>
             @endif
         </ul>
     </div>

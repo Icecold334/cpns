@@ -229,6 +229,8 @@ class PaketController extends Controller
 
     public function destroy(Paket $paket)
     {
-        // Implementasi penghapusan paket soal
+        Gate::allowIf(Auth::user()->role == 1 || 2);
+        $paket->delete();
+        return redirect()->route('paket.index')->with('icon', 'success')->with('title', 'Berhasil')->with('message',  'Paket berhasil dihapus!');
     }
 }
