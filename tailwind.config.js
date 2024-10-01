@@ -50,6 +50,9 @@ export default {
         {
             pattern: /my-(auto|[0-9]{1,2}|[0-9]{1,2}rem)/,
         },
+        {
+            pattern: /max-w-(auto|[0-9]{1,2}|[0-9]{1,2}xl)/,
+        },
     ],
     theme: {
         extend: {

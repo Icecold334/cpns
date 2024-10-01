@@ -1,13 +1,13 @@
 <x-body>
     <x-slot:title>{{ $title }}</x-slot>
     <div class="flex justify-between mb-10 ">
-        <div class="flex items-center space-x-4 text-3xl sm:text-4xl md:text-5xl ">
+        <div class="flex items-center  text-3xl sm:text-4xl md:text-5xl ">
             {{-- <a href="{{ route('paket.index') }}"
                 class=" text-primary-600 hover:text-primary-950 transition duration-200 "><i
                     class="fa-solid fa-circle-chevron-left "></i></a> --}}
             <div class=" font-semibold text-slate-800">Daftar Siswa</div>
         </div>
-        <div class="hidden xl:flex items-center space-x-4 text-3xl sm:text-4xl md:text-5xl ">
+        <div class="hidden xl:flex items-center  text-3xl sm:text-4xl md:text-5xl ">
             <x-button :button="true" data-modal-target="siswaModal" data-modal-toggle="siswaModal">
                 <i class="fa-solid fa-circle-plus"></i> Tambah Siswa
             </x-button>
