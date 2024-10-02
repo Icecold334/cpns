@@ -39,6 +39,10 @@ const render = (_data, table, type) => {
 
 window.table = function (selector) {
     return new DataTable(selector, {
+        // columns: [
+        //     // Sort the second column in ascending order
+        //     { select: -1, headerClass: "w-2 hidden" },
+        // ],
         perPage: 25,
         searchable: true,
         sortable: true,
