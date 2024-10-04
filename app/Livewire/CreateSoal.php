@@ -56,7 +56,6 @@ class CreateSoal extends Component
 
     public function mount()
     {
-
         $this->kategoris = Kategori::where('base_id', $this->paket->base->id)->get();
         if ($this->soal_array != null) {
             $this->soal = $this->soal_array->soal;
@@ -70,6 +69,10 @@ class CreateSoal extends Component
             $this->e = $this->jawaban_array[4]->jawaban;
             $this->benar = $this->jawaban_array->where('benar', 1)->first()->row;
         }
+        if ($this->kategori_id) {
+            dd(Kategori::find(1));
+        }
+        $this->kategori = $this->kategori_id != null ? Kategori::find($this->kategori_id) : null;
     }
 
     public function update()
@@ -113,7 +116,6 @@ class CreateSoal extends Component
 
     public function save()
     {
-        dd('okei');
         $this->validate();
         $soal = new Soal();
         $soal->paket_id = $this->paket->id;
@@ -159,9 +161,10 @@ class CreateSoal extends Component
         $this->benar = '';
     }
 
-    public function fillType($id)
+    public function fillType()
     {
-        return $this->kategori = Kategori::find($id);
+        dd($this->kategori = $this->kategori_id != null ? Kategori::find($this->kategori_id) : null);
+        return $this->kategori = $this->kategori_id != null ? Kategori::find($this->kategori_id) : null;
     }
 
     public function render()

@@ -1,8 +1,9 @@
 <div>
     <form wire:submit.prevent="{{ $soal_array == null ? 'save' : 'update' }}" enctype="multipart/form-data">
         @csrf
-        @if ($kategori_id != null)
-            <div class="hidden" wire:init="fillType({{ $kategori_id }})"></div>
+        @if ($kategori_id)
+            <div class="hidden" wire:init="mount"></div>
+            @dd($kategori)
         @endif
         <div class="flex flex-wrap">
             <div class="w-full">
@@ -26,19 +27,19 @@
                     @endforeach
                 </x-form-input>
             </div>
-            {{-- @if ($kategori_id != null) --}}
-            <div class="w-full">
-                <x-form-input type="select" label="Jawaban Benar" id="benar" wire:model.live="benar"
-                    placeholder="Nama Siswa" autocomplete="off" :error="$errors->first('benar')" class="mb-3">
-                    <option value="">Pilih Jawaban</option>
-                    <option value="1">Jawaban A</option>
-                    <option value="2">Jawaban B</option>
-                    <option value="3">Jawaban C</option>
-                    <option value="4">Jawaban D</option>
-                    <option value="5">Jawaban E</option>
-                </x-form-input>
-            </div>
-            {{-- @endif --}}
+            @if ($kategori_id != null && !$kategori->byPoin)
+                <div class="w-full">
+                    <x-form-input type="select" label="Jawaban Benar" id="benar" wire:model.live="benar"
+                        placeholder="Nama Siswa" autocomplete="off" :error="$errors->first('benar')" class="mb-3">
+                        <option value="">Pilih Jawaban</option>
+                        <option value="1">Jawaban A</option>
+                        <option value="2">Jawaban B</option>
+                        <option value="3">Jawaban C</option>
+                        <option value="4">Jawaban D</option>
+                        <option value="5">Jawaban E</option>
+                    </x-form-input>
+                </div>
+            @endif
 
             <div class="w-full mb-3">
                 <x-form-input type="textarea" label="Soal" :error="$errors->first('soal')" wire:model.live="soal"
@@ -53,17 +54,19 @@
                 <label class="block text-sm font-medium text-gray-700 mb-3">Pilihan Jawaban</label>
                 @foreach (['a', 'b', 'c', 'd', 'e'] as $index => $option)
                     <div class="flex mb-3">
-                        <span
-                            class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-e-0 border-gray-300  dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
-                            Poin : {{ $index + 1 }}
-                        </span>
+                        @if ($kategori_id != null && $kategori->byPoin)
+                            <span
+                                class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-e-0 rounded-s-lg  border-gray-300  dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+                                Poin : {{ $index + 1 }}
+                            </span>
+                        @endif
                         <span
                             class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-e-0 border-gray-300  dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
                             {{ strtoupper($option) }}
                         </span>
                         <textarea name="test" id="test"
                             class="rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            wire:model.live="{{ $option }}" id="{{ $option }}"></textarea>
+                            wire:model.live="{{ $option }}" id="{{ $option }}" placeholder="Jawaban {{ strtoupper($option) }}"></textarea>
                     </div>
                     @error($option)
                         <p class="mb-2  text-sm text-red-600 dark:text-red-500"><span
