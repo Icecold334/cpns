@@ -61,6 +61,7 @@ class CreateSoal extends Component
             $this->soal = $this->soal_array->soal;
             $this->img = $this->soal_array->img;
             $this->kategori_id = $this->soal_array->kategori_id;
+            $this->isi();
             $this->jawaban_array = Jawaban::where('soal_id', $this->soal_array->id)->get();
             $this->a = $this->jawaban_array[0]->jawaban;
             $this->b = $this->jawaban_array[1]->jawaban;
@@ -69,10 +70,6 @@ class CreateSoal extends Component
             $this->e = $this->jawaban_array[4]->jawaban;
             $this->benar = $this->jawaban_array->where('benar', 1)->first()->row;
         }
-        if ($this->kategori_id) {
-            dd(Kategori::find(1));
-        }
-        $this->kategori = $this->kategori_id != null ? Kategori::find($this->kategori_id) : null;
     }
 
     public function update()
@@ -110,6 +107,10 @@ class CreateSoal extends Component
             }
         }
         $this->dispatch('berhasil', icon: 'success', message: 'Soal berhasil diubah!');
+        // return redirect()->route('paket.soal.index', ['paket' => $this->paket->uuid])
+        //     ->with('icon', 'success')
+        //     ->with('title', 'Berhasil')
+        //     ->with('message', 'Soal berhasil diubah!');
 
         // return redirect()->route('paket.soal.edit', ['paket' => Paket::where('id', $this->soal_array->paket_id)->first()->uuid, 'soal' => $this->soal_array->uuid])->with('icon', 'success')->with('title', 'Berhasil')->with('message', 'Soal berhasil diubah!');
     }
@@ -144,12 +145,17 @@ class CreateSoal extends Component
             }
             Jawaban::create($data);
         }
-        $this->dispatch('berhasil', icon: 'success', message: 'Soal berhasil ditambahkan!');
-        $this->resetInputFields();
+        // $this->dispatch('berhasil', icon: 'success', message: 'Soal berhasil ditambahkan!');
+        $this->reset(['kategori_id', 'img', 'benar', 'soal', 'a', 'b', 'c', 'd', 'e']);
+        return redirect()->route('paket.soal.index', ['paket' => $this->paket->uuid])
+            ->with('icon', 'success')
+            ->with('title', 'Berhasil')
+            ->with('message', 'Soal berhasil ditambahkan!');
     }
 
     public function resetInputFields()
     {
+        // dd('pepek');
         $this->soal = '';
         $this->img = null;
         $this->kategori_id = '';
@@ -161,9 +167,18 @@ class CreateSoal extends Component
         $this->benar = '';
     }
 
-    public function fillType()
+    public function updatedKategoriId()
     {
-        dd($this->kategori = $this->kategori_id != null ? Kategori::find($this->kategori_id) : null);
+
+        if ($this->kategori_id != null) {
+            $this->isi();
+        } else {
+            $this->reset(['kategori_id', 'img', 'benar', 'soal', 'a', 'b', 'c', 'd', 'e']);
+        }
+    }
+
+    public function isi()
+    {
         return $this->kategori = $this->kategori_id != null ? Kategori::find($this->kategori_id) : null;
     }
 

@@ -1,10 +1,6 @@
 <div>
     <form wire:submit.prevent="{{ $soal_array == null ? 'save' : 'update' }}" enctype="multipart/form-data">
         @csrf
-        @if ($kategori_id)
-            <div class="hidden" wire:init="mount"></div>
-            @dd($kategori)
-        @endif
         <div class="flex flex-wrap">
             <div class="w-full">
                 @if ($img)
@@ -15,20 +11,20 @@
                         </div>
                     </div>
                 @endif
-                <x-form-input type="file" label="Foto" id="img" wire:model.live="img"
-                    placeholder="Nama Siswa" autocomplete="off" :error="$errors->first('img')" class="mb-3" />
+                <x-form-input type="file" label="Foto" id="img" wire:model.live="img" placeholder="Nama Siswa"
+                    autocomplete="off" :error="$errors->first('img')" class="mb-3" />
             </div>
-            <div class="w-full">
+            <div class=" {{ $kategori_id != null && !$kategori->byPoin ? 'w-2/3 pe-3' : 'w-full' }}">
                 <x-form-input type="select" label="Sub Kategori" id="kategori_id" wire:model.live="kategori_id"
-                    placeholder="Nama Siswa" autocomplete="off" :error="$errors->first('kategori_id')" class="mb-3">
+                    autocomplete="off" :error="$errors->first('kategori_id')" class="mb-3">
                     <option value="">Pilih Sub Kategori</option>
                     @foreach ($kategoris as $kat)
-                        <option value="{{ $kat->id }}" @selected($kat->id == $kategori_id)>{{ $kat->deskripsi }}</option>
+                        <option value="{{ $kat->id }}">{{ $kat->deskripsi }}</option>
                     @endforeach
                 </x-form-input>
             </div>
             @if ($kategori_id != null && !$kategori->byPoin)
-                <div class="w-full">
+                <div class="w-1/3">
                     <x-form-input type="select" label="Jawaban Benar" id="benar" wire:model.live="benar"
                         placeholder="Nama Siswa" autocomplete="off" :error="$errors->first('benar')" class="mb-3">
                         <option value="">Pilih Jawaban</option>
@@ -40,16 +36,11 @@
                     </x-form-input>
                 </div>
             @endif
-
             <div class="w-full mb-3">
-                <x-form-input type="textarea" label="Soal" :error="$errors->first('soal')" wire:model.live="soal"
+                <x-form-input type="textarea" label="Soal" :error="$errors->first('soal')" name="soal" wire:model.live="soal"
                     placeholder="Soal">
                 </x-form-input>
             </div>
-
-
-
-
             <div class="w-full">
                 <label class="block text-sm font-medium text-gray-700 mb-3">Pilihan Jawaban</label>
                 @foreach (['a', 'b', 'c', 'd', 'e'] as $index => $option)
@@ -78,25 +69,24 @@
 
         <x-button :button="true" type='submit'>Simpan</x-button>
     </form>
+    <script>
+        document.addEventListener('berhasil', function(e) {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                showCloseButton: true,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire({
+                icon: e.detail.icon,
+                title: e.detail.message,
+            });
+        });
+    </script>
 </div>
-
-<script>
-    document.addEventListener('berhasil', function(e) {
-        const Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            showCloseButton: true,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.onmouseenter = Swal.stopTimer;
-                toast.onmouseleave = Swal.resumeTimer;
-            }
-        });
-        Toast.fire({
-            icon: e.detail.icon,
-            title: e.detail.message,
-        });
-    });
-</script>

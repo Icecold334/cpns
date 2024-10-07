@@ -24,7 +24,7 @@ class SoalController extends Controller
      */
     public function create(Paket $paket)
     {
-        Gate::authorize('create', [Soal::class, $paket]);
+        // Gate::authorize('create', [Soal::class, $paket]);
         return view('soal.create', ['title' => 'Tambah Soal', 'paket' => $paket]);
     }
 

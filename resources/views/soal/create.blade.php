@@ -1,19 +1,14 @@
 <x-body>
     <x-slot:title>{{ $title }}</x-slot>
-    <h1><a href="{{ route('paket.soal.index', ['paket' => $paket->uuid]) }}"><i
-                class="fa-solid fa-circle-chevron-left"></i></a> Tambah Soal
-    </h1>
-    <div class="row">
-        <div class="col-xl-8 col-md-12 col-sm-12">
-            <div class="card">
-                <div class="card-body">
-                    {{-- @if ($paket->base->id == 1) --}}
-                    <livewire:create-soal :paket="$paket" />
-                    {{-- @else --}}
-                    {{-- <h1>blum ada</h1> --}}
-                    {{-- @endif --}}
-                </div>
-            </div>
-        </div>
+    <div class="flex items-center space-x-4 mb-3 text-3xl sm:text-4xl md:text-5xl">
+        <a href="{{ route('paket.soal.index', ['paket' => $paket->uuid]) }}"
+            class="text-primary-600 hover:text-primary-950 transition duration-200">
+            <i class="fa-solid fa-circle-chevron-left"></i>
+        </a>
+        <div class="font-semibold text-slate-800">{{ $title }}</div>
     </div>
+    <div class="border p-5 rounded-lg shadow-md">
+        <livewire:create-soal :paket="$paket" />
+    </div>
+
 </x-body>

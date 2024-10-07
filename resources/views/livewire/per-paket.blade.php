@@ -51,5 +51,5 @@
             </div>
         </div>
     </div>
-    <livewire:canvas-soal :soals="$soals"></livewire:canvas-soal>
+    {{-- <livewire:canvas-soal :soals="$soals"></livewire:canvas-soal> --}}
 </div>

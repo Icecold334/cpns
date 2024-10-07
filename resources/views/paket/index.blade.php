@@ -25,7 +25,9 @@
                 <th>Nama <i class="fa-solid fa-sort"></i></th>
                 <th>Kategori <i class="fa-solid fa-sort"></i></th>
                 <th>Penulis <i class="fa-solid fa-sort"></i></th>
-                <th>Status <i class="fa-solid fa-sort"></i></th>
+                @if (Auth::user()->role != 3)
+                    <th>Status <i class="fa-solid fa-sort"></i></th>
+                @endif
                 <th></th>
             </tr>
         </thead>
@@ -80,24 +82,26 @@
                     @else
                         @if ($paket->hasil->where('user_id', Auth::user()->id)->first() === null)
                             <td>
-                                <a href="/paket/test/{{ $paket->uuid }}" class="btn badge bg-success text-white">
+                                <x-badge :badge="false" href="/paket/test/{{ $paket->uuid }}" color="success">
                                     <i class="fa-solid fa-play"></i> Kerjakan Ujian
-                                </a>
+                                </x-badge>
                             </td>
                         @else
                             @if ($paket->hasil->where('user_id', Auth::user()->id)->first()->nilai === null)
                                 <td>
-                                    <a href="/paket/test/{{ $paket->uuid }}{{ $paket->hasil->where('user_id', Auth::user()->id)->first()->start_time != null ? '/play' : '' }}"
-                                        class="btn badge bg-success text-white">
+                                    <x-badge :badge="false"
+                                        href="/paket/test/{{ $paket->uuid }}/{{ $paket->hasil->where('user_id', Auth::user()->id)->first()->start_time != null ? 'play' : '' }}"
+                                        color="success">
                                         <i class="fa-solid fa-play"></i>
                                         {{ $paket->hasil->where('user_id', Auth::user()->id)->first()->start_time === null ? 'Kerjakan Ujian' : 'Lanjutkan Ujian' }}
-                                    </a>
+                                    </x-badge>
                                 </td>
                             @else
                                 <td>
-                                    <a href="/paket/hasil/{{ $paket->uuid }}" class="btn badge bg-info text-white">
+                                    <x-badge :badge="false" href="/paket/hasil/{{ $paket->uuid }}" color="info">
                                         <i class="fa-solid fa-circle-info"></i> Hasil Ujian
-                                    </a>
+
+                                    </x-badge>
                                 </td>
                             @endif
                         @endif

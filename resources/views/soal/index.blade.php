@@ -9,12 +9,10 @@
         </div>
         {{-- @can('create', [App\Models\Soal::class, $paket]) --}}
         <div class="hidden xl:flex items-center space-x-4 text-3xl sm:text-4xl md:text-5xl">
-            <x-button :button="true" data-modal-target="soalModal" data-modal-toggle="soalModal">
+            <x-button :button="false" href="{{ route('paket.soal.create', ['paket' => $paket->uuid]) }}">
                 <i class="fa-solid fa-circle-plus"></i> Tambah Soal
             </x-button>
-            <x-modal title='Tambah Guru' id='soalModal' class=" max-w-5xl ">
-                <livewire:create-soal :paket="$paket" />
-            </x-modal>
+
             @if ($paket->soal->count() > 0)
                 <x-button :button="true" id="publish">
                     <i class="fa-solid fa-angles-up"></i> Publikasikan Paket Soal
@@ -44,11 +42,12 @@
                     </td>
                     <td>{{ $soal->kategori->deskripsi }}</td>
                     <td class="text-center">
-                        <x-badge :badge="false"
-                            href="{{ route('paket.soal.edit', ['paket' => $paket->uuid, 'soal' => $soal->uuid]) }}"
+                        <x-badge :badge="false" class="me-3"
+                            href="{{ route('paket.soal.edit', ['paket' => $soal->paket->uuid, 'soal' => $soal->uuid]) }}"
                             color="warning">
                             <i class="fa-solid fa-pen-to-square"></i>
                         </x-badge>
+
                         <x-badge :badge="true" color="danger" id="delete{{ $soal->uuid }}">
                             <i class="fa-solid fa-trash"></i>
                         </x-badge>

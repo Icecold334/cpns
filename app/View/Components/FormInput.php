@@ -8,7 +8,6 @@ class FormInput extends Component
 {
     public $type;
     public $id;
-    public $name;
     public $label;
     public $error;
     public $baseClass;
@@ -18,11 +17,10 @@ class FormInput extends Component
      *
      * @return void
      */
-    public function __construct($type = 'text', $id = null, $name = null, $label = null, $error = false)
+    public function __construct($type = 'text', $id = null, $label = null, $error = false)
     {
         $this->type = $type;
         $this->id = $id;
-        $this->name = $name;
         $this->label = $label;
         $this->error = $error;
 
