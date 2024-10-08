@@ -1,55 +1,60 @@
 <div>
-    <div class="accordion mb-3 shadow-lg" id="accordionPanelsStayOpenExample">
-        <div class="accordion-item">
-            <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false"
-                    aria-controls="panelsStayOpen-collapseThree">
-                    <h5 class="my-0 font-weight-bold">Informasi Ujian</h5>
-                </button>
-            </h2>
-            <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse show">
-                <div class="accordion-body">
-                    <div class="row">
-                        <div class="col-xl-4 col-md-6 col-sm-12 d-flex flex-column">
-                            <div class="card mb-3 flex-grow-1 h-100">
-                                <div class="card-body d-flex justify-content-center align-items-center">
-                                    <div class="d-flex justify-content-center">
-                                        <table class="table table-borderless table-responsive-sm m-0">
-                                            <tr>
-                                                <td class="font-weight-bold">Nama Peserta</td>
-                                                <td>{{ Auth::user()->name }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="font-weight-bold">E-mail</td>
-                                                <td>{{ Auth::user()->email }}</td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-xl-5 col-md-6 col-sm-12 d-flex flex-column">
-                            <div class="card mb-3 flex-grow-1 h-100">
-                                <livewire:card-detail-test :paket="$paket"></livewire:card-detail-test>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-md-12 col-sm-12 d-flex flex-column">
-                            <livewire:card-timer :paket="$paket" :durasi="$paket->durasi"></livewire:card-timer>
+    <div id="accordion-collapse" class="text-gray-900 mb-3" data-accordion="collapse">
+        <h2 id="accordion-collapse-heading-1">
+            <button type="button"
+                class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border  border-gray-200 rounded-t-xl focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 gap-3"
+                data-accordion-target="#accordion-collapse-body-1" aria-expanded="true"
+                aria-controls="accordion-collapse-body-1">
+                <span class="font-bold">Informasi Ujian</span>
+                <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 5 5 1 1 5" />
+                </svg>
+            </button>
+        </h2>
+        <div id="accordion-collapse-body-1" class="hidden" aria-labelledby="accordion-collapse-heading-1">
+            <div class="p-5 border border-gray-200 dark:border-gray-700 dark:bg-gray-900">
+                <div class="grid grid-cols-1 md:grid-cols-3 md:gap-6 justify-around">
+                    <div class="w-full mb-3 xl:mb-0 flex">
+                        <div class="border-[0.1rem] border-gray-300 rounded-md p-4 h-full w-full flex justify-center">
+                            <x-table class="w-1/2">
+                                <tr>
+                                    <td class="font-bold">Nama Peserta</td>
+                                    <td class="font-semibold">{{ Auth::user()->name }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-bold">E-mail</td>
+                                    <td class="font-semibold">{{ Auth::user()->email }}</td>
+                                </tr>
+                            </x-table>
                         </div>
                     </div>
+                    <div class="w-full mb-3 xl:mb-0 flex">
+                        <div
+                            class="border-[0.1rem] border-gray-300 rounded-md p-4 h-full w-full flex items-center justify-center">
+                            <livewire:card-detail-test :paket="$paket"></livewire:card-detail-test>
+                        </div>
+                    </div>
+                    <div class="w-full mb-3 xl:mb-0 flex">
+                        <div
+                            class="border-[0.1rem] border-gray-300 rounded-md p-4 h-full w-full flex items-center justify-center">
+                            <livewire:card-timer :paket="$paket" :durasi="$paket->durasi"></livewire:card-timer>
+                        </div>
+
+                    </div>
                 </div>
+
             </div>
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-xl-12 d-flex">
-            <div class="card mb-3 flex-fill">
-                <livewire:card-soal :soals="$soals"></livewire:card-soal>
-            </div>
+    <div class="flex">
+        <div class="border-[0.15rem] w-full rounded-md p-5">
+            <livewire:card-soal :soals="$soals"></livewire:card-soal>
         </div>
     </div>
-    {{-- <livewire:canvas-soal :soals="$soals"></livewire:canvas-soal> --}}
+    @push('html')
+        <livewire:canvas-soal :soals="$soals"></livewire:canvas-soal>
+    @endpush
 </div>

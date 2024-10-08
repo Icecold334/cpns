@@ -53,13 +53,15 @@ class CardSoal extends Component
         $this->setSoalData($soal, $nomor);
     }
 
-    public function before($no)
+    public function before()
     {
+        $no = $this->nomor;
         $this->navigateSoal($no - 2, $no - 1);
     }
 
-    public function after($no)
+    public function after()
     {
+        $no = $this->nomor;
         $this->navigateSoal($no, $no + 1);
     }
 

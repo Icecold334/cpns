@@ -15,8 +15,10 @@
 
 <body>
     <x-navbar />
-    <x-sidebar />
-    <div class="p-4 sm:ml-64">
+    @if (!request()->routeIs('play'))
+        <x-sidebar />
+    @endif
+    <div class="p-4 {{ request()->routeIs('play') ? '' : 'sm:ml-64' }}">
         <div class="p-4  mt-14">
             {{ $slot }}
         </div>
