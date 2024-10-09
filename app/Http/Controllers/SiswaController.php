@@ -47,7 +47,7 @@ class SiswaController extends Controller
      */
     public function edit(User $siswa)
     {
-        Gate::allowIf(false);
+        Gate::authorize('admin');
         return view('siswa.edit', ['title' => "Ubah $siswa->name", 'user' => $siswa]);
     }
 

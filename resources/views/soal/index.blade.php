@@ -7,19 +7,19 @@
             </a>
             <div class="font-semibold text-slate-800">{{ $title }}</div>
         </div>
-        {{-- @can('create', [App\Models\Soal::class, $paket]) --}}
-        <div class="hidden xl:flex items-center space-x-4 text-3xl sm:text-4xl md:text-5xl">
-            <x-button :button="false" href="{{ route('paket.soal.create', ['paket' => $paket->uuid]) }}">
-                <i class="fa-solid fa-circle-plus"></i> Tambah Soal
-            </x-button>
-
-            @if ($paket->soal->count() > 0)
-                <x-button :button="true" id="publish">
-                    <i class="fa-solid fa-angles-up"></i> Publikasikan Paket Soal
+        @can('create', [App\Models\Soal::class, $paket])
+            <div class="hidden xl:flex items-center space-x-4 text-3xl sm:text-4xl md:text-5xl">
+                <x-button :button="false" href="{{ route('paket.soal.create', ['paket' => $paket->uuid]) }}">
+                    <i class="fa-solid fa-circle-plus"></i> Tambah Soal
                 </x-button>
-            @endif
-        </div>
-        {{-- @endcan --}}
+
+                @if ($paket->soal->count() > 0)
+                    <x-button :button="true" id="publish">
+                        <i class="fa-solid fa-angles-up"></i> Publikasikan Paket Soal
+                    </x-button>
+                @endif
+            </div>
+        @endcan
     </div>
 
     <x-table id="soals">
@@ -29,7 +29,9 @@
                 <th class="text-center">Soal <i class="fa-solid fa-sort"></i></th>
                 <th class="text-center">Jawaban <i class="fa-solid fa-sort"></i></th>
                 <th class="text-center">Kategori <i class="fa-solid fa-sort"></i></th>
-                <th class="text-center"></th>
+                @can('guru')
+                    <th class="text-center"></th>
+                @endcan
             </tr>
         </thead>
         <tbody>
@@ -41,23 +43,25 @@
                         {{ !$soal->kategori->byPoin ? Str::limit($soal->jawaban->where('benar', true)->first()->jawaban, 30, '...') : '-' }}
                     </td>
                     <td>{{ $soal->kategori->deskripsi }}</td>
-                    <td class="text-center">
-                        <x-badge :badge="false" class="me-3"
-                            href="{{ route('paket.soal.edit', ['paket' => $soal->paket->uuid, 'soal' => $soal->uuid]) }}"
-                            color="warning">
-                            <i class="fa-solid fa-pen-to-square"></i>
-                        </x-badge>
+                    @can('guru')
+                        <td class="text-center">
+                            <x-badge :badge="false" class="me-3"
+                                href="{{ route('paket.soal.edit', ['paket' => $soal->paket->uuid, 'soal' => $soal->uuid]) }}"
+                                color="warning">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </x-badge>
 
-                        <x-badge :badge="true" color="danger" id="delete{{ $soal->uuid }}">
-                            <i class="fa-solid fa-trash"></i>
-                        </x-badge>
-                        <form id="formDel{{ $soal->uuid }}"
-                            action="{{ route('paket.soal.destroy', ['paket' => $paket->uuid, 'soal' => $soal->uuid]) }}"
-                            method="POST" style="display: none;">
-                            @csrf
-                            @method('DELETE')
-                        </form>
-                    </td>
+                            <x-badge :badge="true" color="danger" id="delete{{ $soal->uuid }}">
+                                <i class="fa-solid fa-trash"></i>
+                            </x-badge>
+                            <form id="formDel{{ $soal->uuid }}"
+                                action="{{ route('paket.soal.destroy', ['paket' => $paket->uuid, 'soal' => $soal->uuid]) }}"
+                                method="POST" style="display: none;">
+                                @csrf
+                                @method('DELETE')
+                            </form>
+                        </td>
+                    @endcan
                 </tr>
             @endforeach
         </tbody>

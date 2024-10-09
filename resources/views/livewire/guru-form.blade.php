@@ -12,9 +12,9 @@
                 <div class="mb-3">
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jenis Kelamin<span
                             class="text-danger">*</span></label>
-                    <x-form-input type="radio" label="Laki-laki" id="laki" name="gender"
+                    <x-form-input type="radio" label="Laki-laki" id="laki" name="jkel"
                         wire:model.live="gender" value="0" />
-                    <x-form-input type="radio" label="Perempuan" id="perempuan" name="gender"
+                    <x-form-input type="radio" label="Perempuan" id="perempuan" name="jkel"
                         wire:model.live="gender" value="1" />
                 </div>
 

@@ -98,8 +98,9 @@ class CardSoal2 extends Component
     }
 
 
-    public function after($no)
+    public function after()
     {
+        $no = $this->nomor;
         $this->navigateSoal($no, $no + 1);
     }
 

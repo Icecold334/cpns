@@ -7,16 +7,16 @@
                     class="fa-solid fa-circle-chevron-left "></i></a> --}}
             <div class=" font-semibold text-slate-800">Daftar Paket Ujian</div>
         </div>
-        {{-- @can('create', App\Models\Paket::class) --}}
-        <div class="hidden xl:flex items-center  text-3xl sm:text-4xl md:text-5xl ">
-            <x-button :button="true" data-modal-target="paketModal" data-modal-toggle="paketModal">
-                <i class="fa-solid fa-circle-plus"></i> Tambah Paket Ujian
-            </x-button>
-            <x-modal title='Tambah Guru' id='paketModal'>
-                <livewire:paket-form />
-            </x-modal>
-        </div>
-        {{-- @endcan --}}
+        @can('create', App\Models\Paket::class)
+            <div class="hidden xl:flex items-center  text-3xl sm:text-4xl md:text-5xl ">
+                <x-button :button="true" data-modal-target="paketModal" data-modal-toggle="paketModal">
+                    <i class="fa-solid fa-circle-plus"></i> Tambah Paket Ujian
+                </x-button>
+                <x-modal title='Tambah Guru' id='paketModal'>
+                    <livewire:paket-form />
+                </x-modal>
+            </div>
+        @endcan
     </div>
     <x-table id="paket">
         <thead>

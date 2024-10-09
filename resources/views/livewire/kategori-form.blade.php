@@ -10,7 +10,7 @@
                 <x-form-input type="textarea" label="Nama Kategori" :error="$errors->first('deskripsi')" wire:model.live="deskripsi"
                     placeholder="Deskripsi Kategori">
                 </x-form-input>
-                <x-button :button="true" class="mt-3" type="submit">Simpan</x-button>
+                <x-button :button="true" class="mt-5" type="submit">Simpan</x-button>
             </div>
         </div>
     </div>

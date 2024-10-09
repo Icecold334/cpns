@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kategori;
+use Illuminate\Support\Str;
 use App\Models\BaseKategori;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
 
+use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\StoreKategoriRequest;
 use App\Http\Requests\UpdateKategoriRequest;
 
@@ -50,9 +51,10 @@ class KategoriController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Kategori $kategori)
+    public function edit($id, $type)
     {
-        //
+        $kategori = $type == 'base' ? BaseKategori::find($id) : Kategori::find($id);
+        return view('kategori.edit', ['kategori' => $kategori, 'title' => 'Ubah Kategori', 'type' => $type]);
     }
 
     /**

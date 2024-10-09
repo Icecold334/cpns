@@ -33,12 +33,9 @@
                     <td>{{ $loop->iteration }}.</td>
                     <td>{{ $guru->name }}</td>
                     <td>{{ $guru->email }}</td>
-                    <td><x-badge :badge="true" color="warning" class="me-3"
-                            data-modal-target="guru{{ $guru->id }}"
-                            data-modal-toggle="guru{{ $guru->id }}">Ubah</x-badge>
-                        <x-modal title='Ubah Kategori' id='guru{{ $guru->id }}'>
-                            <livewire:guru-form :id="$guru->id" />
-                        </x-modal>
+                    <td><x-badge :badge="false" href="/guru/{{ $guru->id }}/edit" color="warning"
+                            class="me-3">Ubah</x-badge>
+
                         <x-badge :badge="true" color="danger" id="delete{{ $guru->id }}">Hapus</x-badge>
                         <form id="delete-form-{{ $guru->id }}"
                             action="{{ route('guru.destroy', ['guru' => $guru->id]) }}" method="POST"
