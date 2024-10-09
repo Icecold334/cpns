@@ -2,9 +2,9 @@
     <x-slot:title>{{ $title }}</x-slot>
 
 
-    <div class="w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mb-5">
+    <div class="w-full bg-white border border-gray-200 rounded-lg shadow-xl dark:bg-gray-800 dark:border-gray-700 mb-5">
         <ul
-            class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 rounded-t-lg bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:bg-gray-800">
+            class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 rounded-t-lg bg-gray-200 dark:border-gray-700 dark:text-gray-400 dark:bg-gray-800">
             <div
                 class="inline-block text-xl font-semibold p-4 text-gray-900 rounded-ss-lg hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-blue-500">
                 Informasi Ujian</div>
@@ -29,9 +29,9 @@
             </div>
         </div>
     </div>
-    <div class="w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mb-5">
+    <div class="w-full bg-white border border-gray-200 rounded-lg shadow-xl dark:bg-gray-800 dark:border-gray-700 mb-5">
         <ul
-            class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 rounded-t-lg bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:bg-gray-800">
+            class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 rounded-t-lg bg-gray-200 dark:border-gray-700 dark:text-gray-400 dark:bg-gray-800">
             <div
                 class="inline-block text-xl font-semibold p-4 text-gray-900 rounded-ss-lg hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-blue-500">
                 Informasi Peserta</div>
@@ -56,7 +56,7 @@
     <div class="flex">
         {{-- <a href="/paket/test/{{ $paket->uuid }}/play" class="btn btn-primary">Mulai Ujian</a>
         <a href="/paket" class="btn btn-primary">Batal Ujian</a> --}}
-        <x-button :button="false" href="/paket/test/{{ $paket->uuid }}/play">Mulai Ujian</x-button>
+        <x-button :button="false" class="me-3" href="/paket/test/{{ $paket->uuid }}/play">Mulai Ujian</x-button>
         <x-button :button="false" href="/paket">Batal Ujian</x-button>
     </div>
 
