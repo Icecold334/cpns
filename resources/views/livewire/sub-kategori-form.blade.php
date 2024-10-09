@@ -14,8 +14,9 @@
                         </option>
                     @endforeach
                 </x-form-input>
-                <x-form-input type="select" label="Kategori" id="poin" wire:model.live="poin"
-                    placeholder="Nama Kategori" autocomplete="off" :error="$errors->first('poin')" :disabled="$id" class="mb-3">
+                <x-form-input type="select" label="Jenis Kategori" id="poin" wire:model.live="poin"
+                    placeholder="Nama Kategori" autocomplete="off" :error="$errors->first('poin')" :disabled="$id"
+                    class="mb-3 {{ $id ? 'cursor-not-allowed' : '' }}">
                     <option value="">Pilih Opsi</option>
                     <option value="0">Terdapat satu opsi jawaban benar</option>
                     <option value="1">Setiap opsi jawaban memiliki poin</option>

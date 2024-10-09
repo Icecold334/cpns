@@ -5,7 +5,9 @@
         <ul class="space-y-2 font-medium">
             @if (!request()->routeIs('play'))
                 <x-side-item title='Dashboard' href='/panel'><i class="fas fa-fw fa-tachometer-alt "></i></x-side-item>
-                <x-side-item title='Kategori' href='/kategori'><i class="fa-solid fa-font-awesome"></i></x-side-item>
+                @canany(['admin', 'guru'])
+                    <x-side-item title='Kategori' href='/kategori'><i class="fa-solid fa-font-awesome"></i></x-side-item>
+                @endcanany
                 @can('admin')
                     <x-side-item title='Guru' href='/guru'><i class="fa-solid fa-chalkboard-user"></i></x-side-item>
                 @endcan

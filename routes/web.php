@@ -33,8 +33,8 @@ Route::prefix('paket')->middleware(['auth', 'verified'])->group(function () {
 });
 Route::resource('paket', PaketController::class)->middleware(['auth', 'verified']);
 Route::delete('kategori/base/{base}', [KategoriController::class, 'destroyBase'])->name('base.destroy');
-Route::get('kategori/{id}/{type}/edit', [KategoriController::class, 'edit'])->middleware(['auth', 'verified']);
-Route::resource('kategori', KategoriController::class)->middleware(['auth', 'verified']);
+Route::get('kategori/{id}/{type}/edit', [KategoriController::class, 'edit'])->middleware(['admin', 'guru', 'verified']);
+Route::resource('kategori', KategoriController::class)->middleware(['admin', 'guru', 'verified']);
 Route::resource('paket.soal', SoalController::class)->middleware(['auth', 'verified']);
 Route::get('pengaturan', [PengaturanController::class, 'index'])->middleware(['admin', 'verified'])->name('settings');
 // Route::get('profil', [ProfilController::class, 'index'])->middleware(['auth', 'verified'])->name('profil');

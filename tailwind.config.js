@@ -13,6 +13,7 @@ export default {
     ],
     safelist: [
         "cursor-pointer",
+        "cursor-not-allowed",
         "cursor-default",
         {
             pattern:
