@@ -8,7 +8,8 @@ use Livewire\Attributes\On;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Contracts\Session\Session;
+use Illuminate\Support\Facades\Storage;
+
 
 class SiswaForm extends Component
 {
@@ -76,7 +77,7 @@ class SiswaForm extends Component
             'name' => $this->name,
             'email' => $this->email,
             'gender' => $this->gender,
-            'img' => $this->img,
+            'img' => $this->img != null ? str_replace('public', 'storage', $this->img->store('public/user')) : null,
             'role' => 3,
             'password' => Hash::make('password123'),
         ]);
@@ -92,11 +93,18 @@ class SiswaForm extends Component
         $user = User::find($this->id);
         $this->validate();
 
+        if ($this->img != null && !is_string($this->img)) {
+            Storage::delete(str_replace('storage', 'public', $this->img));
+            $img =  str_replace('public', 'storage', $this->img->store('public/user'));
+        } else {
+            $img = $this->img;
+        }
+
         $user->update([
             'name' => $this->name,
             'email' => $this->email,
             'gender' => $this->gender,
-            'img' => $this->img,
+            'img' => $img,
         ]);
 
         return redirect()->to('/siswa')

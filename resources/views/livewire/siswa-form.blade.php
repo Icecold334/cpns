@@ -23,10 +23,10 @@
                     placeholder="Email Siswa" autocomplete="off" :error="$errors->first('email')" class="mb-3" />
 
                 <!-- Foto Siswa -->
-                <div class="mb-3">
+                <div class="mb-3 ">
                     @if ($img)
-                        <img src="{{ $img->temporaryUrl() }}" class="d-block img-thumbnail mb-3" width="30%"
-                            alt="">
+                        <img src="{{ is_string($img) ? asset($img) : $img->temporaryUrl() }}"
+                            class="border-4 shadow-lg rounded-xl mb-3w-1/2 sm:w-1/3 md:w-1/5" alt="">
                     @endif
                     <x-form-input type="file" id="img" label="Foto" wire:model.live="img" :error="$errors->first('img')"
                         class="mb-3" />

@@ -1,4 +1,5 @@
 <div>
+
     <form wire:submit.prevent="{{ $soal_array == null ? 'save' : 'update' }}" enctype="multipart/form-data">
         @csrf
         <div class="flex flex-wrap">
@@ -37,9 +38,10 @@
                 </div>
             @endif
             <div class="w-full mb-3">
-                <x-form-input type="textarea" label="Soal" :error="$errors->first('soal')" name="soal" wire:model.live="soal"
+                <trix-editor></trix-editor>
+                {{-- <x-form-input type="textarea" label="Soal" :error="$errors->first('soal')" name="soal" wire:model.live="soal"
                     placeholder="Soal">
-                </x-form-input>
+                </x-form-input> --}}
             </div>
             <div class="w-full">
                 <label class="block text-sm font-medium text-gray-700 mb-3">Pilihan Jawaban</label>

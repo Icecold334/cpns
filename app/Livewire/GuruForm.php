@@ -3,11 +3,12 @@
 namespace App\Livewire;
 
 use App\Models\User;
-use Illuminate\Contracts\Session\Session;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Contracts\Session\Session;
 
 class GuruForm extends Component
 {
@@ -75,7 +76,7 @@ class GuruForm extends Component
             'name' => $this->name,
             'email' => $this->email,
             'gender' => $this->gender,
-            'img' => $this->img,
+            'img' => $this->img != null ? str_replace('public', 'storage', $this->img->store('public/user')) : null,
             'role' => 2,
             'password' => Hash::make('password123'),
         ]);
@@ -91,11 +92,18 @@ class GuruForm extends Component
         $user = User::find($this->id);
         $this->validate();
 
+        if ($this->img != null && !is_string($this->img)) {
+            Storage::delete(str_replace('storage', 'public', $this->img));
+            $img =  str_replace('public', 'storage', $this->img->store('public/user'));
+        } else {
+            $img = $this->img;
+        }
+
         $user->update([
             'name' => $this->name,
             'email' => $this->email,
             'gender' => $this->gender,
-            'img' => $this->img,
+            'img' => $img,
         ]);
 
         return redirect()->to('/guru')

@@ -8,7 +8,6 @@ use App\Models\Jawaban;
 use Livewire\Component;
 use App\Models\Kategori;
 use Livewire\Attributes\Validate;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
 

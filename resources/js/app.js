@@ -6,6 +6,8 @@ import Swal from "sweetalert2";
 window.Swal = Swal;
 import Alpine from "alpinejs";
 window.Alpine = Alpine;
+import "trix/dist/trix.css";
+import "trix";
 import { DataTable } from "simple-datatables";
 window.DataTable = DataTable;
 Alpine.start();
