@@ -7,136 +7,115 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Akses Ditolak</title>
     <style>
-        @import url("https://fonts.googleapis.com/css?family=Share+Tech+Mono|Montserrat:700");
-
-        * {
-            margin: 0;
-            padding: 0;
-            border: 0;
-            font-size: 100%;
-            font: inherit;
-            vertical-align: baseline;
-            box-sizing: border-box;
-            color: inherit;
-            text-transform: uppercase
-        }
+        @import url("https://fonts.googleapis.com/css?family=Bungee");
 
         body {
-            background-image: linear-gradient(120deg, #3d3d3d 0%, #000000 100%);
-            height: 100vh;
-        }
-
-        h1 {
-            font-size: 45vw;
+            background: #1b1b1b;
+            color: white;
+            font-family: "Bungee", cursive;
+            margin-top: 50px;
             text-align: center;
-            position: fixed;
-            width: 100vw;
-            z-index: 1;
-            color: #ffffff26;
-            text-shadow: 0 0 50px rgba(0, 0, 0, 0.07);
-            top: 50%;
-            transform: translateY(-50%);
-            font-family: "Montserrat", monospace;
         }
 
-        div {
-            background: rgba(0, 0, 0, 0);
-            width: 70vw;
-            position: relative;
-            top: 50%;
-            transform: translateY(-50%);
-            margin: 0 auto;
-            padding: 30px 30px 10px;
-            box-shadow: 0 0 150px -20px rgba(0, 0, 0, 0.5);
-            z-index: 3;
-        }
-
-        P {
-            font-family: "Share Tech Mono", monospace;
-            color: #f5f5f5;
-            margin: 0 0 20px;
-            font-size: 17px;
-            line-height: 1.2;
-        }
-
-        span {
-            color: #f0c674;
-        }
-
-        i {
-            color: #8abeb7;
-        }
-
-        div a {
+        a {
+            color: #2aa7cc;
             text-decoration: none;
         }
 
-        b {
-            color: #81a2be;
+        a:hover {
+            color: white;
         }
 
-        a.avatar {
-            position: fixed;
-            bottom: 15px;
-            right: -100px;
-            animation: slide 0.5s 4.5s forwards;
-            display: block;
-            z-index: 4
+        svg {
+            width: 50vw;
         }
 
-        a.avatar img {
-            border-radius: 100%;
-            width: 44px;
-            border: 2px solid white;
+        .lightblue {
+            fill: #444;
         }
 
-        @keyframes slide {
-            from {
-                right: -100px;
-                transform: rotate(360deg);
-                opacity: 0;
-            }
+        .eye {
+            cx: calc(115px + 30px * var(--mouse-x));
+            cy: calc(50px + 30px * var(--mouse-y));
+        }
 
+        #eye-wrap {
+            overflow: hidden;
+        }
+
+        .error-text {
+            font-size: 120px;
+        }
+
+        .alarm {
+            animation: alarmOn 0.5s infinite;
+        }
+
+        @keyframes alarmOn {
             to {
-                right: 15px;
-                transform: rotate(0deg);
-                opacity: 1;
+                fill: darkred;
             }
         }
     </style>
 </head>
 
 <body>
-    <h1>403</h1>
-    <div>
-        <p>> <span>KODE ERROR</span>: "<i>HTTP 403 Dilarang</i>"</p>
-        <p>> <span>DESKRIPSI ERROR</span>: "<i>Akses Ditolak. Kamu Tidak Memiliki Izin Untuk Mengakses Halaman Ini Di
-                Server</i>"</p>
-        <p>> <span>PENYEBAB ERROR</span>: [<b>akses eksekusi terlarang, akses baca terlarang, akses tulis terlarang, SSL
-                diperlukan, SSL 128 diperlukan, alamat IP ditolak, sertifikat klien diperlukan, akses situs
-                ditolak</b>...]</p>
-        <p>> <span>HAVE A NICE DAY {{ Auth::user()->name }} :-)</span></p>
-        <p>> <span><a href="/panel">KEMBALI</a></span></p>
+    <svg xmlns="http://www.w3.org/2000/svg" id="robot-error" viewBox="0 0 260 118.9" role="img">
+        <title xml:lang="en">403 Error</title>
 
-    </div>
-
+        <defs>
+            <clipPath id="white-clip">
+                <circle id="white-eye" fill="#cacaca" cx="130" cy="65" r="20" />
+            </clipPath>
+            <text id="text-s" class="error-text" y="106"> 403 </text>
+        </defs>
+        <path class="alarm" fill="#e62326" d="M120.9 19.6V9.1c0-5 4.1-9.1 9.1-9.1h0c5 0 9.1 4.1 9.1 9.1v10.6" />
+        <use xlink:href="#text-s" x="-0.5px" y="-1px" fill="black"></use>
+        <use xlink:href="#text-s" fill="#2b2b2b"></use>
+        <g id="robot">
+            <g id="eye-wrap">
+                <use xlink:href="#white-eye"></use>
+                <circle id="eyef" class="eye" clip-path="url(#white-clip)" fill="#000" stroke="#2aa7cc"
+                    stroke-width="2" stroke-miterlimit="10" cx="130" cy="65" r="11" />
+                <ellipse id="white-eye" fill="#2b2b2b" cx="130" cy="40" rx="18" ry="12" />
+            </g>
+            <circle class="lightblue" cx="105" cy="32" r="2.5" id="tornillo" />
+            <use xlink:href="#tornillo" x="50"></use>
+            <use xlink:href="#tornillo" x="50" y="60"></use>
+            <use xlink:href="#tornillo" y="60"></use>
+        </g>
+    </svg>
+    <h1>Anda tidak memiliki izin untuk mengakses halaman ini</h1>
+    <h2>Kembali Ke <a href="/">Beranda!</a></h2>
 
 </body>
 <script>
-    var str = document.getElementsByTagName('div')[0].innerHTML.toString();
-    var i = 0;
-    document.getElementsByTagName('div')[0].innerHTML = "";
+    var root = document.documentElement;
+    var eyef = document.getElementById('eyef');
+    var cx = document.getElementById("eyef").getAttribute("cx");
+    var cy = document.getElementById("eyef").getAttribute("cy");
 
-    setTimeout(function() {
-        var se = setInterval(function() {
-            i++;
-            document.getElementsByTagName('div')[0].innerHTML = str.slice(0, i) + "|";
-            if (i == str.length) {
-                clearInterval(se);
-                document.getElementsByTagName('div')[0].innerHTML = str;
-            }
-        }, 10);
-    }, 0);
+    document.addEventListener("mousemove", evt => {
+        let x = evt.clientX / innerWidth;
+        let y = evt.clientY / innerHeight;
+
+        root.style.setProperty("--mouse-x", x);
+        root.style.setProperty("--mouse-y", y);
+
+        cx = 115 + 30 * x;
+        cy = 50 + 30 * y;
+        eyef.setAttribute("cx", cx);
+        eyef.setAttribute("cy", cy);
+
+    });
+
+    document.addEventListener("touchmove", touchHandler => {
+        let x = touchHandler.touches[0].clientX / innerWidth;
+        let y = touchHandler.touches[0].clientY / innerHeight;
+
+        root.style.setProperty("--mouse-x", x);
+        root.style.setProperty("--mouse-y", y);
+    });
 </script>
 
 </html>

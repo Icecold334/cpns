@@ -18,6 +18,7 @@ class KategoriController extends Controller
      */
     public function index()
     {
+        Gate::allowIf(Auth::user()->role < 3);
         return view('kategori.index', [
             'title' => 'Daftar Kategori',
             'bases' => BaseKategori::all()

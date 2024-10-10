@@ -38,7 +38,8 @@
                 </div>
             @endif
             <div class="w-full mb-3">
-                <trix-editor></trix-editor>
+
+
                 {{-- <x-form-input type="textarea" label="Soal" :error="$errors->first('soal')" name="soal" wire:model.live="soal"
                     placeholder="Soal">
                 </x-form-input> --}}

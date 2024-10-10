@@ -117,6 +117,7 @@ class CreateSoal extends Component
     public function save()
     {
         $this->validate();
+        dd($this->soal);
         $soal = new Soal();
         $soal->paket_id = $this->paket->id;
         $soal->kategori_id = $this->kategori_id;

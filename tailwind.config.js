@@ -203,8 +203,10 @@ export default {
     },
 
     plugins: [
+        require("flowbite-typography"),
         forms,
         require("flowbite/plugin")({
+            wysiwyg: true,
             datatables: true,
         }),
     ],
