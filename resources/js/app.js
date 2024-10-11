@@ -6,8 +6,6 @@ import Swal from "sweetalert2";
 window.Swal = Swal;
 import Alpine from "alpinejs";
 window.Alpine = Alpine;
-import "trix/dist/trix.css";
-import "trix";
 import { DataTable } from "simple-datatables";
 window.DataTable = DataTable;
 Alpine.start();
@@ -17,12 +15,10 @@ import Highlight from "https://esm.sh/@tiptap/extension-highlight@2.6.6";
 import Underline from "https://esm.sh/@tiptap/extension-underline@2.6.6";
 import Link from "https://esm.sh/@tiptap/extension-link@2.6.6";
 import TextAlign from "https://esm.sh/@tiptap/extension-text-align@2.6.6";
-import HorizontalRule from "https://esm.sh/@tiptap/extension-horizontal-rule@2.6.6";
 import Image from "https://esm.sh/@tiptap/extension-image@2.6.6";
 import YouTube from "https://esm.sh/@tiptap/extension-youtube@2.6.6";
 import TextStyle from "https://esm.sh/@tiptap/extension-text-style@2.6.6";
 import FontFamily from "https://esm.sh/@tiptap/extension-font-family@2.6.6";
-import { Color } from "https://esm.sh/@tiptap/extension-color@2.6.6";
 
 const label = {
     placeholder: "Cari Data",
@@ -61,8 +57,8 @@ window.table = function (selector) {
     });
 };
 
-window.addEventListener("load", function () {
-    if (document.getElementById("wysiwyg-example")) {
+window.editor = function (elementId) {
+    window.addEventListener("load", function () {
         const FontSizeTextStyle = TextStyle.extend({
             addAttributes() {
                 return {
@@ -81,10 +77,8 @@ window.addEventListener("load", function () {
                 };
             },
         });
-
-        // tip tap editor setup
         const editor = new Editor({
-            element: document.querySelector("#wysiwyg-example"),
+            element: document.querySelector(`#${elementId}`),
             extensions: [
                 StarterKit,
                 Highlight,
@@ -97,12 +91,9 @@ window.addEventListener("load", function () {
                 TextAlign.configure({
                     types: ["heading", "paragraph"],
                 }),
-                HorizontalRule,
                 Image,
                 YouTube,
-                TextStyle,
                 FontSizeTextStyle,
-                Color,
                 FontFamily,
             ],
             content: "",
@@ -113,38 +104,28 @@ window.addEventListener("load", function () {
             },
         });
 
-        // set up custom event listeners for the buttons
         document
-            .getElementById("toggleBoldButton")
+            .getElementById(elementId + "toggleBoldButton")
             .addEventListener("click", () =>
                 editor.chain().focus().toggleBold().run()
             );
         document
-            .getElementById("toggleItalicButton")
+            .getElementById(elementId + "toggleItalicButton")
             .addEventListener("click", () =>
                 editor.chain().focus().toggleItalic().run()
             );
         document
-            .getElementById("toggleUnderlineButton")
+            .getElementById(elementId + "toggleUnderlineButton")
             .addEventListener("click", () =>
                 editor.chain().focus().toggleUnderline().run()
             );
         document
-            .getElementById("toggleStrikeButton")
+            .getElementById(elementId + "toggleStrikeButton")
             .addEventListener("click", () =>
                 editor.chain().focus().toggleStrike().run()
             );
         document
-            .getElementById("toggleHighlightButton")
-            .addEventListener("click", () =>
-                editor
-                    .chain()
-                    .focus()
-                    .toggleHighlight({ color: "#ffc078" })
-                    .run()
-            );
-        document
-            .getElementById("toggleLinkButton")
+            .getElementById(elementId + "toggleLinkButton")
             .addEventListener("click", () => {
                 const url = window.prompt(
                     "Enter image URL:",
@@ -153,69 +134,78 @@ window.addEventListener("load", function () {
                 editor.chain().focus().toggleLink({ href: url }).run();
             });
         document
-            .getElementById("removeLinkButton")
+            .getElementById(elementId + "removeLinkButton")
             .addEventListener("click", () => {
                 editor.chain().focus().unsetLink().run();
             });
         document
-            .getElementById("toggleCodeButton")
+            .getElementById(elementId + "toggleCodeButton")
             .addEventListener("click", () => {
                 editor.chain().focus().toggleCode().run();
             });
 
         document
-            .getElementById("toggleLeftAlignButton")
+            .getElementById(elementId + "toggleLeftAlignButton")
             .addEventListener("click", () => {
                 editor.chain().focus().setTextAlign("left").run();
             });
         document
-            .getElementById("toggleCenterAlignButton")
+            .getElementById(elementId + "toggleCenterAlignButton")
             .addEventListener("click", () => {
                 editor.chain().focus().setTextAlign("center").run();
             });
         document
-            .getElementById("toggleRightAlignButton")
+            .getElementById(elementId + "toggleRightAlignButton")
             .addEventListener("click", () => {
                 editor.chain().focus().setTextAlign("right").run();
             });
         document
-            .getElementById("toggleListButton")
+            .getElementById(elementId + "toggleListButton")
             .addEventListener("click", () => {
                 editor.chain().focus().toggleBulletList().run();
             });
         document
-            .getElementById("toggleOrderedListButton")
+            .getElementById(elementId + "toggleOrderedListButton")
             .addEventListener("click", () => {
                 editor.chain().focus().toggleOrderedList().run();
             });
         document
-            .getElementById("toggleBlockquoteButton")
+            .getElementById(elementId + "toggleBlockquoteButton")
             .addEventListener("click", () => {
                 editor.chain().focus().toggleBlockquote().run();
             });
-        document
-            .getElementById("toggleHRButton")
-            .addEventListener("click", () => {
-                editor.chain().focus().setHorizontalRule().run();
-            });
-        document
-            .getElementById("addImageButton")
-            .addEventListener("click", () => {
-                const url = window.prompt(
-                    "Enter image URL:",
-                    "https://placehold.co/600x400"
-                );
-                if (url) {
+
+        const addImageButton = document.getElementById(
+            elementId + "addImageButton"
+        );
+        const imageInput = document.getElementById(elementId + "imageInput");
+
+        // Saat tombol "Upload Image" diklik, buka file input untuk memilih gambar
+        addImageButton.addEventListener("click", () => {
+            imageInput.click();
+        });
+
+        // Saat gambar dipilih, tampilkan di editor
+        imageInput.addEventListener("change", (event) => {
+            const file = event.target.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+
+                // Setelah file dibaca, tambahkan ke editor sebagai gambar
+                reader.onload = () => {
+                    const url = reader.result; // URL data dari file yang dipilih
                     editor.chain().focus().setImage({ src: url }).run();
-                }
-            });
+                };
+
+                reader.readAsDataURL(file); // Baca file sebagai data URL
+            }
+        });
+
         document
-            .getElementById("addVideoButton")
+            .getElementById(elementId + "addVideoButton")
             .addEventListener("click", () => {
-                const url = window.prompt(
-                    "Enter YouTube URL:",
-                    "https://www.youtube.com/watch?v=KaLxCiilHns"
-                );
+                const url = window.prompt("Masukkan Link YouTube:", "");
                 if (url) {
                     editor.commands.setYoutubeVideo({
                         src: url,
@@ -228,11 +218,11 @@ window.addEventListener("load", function () {
         // typography dropdown
         const typographyDropdown = FlowbiteInstances.getInstance(
             "Dropdown",
-            "typographyDropdown"
+            elementId + "typographyDropdown"
         );
 
         document
-            .getElementById("toggleParagraphButton")
+            .getElementById(elementId + "toggleParagraphButton")
             .addEventListener("click", () => {
                 editor.chain().focus().setParagraph().run();
                 typographyDropdown.hide();
@@ -252,7 +242,7 @@ window.addEventListener("load", function () {
 
         const textSizeDropdown = FlowbiteInstances.getInstance(
             "Dropdown",
-            "textSizeDropdown"
+            elementId + "textSizeDropdown"
         );
 
         // Loop through all elements with the data-text-size attribute
@@ -268,31 +258,9 @@ window.addEventListener("load", function () {
             });
         });
 
-        // Listen for color picker changes
-        const colorPicker = document.getElementById("color");
-        colorPicker.addEventListener("input", (event) => {
-            const selectedColor = event.target.value;
-
-            // Apply the selected color to the selected text
-            editor.chain().focus().setColor(selectedColor).run();
-        });
-
-        document.querySelectorAll("[data-hex-color]").forEach((button) => {
-            button.addEventListener("click", () => {
-                const selectedColor = button.getAttribute("data-hex-color");
-
-                // Apply the selected color to the selected text
-                editor.chain().focus().setColor(selectedColor).run();
-            });
-        });
-
-        document.getElementById("reset-color").addEventListener("click", () => {
-            editor.commands.unsetColor();
-        });
-
         const fontFamilyDropdown = FlowbiteInstances.getInstance(
             "Dropdown",
-            "fontFamilyDropdown"
+            elementId + "fontFamilyDropdown"
         );
 
         // Loop through all elements with the data-font-family attribute
@@ -307,5 +275,7 @@ window.addEventListener("load", function () {
                 fontFamilyDropdown.hide();
             });
         });
-    }
-});
+
+        return editor;
+    });
+};

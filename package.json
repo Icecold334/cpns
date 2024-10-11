@@ -1,7 +1,4 @@
 {
-    "overrides": {
-        "prosemirror-model": "1.9.1"
-    },
     "private": true,
     "type": "module",
     "scripts": {
@@ -32,5 +29,8 @@
         "simple-datatables": "^9.1.0",
         "sweetalert2": "^11.14.1",
         "trix": "^2.1.6"
+    },
+    "overrides": {
+        "prosemirror-model": "^1.9.1"
     }
 }
