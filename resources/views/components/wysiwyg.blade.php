@@ -1,4 +1,5 @@
-    <div class="w-full border border-gray-300 shadow-2xl rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
+    <div
+        {{ $attributes->merge(['class' => 'w-full border border-gray-300 shadow-2xl rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600']) }}>
         <div class="px-3 py-2 border-b dark:border-gray-600">
             <div class="flex flex-wrap items-center">
                 <div class="flex items-center space-x-1 rtl:space-x-reverse flex-wrap">
@@ -494,13 +495,19 @@
         </div>
         <div class="px-4 py-2 bg-white rounded-b-lg dark:bg-gray-800">
             <label for="{{ $id }}" class="sr-only">Publish post</label>
-            <div id="{{ $id }}"
+            <div id="{{ $id }}" name="test"
                 class="block w-full px-0 text-sm text-gray-800 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400">
             </div>
+            <input type="hidden" name="{{ $id }}" id="input{{ $id }}">
         </div>
     </div>
     @push('scripts')
         <script type="module">
             window.editor("{{ $id }}");
+            document.getElementById('{{ $id }}').addEventListener('input', function() {
+                console.log(this.childNodes[1].innerHTML);
+
+                document.getElementById('input{{ $id }}').value = this.childNodes[1].innerHTML;
+            });
         </script>
     @endpush
