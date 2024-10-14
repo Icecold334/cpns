@@ -3,18 +3,9 @@
     <form wire:submit.prevent="{{ $soal_array == null ? 'save' : 'update' }}" enctype="multipart/form-data">
         @csrf
         <div class="flex flex-wrap">
-            <div class="w-full">
-                @if ($img)
-                    <div class="flex justify-center mb-3">
-                        <div class="w-1/2">
-                            <img src="{{ is_string($img) ? asset($img) : $img->temporaryUrl() }}" class="img-thumbnail"
-                                alt="">
-                        </div>
-                    </div>
-                @endif
-                <x-form-input type="file" label="Foto" id="img" wire:model.live="img" placeholder="Nama Siswa"
-                    autocomplete="off" :error="$errors->first('img')" class="mb-3" />
-            </div>
+            <label for="soal" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Soal</label>
+            <x-wysiwyg id="soal" class="my-3" name="soal" wire:ignore :content="$soal" />
+            {{ $errors->first('soal') }}
             <div class=" {{ $kategori_id != null && !$kategori->byPoin ? 'w-2/3 pe-3' : 'w-full' }}">
                 <x-form-input type="select" label="Sub Kategori" id="kategori_id" wire:model.live="kategori_id"
                     autocomplete="off" :error="$errors->first('kategori_id')" class="mb-3">
@@ -37,13 +28,6 @@
                     </x-form-input>
                 </div>
             @endif
-            <div class="w-full mb-3">
-
-
-                {{-- <x-form-input type="textarea" label="Soal" :error="$errors->first('soal')" name="soal" wire:model.live="soal"
-                    placeholder="Soal">
-                </x-form-input> --}}
-            </div>
             <div class="w-full">
                 <label class="block text-sm font-medium text-gray-700 mb-3">Pilihan Jawaban</label>
                 @foreach (['a', 'b', 'c', 'd', 'e'] as $index => $option)

@@ -38,7 +38,7 @@
             @foreach ($soals as $soal)
                 <tr>
                     <td class="text-center">{{ $loop->iteration }}</td>
-                    <td>{{ Str::limit($soal->soal, 30, '...') }}</td>
+                    <td>{{ Str::limit(Str::of($soal->soal)->stripTags(), 30, '...') }}</td>
                     <td class="{{ $soal->kategori->byPoin ? 'text-center' : '' }}">
                         {{ !$soal->kategori->byPoin ? Str::limit($soal->jawaban->where('benar', true)->first()->jawaban, 30, '...') : '-' }}
                     </td>

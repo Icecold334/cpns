@@ -15,11 +15,33 @@ use App\Http\Controllers\{
 };
 use App\Models\Pengaturan;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 Auth::routes(['verify' => true]);
-Route::get('/wind', fn() => view('wind',));
 Route::get('/', fn() => view('home.index', ['option' => Pengaturan::first()]));
 Route::get('panel', [PanelController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::post('panel', function () {
+    function prosesGambarBase64($htmlInput)
+    {
+        // Cari semua tag <img> dengan src berisi data Base64
+        preg_match_all('/<img.*?src="data:image\/(.*?);base64,(.*?)".*?>/i', $htmlInput, $matches);
+
+        foreach ($matches[2] as $key => $base64Data) {
+            $imgData = base64_decode($base64Data);
+            $fileName = uniqid() . '.jpg';
+            $path = Storage::put("public/uploads/{$fileName}", $imgData);
+            // URL untuk disimpan di database
+            $url = asset('storage/uploads/' . $fileName);
+            $htmlInput = str_replace($matches[0][$key], '<img src="' . $url . '" contenteditable="false" draggable="true"
+            class="">', $htmlInput);
+        }
+
+        return $htmlInput;
+    }
+    $text = request()->soal;
+    $processedHtml = prosesGambarBase64($text);
+    return $processedHtml;
+});
 Route::resource('guru', GuruController::class)->middleware(['admin', 'verified']);
 Route::resource('siswa', SiswaController::class)->middleware(['guru', 'verified']);
 Route::prefix('paket')->middleware(['auth', 'verified'])->group(function () {

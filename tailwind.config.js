@@ -203,6 +203,7 @@ export default {
     },
 
     plugins: [
+        require("@tailwindcss/typography"),
         require("flowbite-typography"),
         forms,
         require("flowbite/plugin")({

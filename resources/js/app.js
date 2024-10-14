@@ -57,7 +57,7 @@ window.table = function (selector) {
     });
 };
 
-window.editor = function (elementId) {
+window.editor = function (elementId, content) {
     window.addEventListener("load", function () {
         const FontSizeTextStyle = TextStyle.extend({
             addAttributes() {
@@ -96,7 +96,7 @@ window.editor = function (elementId) {
                 FontSizeTextStyle,
                 FontFamily,
             ],
-            content: "",
+            content: content,
             editorProps: {
                 attributes: {
                     class: "format lg:format-lg dark:format-invert focus:outline-none format-blue max-w-none",
@@ -201,19 +201,6 @@ window.editor = function (elementId) {
                 reader.readAsDataURL(file); // Baca file sebagai data URL
             }
         });
-
-        document
-            .getElementById(elementId + "addVideoButton")
-            .addEventListener("click", () => {
-                const url = window.prompt("Masukkan Link YouTube:", "");
-                if (url) {
-                    editor.commands.setYoutubeVideo({
-                        src: url,
-                        width: 640,
-                        height: 480,
-                    });
-                }
-            });
 
         // typography dropdown
         const typographyDropdown = FlowbiteInstances.getInstance(

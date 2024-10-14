@@ -117,11 +117,10 @@ class CreateSoal extends Component
     public function save()
     {
         $this->validate();
-        dd($this->soal);
         $soal = new Soal();
         $soal->paket_id = $this->paket->id;
         $soal->kategori_id = $this->kategori_id;
-        $soal->soal = $this->soal;
+        $soal->soal = $this->prosesGambarBase64($this->soal);
         $soal->img = $this->img != null ? str_replace('public', 'storage', $this->img->store('public/soal')) : null;
         $soal->save();
         $jawabanData = [
@@ -180,6 +179,24 @@ class CreateSoal extends Component
     public function isi()
     {
         return $this->kategori = $this->kategori_id != null ? Kategori::find($this->kategori_id) : null;
+    }
+
+    private function prosesGambarBase64($htmlInput)
+    {
+        // Cari semua tag <img> dengan src berisi data Base64
+        preg_match_all('/<img.*?src="data:image\/(.*?);base64,(.*?)".*?>/i', $htmlInput, $matches);
+
+        foreach ($matches[2] as $key => $base64Data) {
+            $imgData = base64_decode($base64Data);
+            $fileName = uniqid() . '.jpg';
+            $path = Storage::put("public/soal/{$fileName}", $imgData);
+            // URL untuk disimpan di database
+            $url = asset('storage/soal/' . $fileName);
+            $htmlInput = str_replace($matches[0][$key], '<img src="' . $url . '" contenteditable="false" draggable="true"
+            class="">', $htmlInput);
+        }
+
+        return $htmlInput;
     }
 
     public function render()

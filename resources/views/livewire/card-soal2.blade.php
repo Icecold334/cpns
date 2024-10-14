@@ -6,9 +6,13 @@
             {{ $paket->nama }}</div>
     </ul>
     <div>
-        <div class="px-4 pb-4 bg-white rounded-lg  dark:bg-gray-800 flex flex-wrap justify-center">
-            <div class="inline mt-2 text-white bg-primary-950   font-bold rounded-lg text-4xl  px-5 py-2.5 me-2 mb-2 ">
+        <div class="px-4 pb-4 bg-white rounded-lg  dark:bg-gray-800 flex flex-col justify-center items-center">
+            <div
+                class="block mt-2 text-white bg-primary-950 font-bold rounded-lg text-4xl px-5 py-2.5 me-2 mb-2 max-w-xs">
                 {{ $durasi }}
+            </div>
+            <div class="mt-2 text-gray-800 text-center prose rounded-lg text-2xl px-5 py-2.5 me-2 mb-2 max-w-xs">
+                {!! $soal->soal !!}
             </div>
 
             <ul class="grid w-full gap-6 grid-cols-1 my-4 px-6 sm:px-10 md:px-28 lg:px-52 xl:px-96 ">
