@@ -3,23 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Models\{Soal, Hasil, Paket, Respon, Jawaban};
-use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\StorePaketRequest;
-use App\Http\Requests\UpdatePaketRequest;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Gate;
+use App\Http\Requests\{StorePaketRequest, UpdatePaketRequest};
+use Illuminate\Support\Facades\{Session, Gate, Auth};
 
 class PaketController extends Controller
 {
+    public function list(Paket $paket)
+    {
+        return view('paket.list', ['paket' => $paket, 'title' => 'Daftar Hasil Siswa']);
+    }
+
+
     public function publish(Paket $paket)
     {
-        $test = $paket->update(['status' => true]);
-        return redirect()->route('paket.soal.index', ['paket' => $paket->uuid])->with('icon', 'success')->with('title', 'Berhasil')->with('message', 'Paket soal berhasil dipublikasikan!');
+        Gate::allowIf(Auth::user()->role != 3);
+        $paket->update(['status' => !$paket->status]);
+        return redirect()->route('paket.soal.index', ['paket' => $paket->uuid])->with('icon', 'success')->with('title', 'Berhasil')->with('message', $paket->status ? 'Paket soal berhasil dipublikasikan!' : 'Paket soal berhasil diunpublish!');
     }
 
 
     public function testIndex(Paket $paket)
     {
+        Gate::allowIf($paket->hasil->first()->nilai == null);
         Session::forget('time');
         Session::forget('last_no');
         return view('paket.testIndex', [
@@ -117,6 +122,7 @@ class PaketController extends Controller
 
     public function test(Paket $paket)
     {
+        Gate::allowIf($paket->hasil->first()->nilai == null);
         $user = Auth::user();
         $existingHasil = Hasil::where('paket_id', $paket->id)->where('user_id', $user->id)->first();
         if (!$existingHasil) {

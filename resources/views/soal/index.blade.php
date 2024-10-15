@@ -20,6 +20,17 @@
                 @endif
             </div>
         @endcan
+        @can('unpublish', [App\Models\Soal::class, $paket])
+            <div class="hidden xl:flex items-center space-x-4 text-3xl sm:text-4xl md:text-5xl">
+
+
+                @if ($paket->soal->count() > 0)
+                    <x-button :button="true" id="unpublish">
+                        <i class="fa-solid fa-angles-down"></i> UnPublikasikan Paket Soal
+                    </x-button>
+                @endif
+            </div>
+        @endcan
     </div>
 
     <x-table id="soals">
@@ -30,7 +41,9 @@
                 <th class="text-center">Jawaban <i class="fa-solid fa-sort"></i></th>
                 <th class="text-center">Kategori <i class="fa-solid fa-sort"></i></th>
                 @can('guru')
-                    <th class="text-center"></th>
+                    @can('create', [App\Models\Soal::class, $paket])
+                        <th class="text-center"></th>
+                    @endcan
                 @endcan
             </tr>
         </thead>
@@ -44,23 +57,27 @@
                     </td>
                     <td>{{ $soal->kategori->deskripsi }}</td>
                     @can('guru')
-                        <td class="text-center">
-                            <x-badge :badge="false" class="me-3"
-                                href="{{ route('paket.soal.edit', ['paket' => $soal->paket->uuid, 'soal' => $soal->uuid]) }}"
-                                color="warning">
-                                <i class="fa-solid fa-pen-to-square"></i>
-                            </x-badge>
+                        @can('create', [App\Models\Soal::class, $paket])
+                            <td class="text-center">
 
-                            <x-badge :badge="true" color="danger" id="delete{{ $soal->uuid }}">
-                                <i class="fa-solid fa-trash"></i>
-                            </x-badge>
-                            <form id="formDel{{ $soal->uuid }}"
-                                action="{{ route('paket.soal.destroy', ['paket' => $paket->uuid, 'soal' => $soal->uuid]) }}"
-                                method="POST" style="display: none;">
-                                @csrf
-                                @method('DELETE')
-                            </form>
-                        </td>
+
+                                <x-badge :badge="false" class="me-3"
+                                    href="{{ route('paket.soal.edit', ['paket' => $soal->paket->uuid, 'soal' => $soal->uuid]) }}"
+                                    color="warning">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </x-badge>
+
+                                <x-badge :badge="true" color="danger" id="delete{{ $soal->uuid }}">
+                                    <i class="fa-solid fa-trash"></i>
+                                </x-badge>
+                                <form id="formDel{{ $soal->uuid }}"
+                                    action="{{ route('paket.soal.destroy', ['paket' => $paket->uuid, 'soal' => $soal->uuid]) }}"
+                                    method="POST" style="display: none;">
+                                    @csrf
+                                    @method('DELETE')
+                                </form>
+                            </td>
+                        @endcan
                     @endcan
                 </tr>
             @endforeach
@@ -74,6 +91,21 @@
                 Swal.fire({
                     title: "Apa Kamu Yakin?",
                     text: "Paket soal yang sudah dipublikasikan tidak bisa diubah",
+                    icon: "question",
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya',
+                    confirmButtonColor: "{{ App\Models\Pengaturan::first()->primary }}",
+                    cancelButtonText: 'Tidak'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "{{ route('publish', ['paket' => $paket->uuid]) }}";
+                    }
+                });
+            });
+            $('#unpublish').click(() => {
+                Swal.fire({
+                    title: "Apa Kamu Yakin?",
+                    text: "Paket soal yang sudah diun-publikasikan tidak bisa dilihat siswa",
                     icon: "question",
                     showCancelButton: true,
                     confirmButtonText: 'Ya',

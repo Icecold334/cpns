@@ -39,26 +39,22 @@
             @if ($jawaban && $nomor != $soals->count())
                 <x-button :button="true" wire:loading.class="cursor-not-allowed" class="mb-4" wire:click="after"
                     :disabled="$nomor == $soals->count()">Soal Berikutnya</x-button>
-                {{-- <button class="btn btn-primary mt-3 ms-3 {{ $nomor == $soals->count() ? 'disabled' : '' }}"
-                    type="button" wire:click="after({{ $nomor }})" wire:loading.class="disabled">Soal
-                    Berikutnya</button> --}}
             @endif
 
 
             <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
                 <div class="bg-primary-950 h-2.5 rounded-full" style="width: {{ $persen }}%"></div>
             </div>
-            @if (!($durasi == 0 && $nomor == $paket->soal->count()))
+            {{-- @if (!($durasi == 0 && $nomor == $paket->soal->count()))
                 <div wire:poll.1000ms="decrement"></div>
             @else
                 <div wire:init="decrement"></div>
-            @endif
+            @endif --}}
 
             @push('scripts')
                 <script>
                     document.addEventListener('redirect-with-delay', function(event) {
 
-                        // Ambil URL dan delay dari event yang dikirim oleh Livewire
                         let url = event.detail[0].url;
 
                         let timerInterval;
@@ -78,27 +74,11 @@
                             // window.location = "{{ route('ujian.selesai', ['paket' => $soal->paket->uuid]) }}";
                             window.location = url;
                         });
-                        // // Set delay untuk redirect
-                        // setTimeout(function() {
-                        //     window.location.href = url;
-                        // }, 1000);
                     }, {
                         once: true
                     });
                 </script>
             @endpush
-
-            {{-- 
-            @foreach ($shuffledJawaban as $jawab)
-                <div class="block">
-                    <input class="btn-check" wire:loading.attr="disabled" type="radio" name="jawab"
-                        value="{{ $jawab->id }}" id="jawaban{{ intToAlphabet($jawab->row, true) }}"
-                        wire:model.live="jawaban" wire:key="jawab-{{ $jawab->id }}">
-                    <label class="btn btn-outline-primary w-100" for="jawaban{{ intToAlphabet($jawab->row, true) }}">
-                        {{ $jawab->jawaban }}
-                    </label>
-                </div>
-            @endforeach --}}
         </div>
     </div>
 </div>

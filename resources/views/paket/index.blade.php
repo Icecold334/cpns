@@ -49,6 +49,10 @@
                                 class="inline me-3">
                                 Rincian
                             </x-badge>
+                            <x-badge :badge="false" href="/paket/{{ $paket->uuid }}/list" color="secondary"
+                                class="inline me-3">
+                                Hasil Siswa
+                            </x-badge>
                             <x-badge :badge="true" color="danger" id="delete{{ $paket->id }}">Hapus</x-badge>
                             <form id="delete-form-{{ $paket->id }}"
                                 action="{{ route('paket.destroy', ['paket' => $paket->uuid]) }}" method="POST"

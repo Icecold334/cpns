@@ -73,6 +73,7 @@ class CreateSoal extends Component
 
     public function update()
     {
+
         $this->validate();
         if ($this->img != null && !is_string($this->img)) {
             Storage::delete(str_replace('storage', 'public', $this->soal_array->img));
@@ -81,7 +82,7 @@ class CreateSoal extends Component
             $img = $this->soal_array->img;
         }
         $this->soal_array->update([
-            'soal' => $this->soal,
+            'soal' => $this->prosesGambarBase64($this->soal),
             'kategori_id' => $this->kategori_id,
             'img' => $img
         ]);
