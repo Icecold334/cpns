@@ -14,7 +14,7 @@
         <ul
             class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 rounded-t-lg bg-gray-200 dark:border-gray-700 dark:text-gray-400 dark:bg-gray-800">
             <div
-                class="inline-block text-xl font-semibold p-4 text-gray-900 rounded-ss-lg hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-blue-500">
+                class="inline-block text-xl font-semibold p-4 text-gray-900 rounded-ss-lg  dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-blue-500">
                 Informasi Ujian</div>
         </ul>
         <div>
@@ -36,7 +36,7 @@
         <ul
             class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 rounded-t-lg bg-gray-200 dark:border-gray-700 dark:text-gray-400 dark:bg-gray-800">
             <div
-                class="inline-block text-xl font-semibold p-4 text-gray-900 rounded-ss-lg hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-blue-500">
+                class="inline-block text-xl font-semibold p-4 text-gray-900 rounded-ss-lg  dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-blue-500">
                 Informasi Peserta</div>
         </ul>
         <div>

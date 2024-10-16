@@ -10,6 +10,7 @@ class PaketController extends Controller
 {
     public function list(Paket $paket)
     {
+
         return view('paket.list', ['paket' => $paket, 'title' => 'Daftar Hasil Siswa']);
     }
 
@@ -24,7 +25,9 @@ class PaketController extends Controller
 
     public function testIndex(Paket $paket)
     {
-        Gate::allowIf($paket->hasil->first()->nilai == null);
+
+        Gate::allowIf($paket->hasil);
+        // Gate::allowIf(!$paket->hasil || $paket->hasil->first()->nilai == null);
         Session::forget('time');
         Session::forget('last_no');
         return view('paket.testIndex', [
@@ -39,7 +42,7 @@ class PaketController extends Controller
             'title' => 'Hasil ' . $paket->nama,
             'paket' => $paket,
             'total' => floor(($paket->hasil->pluck('nilai')->sum() / ($paket->hasil->pluck('nilai')->count() * 100)) * 100),
-            'hasils' => $paket->hasil,
+            'hasils' => $paket->hasil->where('user_id', Auth::user()->id),
             'user' => Auth::user(),
         ]);
     }
@@ -122,7 +125,7 @@ class PaketController extends Controller
 
     public function test(Paket $paket)
     {
-        Gate::allowIf($paket->hasil->first()->nilai == null);
+        // Gate::allowIf($paket->hasil->first()->nilai == null);
         $user = Auth::user();
         $existingHasil = Hasil::where('paket_id', $paket->id)->where('user_id', $user->id)->first();
         if (!$existingHasil) {

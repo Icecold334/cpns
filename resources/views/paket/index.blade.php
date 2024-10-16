@@ -44,15 +44,17 @@
                                 <i class="fa-solid {{ $paket->status ? 'fa-eye' : 'fa-eye-slash' }}"></i>
                             </x-badge>
                         </td>
-                        <td>
+                        <td class="text-left">
                             <x-badge :badge="false" href="/paket/{{ $paket->uuid }}/soal" color="info"
                                 class="inline me-3">
                                 Rincian
                             </x-badge>
-                            <x-badge :badge="false" href="/paket/{{ $paket->uuid }}/list" color="secondary"
-                                class="inline me-3">
-                                Hasil Siswa
-                            </x-badge>
+                            @if ($paket->status)
+                                <x-badge :badge="false" href="/paket/{{ $paket->uuid }}/list" color="secondary"
+                                    class="inline me-3">
+                                    Hasil Ujian
+                                </x-badge>
+                            @endif
                             <x-badge :badge="true" color="danger" id="delete{{ $paket->id }}">Hapus</x-badge>
                             <form id="delete-form-{{ $paket->id }}"
                                 action="{{ route('paket.destroy', ['paket' => $paket->uuid]) }}" method="POST"
