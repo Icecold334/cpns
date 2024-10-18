@@ -2,7 +2,7 @@
     <div id="accordion-collapse" class="text-gray-900 mb-3" data-accordion="collapse">
         <h2 id="accordion-collapse-heading-1">
             <button type="button"
-                class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border  border-gray-200 rounded-t-xl focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 gap-3"
+                class="flex items-center justify-between bg-gray-200 w-full p-5 font-medium rtl:text-right text-gray-900 border  border-gray-200 rounded-t-xl  dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-800 gap-3"
                 data-accordion-target="#accordion-collapse-body-1" aria-expanded="true"
                 aria-controls="accordion-collapse-body-1">
                 <span class="font-bold">Informasi Ujian</span>
@@ -18,14 +18,14 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 md:gap-6 justify-around">
                     <div class="w-full mb-3 xl:mb-0 flex">
                         <div class="border-[0.1rem] border-gray-300 rounded-md p-4 h-full w-full flex justify-center">
-                            <x-table class="w-1/2">
+                            <x-table class=" text-gray-800">
                                 <tr>
-                                    <td class="font-bold">Nama Peserta</td>
-                                    <td class="font-semibold">{{ Auth::user()->name }}</td>
+                                    <td class=" px-7 font-bold">Nama Peserta</td>
+                                    <td class=" px-7 font-semibold">{{ Auth::user()->name }}</td>
                                 </tr>
                                 <tr>
-                                    <td class="font-bold">E-mail</td>
-                                    <td class="font-semibold">{{ Auth::user()->email }}</td>
+                                    <td class=" px-7 font-bold">E-mail</td>
+                                    <td class=" px-7 font-semibold">{{ Auth::user()->email }}</td>
                                 </tr>
                             </x-table>
                         </div>

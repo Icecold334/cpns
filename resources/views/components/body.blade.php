@@ -22,15 +22,20 @@
 
 </head>
 
-<body>
-    <x-navbar />
+<body
+    class="{{ request()->routeIs('play') && collect(json_decode($paket, true))->get('flat') == 0 ? 'bg-gradient-to-b from-gray-400  to-gray-300' : '' }} min-h-svh ">
     @if (!request()->routeIs('play'))
+        <x-navbar />
         <x-sidebar />
+    @elseif(collect(json_decode($paket, true))->get('flat') == 1)
+        <x-navbar />
     @endif
-    <div class="p-4 {{ request()->routeIs('play') ? '' : 'sm:ml-64' }}">
-        <div class="p-4  mt-14">
-            {{ $slot }}
-        </div>
+
+    <div
+        class="{{ request()->routeIs('play') ? ($paket && collect(json_decode($paket, true))->get('flat') == 1 ? 'p-8 mt-14' : '') : 'sm:ml-64 p-8 mt-14' }}">
+        {{-- <div class="p-4  "> --}}
+        {{ $slot }}
+        {{-- </div> --}}
     </div>
     @stack('html')
 </body>

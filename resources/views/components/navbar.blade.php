@@ -25,37 +25,45 @@
                         </a>
                     @endif
                 </div>
-                <div class="flex items-center">
-                    <div class="flex items-center ms-3">
-                        <div>
-                            <button type="button"
-                                class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
-                                aria-expanded="false" data-dropdown-toggle="dropdown-user">
-                                <span class="sr-only">Open user menu</span>
-                                <img class="w-8 h-8 rounded-full"
-                                    src="{{ asset(Auth::user()->img ?? 'img/undraw_profile.svg') }}" alt="user photo">
-                            </button>
-                        </div>
-                        <div class="z-50 hidden  my-4 text-base list-none bg-primary-950 divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600"
-                            id="dropdown-user">
-                            <div class="px-4 py-3" role="none">
-                                <p class="text-sm text-white dark:text-white" role="none">
-                                    {{ Auth::user()->name }}
-                                </p>
-                                <p class="text-sm font-medium text-white truncate dark:text-white" role="none">
-                                    {{ Auth::user()->email }}
-                                </p>
+                @if (!request()->routeIs('play'))
+                    <div class="flex items-center">
+                        <div class="flex items-center ms-3">
+                            <div>
+                                <button type="button"
+                                    class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+                                    aria-expanded="false" data-dropdown-toggle="dropdown-user">
+                                    <span class="sr-only">Open user menu</span>
+                                    <img class="w-8 h-8 rounded-full"
+                                        src="{{ asset(Auth::user()->img ?? 'img/undraw_profile.svg') }}"
+                                        alt="user photo">
+                                </button>
                             </div>
-                            <ul class="py-1" role="none">
-                                <li>
-                                    <a href="/logout"
-                                        class="block px-4 py-2 text-sm text-white hover:bg-gray-100 hover:text-primary-950 dark:text-white dark:hover:bg-gray-600 dark:hover:text-white"
-                                        role="menuitem">Keluar</a>
-                                </li>
-                            </ul>
+                            <div class="z-50 hidden  my-4 text-base list-none bg-primary-950 divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600"
+                                id="dropdown-user">
+                                <div class="px-4 py-3" role="none">
+                                    <p class="text-sm text-white dark:text-white" role="none">
+                                        {{ Auth::user()->name }}
+                                    </p>
+                                    <p class="text-sm font-medium text-white truncate dark:text-white" role="none">
+                                        {{ Auth::user()->email }}
+                                    </p>
+                                </div>
+                                <ul class="py-1" role="none">
+                                    <li>
+                                        <a href="/profil"
+                                            class="block px-4 py-2 text-sm text-white hover:bg-gray-100 hover:text-primary-950 dark:text-white dark:hover:bg-gray-600 dark:hover:text-white"
+                                            role="menuitem">Profil</a>
+                                    </li>
+                                    <li>
+                                        <a href="/logout"
+                                            class="block px-4 py-2 text-sm text-white hover:bg-gray-100 hover:text-primary-950 dark:text-white dark:hover:bg-gray-600 dark:hover:text-white"
+                                            role="menuitem">Keluar</a>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endif
             </div>
         </div>
     </nav>
