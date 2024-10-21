@@ -46,11 +46,11 @@
             <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
                 <div class="bg-primary-950 h-2.5 rounded-full " style="width: {{ $persen }}%"></div>
             </div>
-            {{-- @if (!($durasi == 0 && $nomor == $paket->soal->count()))
+            @if (!($durasi == 0 && $nomor == $paket->soal->count()))
                 <div wire:poll.1000ms="decrement"></div>
             @else
                 <div wire:init="decrement"></div>
-            @endif --}}
+            @endif
 
             @push('scripts')
                 <script>

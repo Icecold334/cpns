@@ -56,7 +56,7 @@
                     @foreach ($paket->base->kategori as $kategori)
                         <tr class="text-xl font-medium text-gray-900">
                             <td style="width: 30%">Jumlah Soal {{ $kategori->nama }}</td>
-                            <td> {{ $kategori->soal->count() }} </td>
+                            <td> {{ $kategori->soal->where('paket_id', $paket->id)->count() }} </td>
                         </tr>
                     @endforeach
                 </x-table>
