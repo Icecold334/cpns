@@ -7,6 +7,7 @@ use Livewire\Component;
 class PerSoal extends Component
 {
     public $paket;
+    public $result;
     public $soals;
     public function render()
     {

@@ -43,4 +43,8 @@ class Paket extends Model
     {
         return $this->hasMany(Hasil::class, 'paket_id');
     }
+    public function result(): HasMany
+    {
+        return $this->hasMany(Result::class, 'paket_id');
+    }
 }

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Session;
 class CanvasSoal extends Component
 {
     public $soals;
+    public $result;
     public $show = false;
     public $activeSoalId;
     public $soal_last;
@@ -54,7 +55,7 @@ class CanvasSoal extends Component
 
     private function loadJawaban()
     {
-        $this->jawaban = Respon::where('user_id', Auth::id())
+        $this->jawaban = Respon::where('user_id', Auth::id())->where('result_id', $this->result->id)
             ->pluck('soal_id')
             ->toArray();
     }

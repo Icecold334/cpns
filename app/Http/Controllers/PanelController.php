@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Paket;
 use Illuminate\Http\Request;
 
 class PanelController extends Controller
@@ -9,6 +10,7 @@ class PanelController extends Controller
     // index
     public function index()
     {
-        return view('panel.index', ['title' => 'Dashboard ']);
+        $pakets = Paket::where('status', true)->get();
+        return view('panel.index', ['title' => 'Dashboard ', 'pakets' => $pakets]);
     }
 }

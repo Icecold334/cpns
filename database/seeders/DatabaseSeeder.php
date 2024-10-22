@@ -41,7 +41,7 @@ class DatabaseSeeder extends Seeder
 
 
         // Buat paket soal
-        $paket = Paket::factory()->create(['nama' => 'Paket Soal A', 'durasi' => 3600, 'user_id' => 2, 'base_id' => 1]);
+        $paket = Paket::factory()->create(['nama' => 'Paket Soal A', 'durasi' => 3600, 'user_id' => 2, 'base_id' => 1, 'status' => 1]);
         $paket2 = Paket::factory()->create(['nama' => 'Paket Soal B', 'durasi' => 2400, 'user_id' => 2, 'base_id' => 1]);
         Paket::factory()->create(['nama' => 'Paket Soal C', 'durasi' => 5, 'user_id' => 2, 'base_id' => 2, 'status' => 1, 'flat' => false]);
         Soal::factory()->create(['uuid' => fake()->uuid(), 'paket_id' => 3, 'kategori_id' => 4, 'soal' => 'asdads']);

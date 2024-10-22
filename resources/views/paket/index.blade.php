@@ -104,7 +104,9 @@
                                 </td>
                             @else
                                 <td>
-                                    <x-badge :badge="false" href="/paket/hasil/{{ $paket->uuid }}" color="info">
+                                    <x-badge :badge="false"
+                                        href="{{ route('hasil', ['paket' => $paket->uuid, 'result' => $paket->result->last()->id]) }}"
+                                        color="info">
                                         <i class="fa-solid fa-circle-info"></i> Hasil Ujian
 
                                     </x-badge>

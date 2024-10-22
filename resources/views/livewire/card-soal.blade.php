@@ -52,7 +52,6 @@
                 wire:loading.attr="disabled" wire:loading.class.remove="bg-primary-950"
                 wire:loading.class="bg-primary-500 cursor-not-allowed" id="selesai">Selesai</x-button></div>
     </div>
-
     @push('scripts')
         <script>
             document.addEventListener('selesai', function(e) {
@@ -70,7 +69,8 @@
                         clearInterval(timerInterval);
                     }
                 }).then((result) => {
-                    window.location = "{{ route('ujian.selesai', ['paket' => $soal->paket->uuid]) }}";
+                    window.location =
+                        "{{ route('ujian.selesai', ['paket' => $soal->paket->uuid, 'result' => $result->id]) }}";
                 });
             }, {
                 once: true
@@ -87,7 +87,8 @@
                     cancelButtonText: 'Batal'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location = "{{ route('ujian.selesai', ['paket' => $soal->paket->uuid]) }}";
+                        window.location =
+                            "{{ route('ujian.selesai', ['paket' => $soal->paket->uuid, 'result' => $result->id]) }}";
                     }
                 });
             });

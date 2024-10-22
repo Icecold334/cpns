@@ -39,7 +39,8 @@
                     <div class="w-full mb-3 xl:mb-0 flex">
                         <div
                             class="border-[0.1rem] border-gray-300 rounded-md p-4 h-full w-full flex items-center justify-center">
-                            <livewire:card-timer :paket="$paket" :durasi="$paket->durasi"></livewire:card-timer>
+                            <livewire:card-timer :paket="$paket" :durasi="$paket->durasi"
+                                :result="$result"></livewire:card-timer>
                         </div>
 
                     </div>
@@ -51,11 +52,11 @@
 
     <div class="flex">
         <div class="border-[0.15rem] w-full rounded-md p-5">
-            <livewire:card-soal :soals="$soals"></livewire:card-soal>
+            <livewire:card-soal :soals="$soals" :result="$result"></livewire:card-soal>
         </div>
     </div>
     @push('html')
-        <livewire:canvas-soal :soals="$soals"></livewire:canvas-soal>
+        <livewire:canvas-soal :soals="$soals" :result="$result"></livewire:canvas-soal>
     @endpush
     @push('play')
         <button data-drawer-target="drawer-navigation" data-drawer-show="drawer-navigation"

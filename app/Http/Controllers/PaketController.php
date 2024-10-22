@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{Soal, Hasil, Paket, Respon, Jawaban};
+use App\Models\{Soal, Hasil, Paket, Respon, Jawaban, Result};
 use App\Http\Requests\{StorePaketRequest, UpdatePaketRequest};
 use Illuminate\Support\Facades\{Session, Gate, Auth};
 
@@ -36,18 +36,18 @@ class PaketController extends Controller
             'user' => Auth::user(),
         ]);
     }
-    public function hasil(Paket $paket)
+    public function hasil(Paket $paket, Result $result)
     {
         return view('paket.hasil', [
             'title' => 'Hasil ' . $paket->nama,
             'paket' => $paket,
             'total' => floor(($paket->hasil->pluck('nilai')->sum() / ($paket->hasil->pluck('nilai')->count() * 100)) * 100),
-            'hasils' => $paket->hasil->where('user_id', Auth::user()->id),
+            'hasils' => $paket->hasil->where('user_id', Auth::user()->id)->where('result_id', $result->id),
             'user' => Auth::user(),
         ]);
     }
 
-    public function selesai(Paket $paket)
+    public function selesai(Paket $paket, Result $result)
     {
         Session::forget('time');
         Session::forget('last_no');
@@ -55,8 +55,8 @@ class PaketController extends Controller
         $responses = $this->getUserResponses($userId, $paket);
         $scores = $this->calculateScores($responses);
         $totalNilai = $this->calculateTotalNilai($paket, $scores);
-        $this->updateHasil($paket, $totalNilai);
-        return redirect()->route('hasil', ['paket' => $paket->uuid]);
+        $this->updateHasil($paket, $totalNilai, $result);
+        return redirect()->route('hasil', ['paket' => $paket->uuid, 'result' => $result->id]);
     }
     private function getUserResponses($userId, Paket $paket)
     {
@@ -108,7 +108,7 @@ class PaketController extends Controller
         return $totalNilai;
         // return (int)floor(((array_sum($totalNilai)) / 300) * 100);
     }
-    private function updateHasil(Paket $paket, $totalNilai)
+    private function updateHasil(Paket $paket, $totalNilai, $result)
     {
         $kategoris = [];
         foreach ($paket->base->kategori as $key => $kategori) {
@@ -120,6 +120,8 @@ class PaketController extends Controller
                 ->where('kategori_id', $kategori->id)
                 ->update(['nilai' => $totalNilai[$kategori->id] ?? 0, 'completed_at' => now()]);
         }
+        $nilai = ((int)floor(($paket->hasil->pluck('nilai')->sum() / ($paket->hasil->pluck('nilai')->count() * 100)) * 100));
+        $result->nilai = $nilai;
     }
 
 
@@ -128,24 +130,28 @@ class PaketController extends Controller
         // Gate::allowIf($paket->hasil->first()->nilai == null);
         $user = Auth::user();
         $existingHasil = Hasil::where('paket_id', $paket->id)->where('user_id', $user->id)->first();
-        if (!$existingHasil) {
+        $result = Result::where('paket_id', $paket->id)->where('user_id', $user->id)->where('nilai', null)->get()->last();
+        if (!$result) {
             $soalsSorted = $this->getShuffledSoalByPaket($paket);
             $urutanString = implode(',', $soalsSorted->pluck('id')->toArray());
+            $result = Result::create(['user_id' => $user->id, 'paket_id' => $paket->id, 'paket' => $paket->nama, 'urutan' => $urutanString]);
             foreach ($paket->base->kategori as $kategori) {
                 Hasil::create([
                     'user_id' => $user->id,
                     'paket_id' => $paket->id,
+                    'result_id' => $result->id,
                     'kategori_id' => $kategori->id,
                     'urutan' => $urutanString,
                 ]);
             };
         } else {
-            $urutanArray = explode(',', $existingHasil->urutan);
+            $urutanArray = explode(',', $existingHasil->first()->urutan);
             $soalsSorted = $this->sortSoalsByOrder($urutanArray);
         }
         return view('paket.test', [
             'title' => $paket->nama,
             'paket' => $paket,
+            'result' => $result,
             'user' => $user,
             'soals' => $soalsSorted,
         ]);

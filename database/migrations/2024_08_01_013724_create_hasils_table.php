@@ -15,6 +15,7 @@ return new class extends Migration
         Schema::create('hasils', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('result_id')->constrained('results')->onDelete('cascade');
             $table->foreignId('paket_id')->constrained('pakets')->onDelete('cascade');
             $table->foreignId('kategori_id')->nullable()->constrained('kategoris')->onDelete('cascade');
             $table->string('urutan');

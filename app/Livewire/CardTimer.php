@@ -11,11 +11,13 @@ class CardTimer extends Component
     public $timeRemaining;
     public $durasi;
     public $paket;
+    public $result;
 
 
     public function mount()
     {
         $user = $this->paket->hasil->where('user_id', Auth::id())->first();
+        $user = $this->paket->result->where('user_id', Auth::id())->last();
         $startTime = $user->start_time;
         $endTime = $user->end_time;
         if ($startTime && $endTime) {
@@ -25,11 +27,11 @@ class CardTimer extends Component
             if ($current->between($start, $end)) {
                 $this->timeRemaining = abs((int)$end->diffInSeconds($current));
             } else {
-                redirect()->route('ujian.selesai', ['paket' => $this->paket->uuid]);
+                redirect()->route('ujian.selesai', ['paket' => $this->paket->uuid, 'result' => $this->result->id]);
             }
         } else {
             $this->timeRemaining = $this->durasi;
-            $user = $this->paket->hasil->where('user_id', Auth::id())->first();
+            $user = $this->paket->result->where('user_id', Auth::id())->last();
             $user->update([
                 'start_time' => now(),
                 'end_time' => Carbon::parse(now())->addSeconds($this->durasi)
@@ -43,7 +45,7 @@ class CardTimer extends Component
             $this->timeRemaining--;
         } else {
             $this->dispatch('selesai');
-            redirect()->route('ujian.selesai', ['paket' => $this->paket->uuid]);
+            redirect()->route('ujian.selesai', ['paket' => $this->paket->uuid, 'result' => $this->result->id]);
         }
     }
 
