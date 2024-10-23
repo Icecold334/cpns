@@ -26,27 +26,36 @@ class CardSoal2 extends Component
     public $nomor = 1;
     public function mount()
     {
-
         $this->durasi = Session::get('time') ?? $this->paket->durasi;
         $this->loadCurrentSoal();
         $this->loadStatus();
     }
+    // public function loadStatus()
+    // {
+    //     $this->total = $this->paket->soal->count();
+    //     $this->terjawab = count(Respon::where('user_id', Auth::user()->id)
+    //         ->where('result_id', $this->result->id)
+    //         ->whereIn('soal_id', $this->paket->soal->pluck('id')->toArray())
+    //         ->pluck('soal_id')
+    //         ->toArray());
+    //     $this->belum = $this->total - $this->terjawab;
+    //     $this->persen = (($this->nomor - 1) / $this->total) * 100;
+    //     // dump([$this->total, $this->terjawab, $this->belum]);
+    // }
     public function loadStatus()
     {
-        // Menghitung total soal dalam paket
         $this->total = $this->paket->soal->count();
-
-        // Mendapatkan array ID soal yang telah dijawab oleh user
         $this->terjawab = count(Respon::where('user_id', Auth::user()->id)
             ->where('result_id', $this->result->id)
             ->whereIn('soal_id', $this->paket->soal->pluck('id')->toArray())
             ->pluck('soal_id')
             ->toArray());
-
-        // Menghitung soal yang belum dijawab
         $this->belum = $this->total - $this->terjawab;
-        $this->persen = (($this->nomor - 1) / $this->total) * 100;
+
+        // Menghitung persen dengan pembatasan 100
+        $this->persen = min((($this->nomor - 1) / $this->total) * 100, 100);
     }
+
 
     private function loadCurrentSoal()
     {

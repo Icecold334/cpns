@@ -2,8 +2,8 @@
     <!-- Header -->
     <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-8">Dashboard Siswa</h2>
 
-    <div class="grid grid-cols-3 gap-10">
-        <div class="xl:col-span-2">
+    <div class="grid md:grid-cols-1 xl:grid-cols-3 gap-10">
+        <div class="md:col-span-1 xl:col-span-2">
             <div
                 class="py-5 px-16 bg-gray-100 border-2 hover:shadow-2xl hover:bg-gray-50 transition duration-200 rounded-lg dark:bg-gray-800 ">
 
@@ -11,7 +11,7 @@
                 <canvas id="nilaiChart"></canvas>
             </div>
         </div>
-        <div class="xl:col-span-1 grid grid-flow-row gap-6">
+        <div class="md:col-span-1 xl:col-span-1 grid grid-flow-row gap-6">
             <x-card-panel>
                 <div class="flex-1">
                     <h5 class="text-xl font-bold text-gray-900 dark:text-white">Paket Ujian Tersedia</h5>
@@ -50,7 +50,6 @@
     </div>
 
 
-
 </div>
 <!-- Chart.js -->
 @push('scripts')
@@ -60,13 +59,13 @@
         const chart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: @json($pakets->pluck('nama')->toArray()),
+                labels: @json($results->pluck('paket')->toArray()),
                 datasets: [{
                     label: 'Nilai',
-                    data: [65, 60, 90, 75, ],
+                    data: @json($results->pluck('nilai')->toArray()),
                     borderColor: '{{ App\Models\Pengaturan::first()->primary }}',
                     fill: false,
-                    tension: 0.2
+                    tension: 0.1
                 }]
             },
             options: {
@@ -75,10 +74,14 @@
                         display: false
                     },
                     y: {
+                        min: -5, // Batas minimum tampilan
+                        max: 110, // Batas maksimum tampilan
                         ticks: {
-                            stepSize: 25
+                            callback: function(value) {
+                                return value; // Menampilkan label sesuai nilai
+                            }
                         },
-                        beginAtZero: true
+                        // beginAtZero: true
                     }
                 },
                 plugins: {

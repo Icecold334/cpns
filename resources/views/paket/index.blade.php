@@ -93,19 +93,19 @@
                                 </x-badge>
                             </td>
                         @else
-                            @if ($paket->hasil->where('user_id', Auth::user()->id)->first()->nilai === null)
+                            {{-- @if ($paket->hasil->where('user_id', Auth::user()->id)->first()->nilai === null) --}}
+                            @if (!($paket->result && $paket->result->last() && $paket->result->last()->nilai !== null))
                                 <td>
                                     <x-badge :badge="false"
                                         href="/paket/test/{{ $paket->uuid }}/{{ $paket->hasil->where('user_id', Auth::user()->id)->first()->start_time != null ? 'play' : '' }}"
                                         color="success">
                                         <i class="fa-solid fa-play"></i>
-                                        {{ $paket->hasil->where('user_id', Auth::user()->id)->first()->start_time === null ? 'Kerjakan Ujian' : 'Lanjutkan Ujian' }}
+                                        {{ !($paket->result && $paket->result->last() && $paket->result->last()->start_time !== null) ? 'Kerjakan Ujian' : 'Lanjutkan Ujian' }}
                                     </x-badge>
                                 </td>
                             @else
                                 <td>
-                                    <x-badge :badge="false"
-                                        href="{{ route('hasil', ['paket' => $paket->uuid, 'result' => $paket->result->last()->id]) }}"
+                                    <x-badge :badge="false" href="{{ route('hasil', ['paket' => $paket->uuid]) }}"
                                         color="info">
                                         <i class="fa-solid fa-circle-info"></i> Hasil Ujian
 

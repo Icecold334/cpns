@@ -42,7 +42,6 @@
                     :disabled="$nomor == $soals->count()">Soal Berikutnya</x-button>
             @endif
 
-
             <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
                 <div class="bg-primary-950 h-2.5 rounded-full " style="width: {{ $persen }}%"></div>
             </div>
@@ -72,7 +71,7 @@
                                 clearInterval(timerInterval);
                             }
                         }).then((result) => {
-                            // window.location = "{{ route('ujian.selesai', ['paket' => $soal->paket->uuid]) }}";
+
                             window.location = url;
                         });
                     }, {

@@ -28,7 +28,7 @@ Route::resource('siswa', SiswaController::class)->middleware(['guru', 'verified'
 Route::prefix('paket')->middleware(['auth', 'verified'])->group(function () {
     Route::get('{paket}/list', [PaketController::class, 'list'])->name('list');
     Route::get('publish/{paket}', [PaketController::class, 'publish'])->middleware('guru')->name('publish');
-    Route::get('hasil/{paket}/{result}', [PaketController::class, 'hasil'])->name('hasil');
+    Route::get('hasil/{paket}/', [PaketController::class, 'hasil'])->name('hasil');
     Route::middleware('siswa')->group(function () {
         Route::get('test/{paket}', [PaketController::class, 'testIndex']);
         Route::get('test/{paket}/play', [PaketController::class, 'test'])->name('play');

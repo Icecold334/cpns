@@ -33,7 +33,7 @@
                     <div class="w-full mb-3 xl:mb-0 flex">
                         <div
                             class="border-[0.1rem] border-gray-300 rounded-md p-4 h-full w-full flex items-center justify-center">
-                            <livewire:card-detail-test :paket="$paket"></livewire:card-detail-test>
+                            <livewire:card-detail-test :paket="$paket" :result="$result"></livewire:card-detail-test>
                         </div>
                     </div>
                     <div class="w-full mb-3 xl:mb-0 flex">

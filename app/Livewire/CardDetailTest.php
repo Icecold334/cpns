@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 class CardDetailTest extends Component
 {
     public $paket;
+    public $result;
     public $total;
     public $terjawab;
     public $belum;
@@ -19,7 +20,7 @@ class CardDetailTest extends Component
         $this->total = $this->paket->soal->count();
 
         // Mendapatkan array ID soal yang telah dijawab oleh user
-        $this->terjawab = count(Respon::where('user_id', Auth::user()->id)
+        $this->terjawab = count(Respon::where('user_id', Auth::user()->id)->where('result_id', $this->result->id)
             ->whereIn('soal_id', $this->paket->soal->pluck('id')->toArray())
             ->pluck('soal_id')
             ->toArray());

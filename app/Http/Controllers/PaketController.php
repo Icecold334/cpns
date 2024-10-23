@@ -36,31 +36,34 @@ class PaketController extends Controller
             'user' => Auth::user(),
         ]);
     }
-    public function hasil(Paket $paket, Result $result)
+    public function hasil(Paket $paket)
     {
+        $hasils = $paket->hasil->where('user_id', Auth::user()->id)->where('result_id', $paket->result->last()->id);
+
         return view('paket.hasil', [
             'title' => 'Hasil ' . $paket->nama,
             'paket' => $paket,
-            'total' => floor(($paket->hasil->pluck('nilai')->sum() / ($paket->hasil->pluck('nilai')->count() * 100)) * 100),
-            'hasils' => $paket->hasil->where('user_id', Auth::user()->id)->where('result_id', $result->id),
+            'total' => floor(($hasils->pluck('nilai')->sum() / ($paket->hasil->where('result_id', $paket->result->last()->id)->pluck('nilai')->count() * 100)) * 100),
+            'hasils' => $hasils,
             'user' => Auth::user(),
         ]);
     }
 
     public function selesai(Paket $paket, Result $result)
     {
+
         Session::forget('time');
         Session::forget('last_no');
         $userId = Auth::id();
-        $responses = $this->getUserResponses($userId, $paket);
+        $responses = $this->getUserResponses($userId, $paket, $result);
         $scores = $this->calculateScores($responses);
         $totalNilai = $this->calculateTotalNilai($paket, $scores);
         $this->updateHasil($paket, $totalNilai, $result);
-        return redirect()->route('hasil', ['paket' => $paket->uuid, 'result' => $result->id]);
+        return redirect()->route('hasil', ['paket' => $paket->uuid]);
     }
-    private function getUserResponses($userId, Paket $paket)
+    private function getUserResponses($userId, Paket $paket, Result $result)
     {
-        return Respon::where('user_id', $userId)
+        return Respon::where('user_id', $userId)->where('result_id', $result->id)
             ->whereHas('soal', function ($query) use ($paket) {
                 $query->where('paket_id', $paket->id);
             })->get();
@@ -108,7 +111,7 @@ class PaketController extends Controller
         return $totalNilai;
         // return (int)floor(((array_sum($totalNilai)) / 300) * 100);
     }
-    private function updateHasil(Paket $paket, $totalNilai, $result)
+    private function updateHasil(Paket $paket, $totalNilai, Result $result)
     {
         $kategoris = [];
         foreach ($paket->base->kategori as $key => $kategori) {
@@ -118,10 +121,12 @@ class PaketController extends Controller
             Hasil::where('paket_id', $paket->id)
                 ->where('user_id', Auth::id())
                 ->where('kategori_id', $kategori->id)
+                ->where('result_id', $result->id)
                 ->update(['nilai' => $totalNilai[$kategori->id] ?? 0, 'completed_at' => now()]);
         }
-        $nilai = ((int)floor(($paket->hasil->pluck('nilai')->sum() / ($paket->hasil->pluck('nilai')->count() * 100)) * 100));
-        $result->nilai = $nilai;
+        $nilai = ((int)floor(($paket->hasil->where('result_id', $result->id)->pluck('nilai')->sum() / ($paket->hasil->where('result_id', $result->id)->pluck('nilai')->count() * 100)) * 100));
+
+        $result->update(['nilai' => $nilai]);
     }
 
 
@@ -145,9 +150,10 @@ class PaketController extends Controller
                 ]);
             };
         } else {
-            $urutanArray = explode(',', $existingHasil->first()->urutan);
+            $urutanArray = explode(',', $result->urutan);
             $soalsSorted = $this->sortSoalsByOrder($urutanArray);
         }
+        // dd($soalsSorted);
         return view('paket.test', [
             'title' => $paket->nama,
             'paket' => $paket,
