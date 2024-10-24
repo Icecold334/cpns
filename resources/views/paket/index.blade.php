@@ -23,8 +23,8 @@
             <tr>
                 <th># <i class="fa-solid fa-sort"></i></th>
                 <th>Nama <i class="fa-solid fa-sort"></i></th>
-                <th>Kategori <i class="fa-solid fa-sort"></i></th>
-                <th>Penulis <i class="fa-solid fa-sort"></i></th>
+                <th class="hidden lg:table-cell">Kategori <i class="fa-solid fa-sort"></i></th>
+                <th class="hidden lg:table-cell">Penulis <i class="fa-solid fa-sort"></i></th>
                 @if (Auth::user()->role != 3)
                     <th>Status <i class="fa-solid fa-sort"></i></th>
                 @endif
@@ -36,8 +36,8 @@
                 <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $paket->nama }}</td>
-                    <td>{{ $paket->base->nama }}</td>
-                    <td>{{ $paket->user->name }}</td>
+                    <td class="hidden lg:table-cell">{{ $paket->base->nama }}</td>
+                    <td class="hidden lg:table-cell">{{ $paket->user->name }}</td>
                     @if (Auth::user()->role != 3)
                         <td class="text-center">
                             <x-badge :badge="true" color="{{ $paket->status ? 'success' : 'secondary' }}">
@@ -96,6 +96,7 @@
                             {{-- @if ($paket->hasil->where('user_id', Auth::user()->id)->first()->nilai === null) --}}
                             @if (!($paket->result && $paket->result->last() && $paket->result->last()->nilai !== null))
                                 <td>
+
                                     <x-badge :badge="false"
                                         href="/paket/test/{{ $paket->uuid }}/{{ $paket->hasil->where('user_id', Auth::user()->id)->first()->start_time != null ? 'play' : '' }}"
                                         color="success">
@@ -105,10 +106,20 @@
                                 </td>
                             @else
                                 <td>
+
+                                    <button data-tooltip-target="tooltip-default" type="button"
+                                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Default
+                                        tooltip</button>
+
+                                    <div id="tooltip-default" role="tooltip"
+                                        class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                                        Tooltip content
+                                        <div class="tooltip-arrow" data-popper-arrow></div>
+                                    </div>
+
                                     <x-badge :badge="false" href="{{ route('hasil', ['paket' => $paket->uuid]) }}"
                                         color="info">
-                                        <i class="fa-solid fa-circle-info"></i> Hasil Ujian
-
+                                        <i class="fa-solid fa-circle-info"></i>
                                     </x-badge>
                                 </td>
                             @endif
