@@ -40,22 +40,46 @@
                     <td class="hidden lg:table-cell">{{ $paket->user->name }}</td>
                     @if (Auth::user()->role != 3)
                         <td class="text-center">
-                            <x-badge :badge="true" color="{{ $paket->status ? 'success' : 'secondary' }}">
+                            <x-badge :badge="true" color="{{ $paket->status ? 'success' : 'secondary' }}"
+                                data-tooltip-target="status{{ $paket->id }}">
                                 <i class="fa-solid {{ $paket->status ? 'fa-eye' : 'fa-eye-slash' }}"></i>
                             </x-badge>
+                            <div id="status{{ $paket->id }}" role="tooltip"
+                                class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                                {{ $paket->status ? 'Paket sudah dipublikasikan' : 'Paket belum dipublikasikan' }}
+                                <div class="tooltip-arrow" data-popper-arrow></div>
+                            </div>
                         </td>
                         <td class="text-left">
                             <x-badge :badge="false" href="/paket/{{ $paket->uuid }}/soal" color="info"
-                                class="inline me-3">
-                                Rincian
+                                class="inline me-3" data-tooltip-target="info{{ $paket->id }}">
+                                <i class="fa-solid fa-circle-info"></i>
                             </x-badge>
+                            <div id="info{{ $paket->id }}" role="tooltip"
+                                class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                                Rincian paket ujian
+                                <div class="tooltip-arrow" data-popper-arrow></div>
+                            </div>
                             @if ($paket->status)
                                 <x-badge :badge="false" href="/paket/{{ $paket->uuid }}/list" color="secondary"
-                                    class="inline me-3">
-                                    Hasil Ujian
+                                    class="inline me-3" data-tooltip-target="hasil{{ $paket->id }}">
+                                    <i class="fa-solid fa-square-poll-vertical"></i>
                                 </x-badge>
+                                <div id="hasil{{ $paket->id }}" role="tooltip"
+                                    class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                                    Hasil ujian
+                                    <div class="tooltip-arrow" data-popper-arrow></div>
+                                </div>
                             @endif
-                            <x-badge :badge="true" color="danger" id="delete{{ $paket->id }}">Hapus</x-badge>
+                            <x-badge :badge="true" color="danger" id="delete{{ $paket->id }}"
+                                data-tooltip-target="hapus{{ $paket->id }}">
+                                <i class="fa-solid fa-trash"></i>
+                            </x-badge>
+                            <div id="hapus{{ $paket->id }}" role="tooltip"
+                                class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                                Hapus paket
+                                <div class="tooltip-arrow" data-popper-arrow></div>
+                            </div>
                             <form id="delete-form-{{ $paket->id }}"
                                 action="{{ route('paket.destroy', ['paket' => $paket->uuid]) }}" method="POST"
                                 style="display: none;">
@@ -88,39 +112,57 @@
                     @else
                         @if ($paket->hasil->where('user_id', Auth::user()->id)->first() === null)
                             <td>
-                                <x-badge :badge="false" href="/paket/test/{{ $paket->uuid }}" color="success">
-                                    <i class="fa-solid fa-play"></i> Kerjakan Ujian
+                                <x-badge :badge="false" href="/paket/test/{{ $paket->uuid }}" color="success"
+                                    data-tooltip-target="play{{ $paket->id }}">
+                                    <i class="fa-solid fa-play"></i>
                                 </x-badge>
+                                <div id="play{{ $paket->id }}" role="tooltip"
+                                    class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                                    Kerjakan Ujian
+                                    <div class="tooltip-arrow" data-popper-arrow></div>
+                                </div>
                             </td>
                         @else
                             {{-- @if ($paket->hasil->where('user_id', Auth::user()->id)->first()->nilai === null) --}}
-                            @if (!($paket->result && $paket->result->last() && $paket->result->last()->nilai !== null))
+                            @if (
+                                !(
+                                    $paket->result->where('user_id', Auth::user()->id)->isNotEmpty() &&
+                                    $paket->result->where('user_id', Auth::user()->id)->last()->nilai !== null
+                                ))
                                 <td>
-
                                     <x-badge :badge="false"
-                                        href="/paket/test/{{ $paket->uuid }}/{{ $paket->hasil->where('user_id', Auth::user()->id)->first()->start_time != null ? 'play' : '' }}"
-                                        color="success">
+                                        href="/paket/test/{{ $paket->uuid }}/{{ $paket->result->where('user_id', Auth::user()->id)->isNotEmpty() && $paket->result->last() ? 'play' : '' }}"
+                                        color="{{ !$paket->result->where('user_id', Auth::user()->id)->isNotEmpty() || ($paket->result->last() && $paket->result->last()->start_time === null) ? 'success' : 'warning' }}"
+                                        data-tooltip-target="play{{ $paket->id }}">
                                         <i class="fa-solid fa-play"></i>
-                                        {{ !($paket->result && $paket->result->last() && $paket->result->last()->start_time !== null) ? 'Kerjakan Ujian' : 'Lanjutkan Ujian' }}
                                     </x-badge>
+                                    <div id="play{{ $paket->id }}" role="tooltip"
+                                        class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                                        {{ !$paket->result->where('user_id', Auth::user()->id)->isNotEmpty() || ($paket->result->last() && $paket->result->last()->start_time === null) ? 'Kerjakan Ujian' : 'Lanjutkan Ujian' }}
+
+                                        <div class="tooltip-arrow" data-popper-arrow></div>
+                                    </div>
                                 </td>
                             @else
                                 <td>
-
-                                    <button data-tooltip-target="tooltip-default" type="button"
-                                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Default
-                                        tooltip</button>
-
-                                    <div id="tooltip-default" role="tooltip"
+                                    <x-badge :badge="false" href="{{ route('hasil', ['paket' => $paket->uuid]) }}"
+                                        color="info" data-tooltip-target="hasil{{ $paket->id }}"><i
+                                            class="fa-solid fa-circle-info"></i>
+                                    </x-badge>
+                                    <div id="hasil{{ $paket->id }}" role="tooltip"
                                         class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
-                                        Tooltip content
+                                        Hasil Ujian
                                         <div class="tooltip-arrow" data-popper-arrow></div>
                                     </div>
-
-                                    <x-badge :badge="false" href="{{ route('hasil', ['paket' => $paket->uuid]) }}"
-                                        color="info">
-                                        <i class="fa-solid fa-circle-info"></i>
+                                    <x-badge :badge="false" href="/paket/test/{{ $paket->uuid }}" color="success"
+                                        data-tooltip-target="play{{ $paket->id }}">
+                                        <i class="fa-solid fa-play"></i>
                                     </x-badge>
+                                    <div id="play{{ $paket->id }}" role="tooltip"
+                                        class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                                        Kerjakan Lagi
+                                        <div class="tooltip-arrow" data-popper-arrow></div>
+                                    </div>
                                 </td>
                             @endif
                         @endif

@@ -10,7 +10,7 @@ class PanelController extends Controller
     // index
     public function index()
     {
-        $pakets = Paket::where('status', true)->get();
+        $pakets = Paket::all();
         return view('panel.index', ['title' => 'Dashboard ', 'pakets' => $pakets]);
     }
 }

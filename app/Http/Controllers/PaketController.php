@@ -38,7 +38,7 @@ class PaketController extends Controller
     }
     public function hasil(Paket $paket)
     {
-        $hasils = $paket->hasil->where('user_id', Auth::user()->id)->where('result_id', $paket->result->last()->id);
+        $hasils = $paket->hasil->where('user_id', Auth::user()->id)->where('result_id', $paket->result->where('user_id', Auth::user()->id)->last()->id);
 
         return view('paket.hasil', [
             'title' => 'Hasil ' . $paket->nama,

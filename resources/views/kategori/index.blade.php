@@ -44,8 +44,23 @@
                     @can('admin')
                         <td>
                             <x-badge :badge="false" href="/kategori/{{ $base->id }}/base/edit" class="me-3"
-                                color="warning">Ubah</x-badge>
-                            <x-badge :badge="true" color="danger" id="delete{{ $base->id }}">Hapus</x-badge>
+                                color="warning" data-tooltip-target="edit{{ $base->id }}">
+                                <i class="fa-solid fa-pen"></i>
+                            </x-badge>
+                            <div id="edit{{ $base->id }}" role="tooltip"
+                                class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                                Ubah data kategori
+                                <div class="tooltip-arrow" data-popper-arrow></div>
+                            </div>
+                            <x-badge :badge="true" color="danger" id="delete{{ $base->id }}"
+                                data-tooltip-target="hapus{{ $base->id }}">
+                                <i class="fa-solid fa-trash"></i>
+                            </x-badge>
+                            <div id="hapus{{ $base->id }}" role="tooltip"
+                                class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                                Hapus kategori
+                                <div class="tooltip-arrow" data-popper-arrow></div>
+                            </div>
                             <form id="delete-form-{{ $base->id }}"
                                 action="{{ route('base.destroy', ['base' => $base->id]) }}" method="POST"
                                 style="display: none;">
@@ -85,8 +100,23 @@
                         @can('admin')
                             <td>
                                 <x-badge :badge="false" href="/kategori/{{ $kategori->id }}/sub/edit" class="me-3"
-                                    color="warning">Ubah</x-badge>
-                                <x-badge :badge="true" color="danger" id="deleteSub{{ $kategori->id }}">Hapus</x-badge>
+                                    color="warning" data-tooltip-target="editSub{{ $kategori->id }}">
+                                    <i class="fa-solid fa-pen"></i>
+                                </x-badge>
+                                <div id="editSub{{ $kategori->id }}" role="tooltip"
+                                    class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                                    Ubah data kategori
+                                    <div class="tooltip-arrow" data-popper-arrow></div>
+                                </div>
+                                <x-badge :badge="true" color="danger" id="deleteSub{{ $kategori->id }}"
+                                    data-tooltip-target="hapusSub{{ $kategori->id }}">
+                                    <i class="fa-solid fa-trash"></i>
+                                </x-badge>
+                                <div id="hapusSub{{ $kategori->id }}" role="tooltip"
+                                    class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                                    Hapus kategori
+                                    <div class="tooltip-arrow" data-popper-arrow></div>
+                                </div>
                                 <form id="delete-form-sub-{{ $kategori->id }}"
                                     action="{{ route('kategori.destroy', ['kategori' => $kategori->id]) }}" method="POST"
                                     style="display: none;">

@@ -33,10 +33,25 @@
                     <td>{{ $loop->iteration }}.</td>
                     <td>{{ $guru->name }}</td>
                     <td>{{ $guru->email }}</td>
-                    <td><x-badge :badge="false" href="/guru/{{ $guru->id }}/edit" color="warning"
-                            class="me-3">Ubah</x-badge>
+                    <td><x-badge :badge="false" href="/guru/{{ $guru->id }}/edit" color="warning" class="me-3"
+                            data-tooltip-target="edit{{ $guru->id }}">
+                            <i class="fa-solid fa-pen"></i>
+                            <div id="edit{{ $guru->id }}" role="tooltip"
+                                class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                                Ubah data guru
+                                <div class="tooltip-arrow" data-popper-arrow></div>
+                            </div>
+                        </x-badge>
 
-                        <x-badge :badge="true" color="danger" id="delete{{ $guru->id }}">Hapus</x-badge>
+                        <x-badge :badge="true" color="danger" id="delete{{ $guru->id }}"
+                            data-tooltip-target="hapus{{ $guru->id }}">
+                            <i class="fa-solid fa-trash"></i>
+                            <div id="hapus{{ $guru->id }}" role="tooltip"
+                                class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                                Hapus guru
+                                <div class="tooltip-arrow" data-popper-arrow></div>
+                            </div>
+                        </x-badge>
                         <form id="delete-form-{{ $guru->id }}"
                             action="{{ route('guru.destroy', ['guru' => $guru->id]) }}" method="POST"
                             style="display: none;">

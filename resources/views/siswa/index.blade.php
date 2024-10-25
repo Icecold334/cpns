@@ -41,9 +41,24 @@
                         <td>
                             <div class="flex">
                                 <x-badge :badge="false" href="/siswa/{{ $siswa->id }}/edit" class="mx-3"
-                                    color="warning">Ubah</x-badge>
+                                    color="warning" data-tooltip-target="edit{{ $siswa->id }}">
+                                    <i class="fa-solid fa-pen"></i>
+                                    <div id="edit{{ $siswa->id }}" role="tooltip"
+                                        class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                                        Ubah data siswa
+                                        <div class="tooltip-arrow" data-popper-arrow></div>
+                                    </div>
+                                </x-badge>
 
-                                <x-badge :badge="true" color="danger" id="delete{{ $siswa->id }}">Hapus</x-badge>
+                                <x-badge :badge="true" color="danger" id="delete{{ $siswa->id }}"
+                                    data-tooltip-target="hapus{{ $siswa->id }}">
+                                    <i class="fa-solid fa-trash"></i>
+                                    <div id="hapus{{ $siswa->id }}" role="tooltip"
+                                        class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                                        Hapus siswa
+                                        <div class="tooltip-arrow" data-popper-arrow></div>
+                                    </div>
+                                </x-badge>
                                 <form id="delete-form-{{ $siswa->id }}"
                                     action="{{ route('siswa.destroy', ['siswa' => $siswa->id]) }}" method="POST"
                                     style="display: none;">

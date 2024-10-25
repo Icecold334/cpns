@@ -32,7 +32,7 @@
     @endif
 
     <div
-        class="{{ request()->routeIs('play') ? ($paket && collect(json_decode($paket, true))->get('flat') == 1 ? 'p-8 mt-14' : '') : 'sm:ml-64 p-8 mt-14' }}">
+        class="max-w-screen-2xl {{ request()->routeIs('play') ? ($paket && collect(json_decode($paket, true))->get('flat') == 1 ? 'p-8 mt-14' : '') : 'sm:ml-64 p-8 mt-14' }}">
         {{-- <div class="p-4  "> --}}
         {{ $slot }}
         {{-- </div> --}}

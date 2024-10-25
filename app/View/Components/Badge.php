@@ -13,7 +13,7 @@ class Badge extends Component
      */
     public function __construct(public $badge, public $color = 'primary', public $classs = '')
     {
-        $this->classs = "cursor-pointer bg-{$this->color}-600 hover:bg-{$this->color}-950 text-gray-200 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300";
+        $this->classs = "cursor-pointer bg-{$this->color}-600 my-3 hover:bg-{$this->color}-950 text-gray-200 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300";
     }
 
     /**

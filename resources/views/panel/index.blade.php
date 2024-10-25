@@ -3,8 +3,8 @@
     @can('siswa')
         <livewire:panel-siswa :pakets="$pakets">
         @elsecan('guru')
-            b
-        @elsecan('admin')
-            c
-        @endcan
+            <livewire:panel-guru :pakets="$pakets">
+            @elsecan('admin')
+                {{-- <livewire:panel-guru :pakets="$pakets"> --}}
+            @endcan
 </x-body>

@@ -20,19 +20,20 @@
                         {{ $kategori->nama }}
                     </th>
                 @endforeach
-                @can('admin')
-                    <th></th>
-                @endcan
+                <th>Nilai</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($paket->hasil->where('nilai', '!=', null)->unique('user_id')->pluck('user') as $user)
+            @foreach ($paket->result->whereNotNull('nilai')->unique('user_id')->pluck('user') as $user)
                 <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $user->name }}</td>
-                    @foreach ($paket->hasil->groupBy('user_id')[$user->id] as $hasil)
+                    @foreach ($paket->hasil->whereNotNull('nilai')->where('nilai', '>=', 0)->where('user_id', $user->id)->groupBy('result_id')->last() as $hasil)
                         <td class="text-center">{{ $hasil->nilai }}</td>
                     @endforeach
+                    <td class="text-center">
+                        {{ $paket->result->whereNotNull('nilai')->where('nilai', '>=', 0)->where('user_id', $user->id)->last()->nilai }}
+                    </td>
                     {{-- @can('admin')
                         <td>
                             <div class="flex">

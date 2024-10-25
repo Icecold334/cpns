@@ -1,5 +1,4 @@
 import "./bootstrap";
-import "flowbite";
 import $ from "jquery";
 window.jQuery = window.$ = $;
 import Swal from "sweetalert2";
@@ -19,6 +18,7 @@ import Image from "https://esm.sh/@tiptap/extension-image@2.6.6";
 import YouTube from "https://esm.sh/@tiptap/extension-youtube@2.6.6";
 import TextStyle from "https://esm.sh/@tiptap/extension-text-style@2.6.6";
 import FontFamily from "https://esm.sh/@tiptap/extension-font-family@2.6.6";
+import "flowbite";
 
 const label = {
     placeholder: "Cari Data",
