@@ -1,6 +1,5 @@
 <div>
     <!-- Header -->
-    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Dashboard</h2>
     <div class="grid grid-cols-1 xl:grid-cols-3 xl:gap-10">
         <div class="col-span-1 xl:col-span-1 grid grid-flow-row gap-6 mb-6">
             <x-card-panel class="hover:scale-[1.05]">

@@ -1,11 +1,11 @@
 <div>
     <!-- Header -->
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-4">
+    <div class="grid grid-cols-1 md:grid-cols-1 xl:grid-cols-3 gap-6 mb-4">
         <x-card-panel class="hover:scale-[1.05]">
             <div class="flex-1">
-                <h5 class="text-xl font-bold text-gray-900 dark:text-white">Paket Ujian Dibuat</h5>
+                <h5 class="text-xl font-bold text-gray-900 dark:text-white">Jumlah Paket Ujian</h5>
                 <p class="text-2xl font-semibold text-gray-700 dark:text-gray-200">
-                    {{ $pakets->where('user_id', Auth::user()->id)->count() }}
+                    {{ $pakets->count() }}
                 </p>
             </div>
             <div
@@ -15,28 +15,28 @@
         </x-card-panel>
         <x-card-panel class="hover:scale-[1.05]">
             <div class="flex-1">
-                <h5 class="text-xl font-bold text-gray-900 dark:text-white">Jumlah Soal Dibuat</h5>
+                <h5 class="text-xl font-bold text-gray-900 dark:text-white">Jumlah Guru</h5>
                 <p class="text-2xl font-semibold text-gray-700 dark:text-gray-200">
-                    {{ $soals->count() }}
+                    {{ $users->where('role', 2)->count() }}
                 </p>
             </div>
             <div class="w-14 h-14 flex bg-info-100 items-center justify-center py-4 px-5 rounded-full text-info-950 ">
-                <i class="fa-solid fa-pen-ruler"></i>
+                <i class="fa-solid fa-chalkboard-user"></i>
             </div>
         </x-card-panel>
         <x-card-panel class="hover:scale-[1.05]">
             <div class="flex-1">
-                <h5 class="text-xl font-bold text-gray-900 dark:text-white">Paket Ujian Aktif</h5>
+                <h5 class="text-xl font-bold text-gray-900 dark:text-white">Jumlah Siswa</h5>
                 <p class="text-2xl font-semibold text-gray-700 dark:text-gray-200">
-                    {{ $pakets->where('user_id', Auth::user()->id)->where('status', true)->count() }}
+                    {{ $users->where('role', 3)->count() }}
+
                 </p>
             </div>
-            <div
-                class="w-14 h-14 flex bg-success-100 items-center justify-center py-4 px-5 rounded-full text-success-600 ">
-                <i class="fa-solid fa-file-circle-check"></i>
+            <div class="w-14 h-14 flex bg-info-100 items-center justify-center py-4 px-5 rounded-full text-info-600 ">
+                <i class="fa-solid fa-users-rectangle"></i>
             </div>
         </x-card-panel>
-        <x-card-panel class="hover:scale-[1.05]">
+        {{-- <x-card-panel class="hover:scale-[1.05]">
             <div class="flex-1">
                 <h5 class="text-xl font-bold text-gray-900 dark:text-white">Paket Ujian Tidak Aktif</h5>
                 <p class="text-2xl font-semibold text-gray-700 dark:text-gray-200">
@@ -47,7 +47,7 @@
                 class="w-14 h-14 flex bg-secondary-100 items-center justify-center py-4 px-5 rounded-full text-secondary-600 ">
                 <i class="fa-solid fa-file-circle-xmark"></i>
             </div>
-        </x-card-panel>
+        </x-card-panel> --}}
     </div>
     <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
         <div
@@ -68,6 +68,7 @@
         </div>
         <div
             class=" hover:scale-[1.02] p-5  bg-gray-100 border-2 hover:shadow-2xl hover:bg-gray-50 transition duration-200 rounded-lg dark:bg-gray-800 ">
+
             <h5 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Paket Ujian Paling Disukai</h5>
             <div class=" flex items-center justify-center h-64">
                 <canvas id="mostLike"></canvas>
@@ -172,9 +173,9 @@
                             // display: false,
                             // min: -5, // Batas minimum tampilan
                             // max: 100, // Batas maksimum tampilan
-                            // ticks: {
-                            //     stepSize: 25
-                            // },
+                            ticks: {
+                                stepSize: 1
+                            },
                             beginAtZero: true
                         }
                     },

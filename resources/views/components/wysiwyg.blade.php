@@ -2,7 +2,7 @@
         {{ $attributes->merge(['class' => 'w-full border border-gray-300 shadow-2xl rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600']) }}>
         <div class="px-3 py-2 border-b dark:border-gray-600">
             <div class="flex flex-wrap items-center">
-                <div class="flex items-center space-x-1 rtl:space-x-reverse flex-wrap">
+                <div class="flex items-center space-x-1  flex-wrap">
                     <button id="{{ $id }}toggleBoldButton" data-tooltip-target="{{ $id }}tooltip-bold"
                         type="button"
                         class="p-1.5 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">
@@ -482,22 +482,34 @@
             <div id="{{ $id }}" name="test"
                 class="block w-full px-0 text-sm text-gray-800 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400">
             </div>
-            <input type="hidden" name="{{ $id }}" id="input{{ $id }}"
-                wire:model="{{ $id }}">
+            <input type="text" name="{{ $id }}" id="input{{ $id }}"
+                wire:model="{{ $id }}" wire:ignore>
         </div>
     </div>
+    <div class="-mt-1 text-sm font-medium text-red-700 dark:text-red-600">{{ $errors->first($id) }}</div>
     {{-- @push('scripts') --}}
     <script type="module">
         let content = `{!! $content !!}`
         window.editor("{{ $id }}", content);
+
+        function isContentEmpty(content) {
+            const isEmpty = content.trim() === '' || content.includes('<br class="ProseMirror-trailingBreak">');
+            return isEmpty;
+        }
         document.addEventListener('DOMContentLoaded', () => {
             const wireId = document.querySelector('[wire\\:id]').getAttribute('wire:id');
-            ['mousemove', 'click', 'keydown'].forEach(eventType => {
+            ['mousemove', 'click', 'keydown', 'scroll'].forEach(eventType => {
                 document.getElementById('{{ $id }}').addEventListener(eventType, () => {
                     const inputElement = document.getElementById('input{{ $id }}');
                     inputElement.value = document.getElementById('{{ $id }}').childNodes[
                         1].innerHTML;
-                    Livewire.find(wireId).set('soal', inputElement.value);
+                    if (!isContentEmpty(document.getElementById('{{ $id }}').childNodes[
+                            1].innerHTML)) {
+                        Livewire.find(wireId).set('soal', inputElement.value);
+                    } else {
+                        $("#input{{ $id }}").val("");
+                        Livewire.find(wireId).set('soal', '');
+                    }
                 });
             });
         });

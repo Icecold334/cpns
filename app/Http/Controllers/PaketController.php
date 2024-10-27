@@ -19,7 +19,7 @@ class PaketController extends Controller
     {
         Gate::allowIf(Auth::user()->role != 3);
         $paket->update(['status' => !$paket->status]);
-        return redirect()->route('paket.soal.index', ['paket' => $paket->uuid])->with('icon', 'success')->with('title', 'Berhasil')->with('message', $paket->status ? 'Paket soal berhasil dipublikasikan!' : 'Paket soal berhasil diunpublish!');
+        return redirect()->route('paket.soal.index', ['paket' => $paket->uuid])->with('icon', 'success')->with('title', 'Berhasil')->with('message', $paket->status ? 'Paket soal berhasil diaktifkan!' : 'Paket soal berhasil dinonaktifkan!');
     }
 
 

@@ -18,7 +18,7 @@ class CreateSoal extends Component
     public $paket;
     public $soal_array;
 
-    #[Validate('required', message: 'Soal tidak boleh kosong!')]
+    #[Validate('required', message: 'Soal wajib diisi!')]
     public $soal;
 
     #[Validate('required', message: 'Kategori soal harus dipilih!')]
@@ -145,12 +145,12 @@ class CreateSoal extends Component
             }
             Jawaban::create($data);
         }
-        // $this->dispatch('berhasil', icon: 'success', message: 'Soal berhasil ditambahkan!');
         $this->reset(['kategori_id', 'img', 'benar', 'soal', 'a', 'b', 'c', 'd', 'e']);
-        return redirect()->route('paket.soal.index', ['paket' => $this->paket->uuid])
-            ->with('icon', 'success')
-            ->with('title', 'Berhasil')
-            ->with('message', 'Soal berhasil ditambahkan!');
+        $this->dispatch('berhasil', icon: 'success', message: 'Soal berhasil ditambahkan!');
+        // return redirect()->route('paket.soal.index', ['paket' => $this->paket->uuid])
+        //     ->with('icon', 'success')
+        //     ->with('title', 'Berhasil')
+        //     ->with('message', 'Soal berhasil ditambahkan!');
     }
 
     public function resetInputFields()

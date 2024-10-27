@@ -15,7 +15,7 @@
 
                 @if ($paket->soal->count() > 0)
                     <x-button :button="true" id="publish">
-                        <i class="fa-solid fa-angles-up"></i> Publikasikan Paket Soal
+                        <i class="fa-solid fa-angles-up"></i> Aktifkan Paket Ujian
                     </x-button>
                 @endif
             </div>
@@ -26,7 +26,7 @@
 
                 @if ($paket->soal->count() > 0)
                     <x-button :button="true" id="unpublish">
-                        <i class="fa-solid fa-angles-down"></i> UnPublikasikan Paket Soal
+                        <i class="fa-solid fa-angles-down"></i> Nonaktifkan Paket Ujian
                     </x-button>
                 @endif
             </div>
@@ -90,7 +90,7 @@
             $('#publish').click(() => {
                 Swal.fire({
                     title: "Apa Kamu Yakin?",
-                    text: "Paket soal yang sudah dipublikasikan tidak bisa diubah",
+                    text: "Paket ujian yang sudah diaktifkan tidak dapat diubah",
                     icon: "question",
                     showCancelButton: true,
                     confirmButtonText: 'Ya',

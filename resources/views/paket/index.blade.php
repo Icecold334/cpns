@@ -63,7 +63,7 @@
                             @if ($paket->status)
                                 <x-badge :badge="false" href="/paket/{{ $paket->uuid }}/list" color="secondary"
                                     class="inline me-3" data-tooltip-target="hasil{{ $paket->id }}">
-                                    <i class="fa-solid fa-square-poll-vertical"></i>
+                                    <i class="fa-solid fa-chart-simple"></i>
                                 </x-badge>
                                 <div id="hasil{{ $paket->id }}" role="tooltip"
                                     class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
