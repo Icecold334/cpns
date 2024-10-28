@@ -19,6 +19,8 @@ import YouTube from "https://esm.sh/@tiptap/extension-youtube@2.6.6";
 import TextStyle from "https://esm.sh/@tiptap/extension-text-style@2.6.6";
 import FontFamily from "https://esm.sh/@tiptap/extension-font-family@2.6.6";
 import "flowbite";
+import "trix";
+import "trix/dist/trix.css";
 
 const label = {
     placeholder: "Cari Data",

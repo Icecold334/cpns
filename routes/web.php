@@ -35,6 +35,7 @@ Route::prefix('paket')->middleware(['auth', 'verified'])->group(function () {
         Route::get('test/{paket}/{result}/selesai', [PaketController::class, 'selesai'])->name('ujian.selesai');
     });
 });
+Route::post('/trix-upload', [SoalController::class, 'upload'])->middleware(['auth', 'verified']);
 Route::resource('paket', PaketController::class)->middleware(['auth', 'verified']);
 Route::delete('kategori/base/{base}', [KategoriController::class, 'destroyBase'])->name('base.destroy');
 Route::get('kategori/{id}/{type}/edit', [KategoriController::class, 'edit'])->middleware(['admin', 'guru', 'verified']);

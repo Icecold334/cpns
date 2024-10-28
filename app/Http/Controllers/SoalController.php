@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateSoalRequest;
 use App\Models\Jawaban;
 use App\Models\Paket;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Http\Request;
 
 class SoalController extends Controller
 {
@@ -68,5 +69,20 @@ class SoalController extends Controller
         Jawaban::where('soal_id', $soal->id)->delete();
         $soal->delete();
         return redirect()->route('paket.soal.index', ['paket' => Paket::where('id', $paket->id)->first()->uuid])->with('icon', 'success')->with('title', 'Berhasil')->with('message', 'Soal berhasil dihapus!');
+    }
+
+    public function upload(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file|max:5120', // Maksimal 5MB
+        ]);
+        if ($request->hasFile('file')) {
+            $path = str_replace('public', 'storage', $request->file('file')->store('public/soal'));
+            return response()->json([
+                'url' => asset($path)
+            ]);
+        }
+
+        return response()->json(['error' => 'File not found'], 400);
     }
 }
