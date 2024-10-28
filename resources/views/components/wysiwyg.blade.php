@@ -486,31 +486,38 @@
                 wire:model="{{ $id }}" wire:ignore>
         </div>
     </div>
-    <div class="-mt-1 text-sm font-medium text-red-700 dark:text-red-600">{{ $errors->first($id) }}</div>
+    <div class="mt-1 text-sm font-medium text-red-700 dark:text-red-600">{{ $errors->first($id) }}</div>
     {{-- @push('scripts') --}}
     <script type="module">
         let content = `{!! $content !!}`
+        console.log($('#input{{ $id }}'));
+
+        if (content == '') {
+            content = $('#input{{ $id }}').val()
+        }
+
         window.editor("{{ $id }}", content);
 
+
+
         function isContentEmpty(content) {
-            const isEmpty = content.trim() === '' || content.includes('<br class="ProseMirror-trailingBreak">');
-            return isEmpty;
+            return content.trim() === '' || content.includes('<br class="ProseMirror-trailingBreak">');
         }
         document.addEventListener('DOMContentLoaded', () => {
             const wireId = document.querySelector('[wire\\:id]').getAttribute('wire:id');
             ['mousemove', 'click', 'keydown', 'scroll'].forEach(eventType => {
-                document.getElementById('{{ $id }}').addEventListener(eventType, () => {
-                    const inputElement = document.getElementById('input{{ $id }}');
-                    inputElement.value = document.getElementById('{{ $id }}').childNodes[
-                        1].innerHTML;
-                    if (!isContentEmpty(document.getElementById('{{ $id }}').childNodes[
-                            1].innerHTML)) {
-                        Livewire.find(wireId).set('soal', inputElement.value);
+                const parentElement = document.getElementById('{{ $id }}');
+                const inputElement = document.getElementById('input{{ $id }}');
+                parentElement.addEventListener(eventType, () => {
+                    const content = parentElement.childNodes[1].innerHTML;
+                    if (!isContentEmpty(content)) {
+                        inputElement.value = content;
                     } else {
-                        $("#input{{ $id }}").val("");
-                        Livewire.find(wireId).set('soal', '');
+                        inputElement.value = "";
                     }
+                    inputElement.dispatchEvent(new Event('input'));
                 });
+
             });
         });
     </script>

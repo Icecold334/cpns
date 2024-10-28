@@ -172,9 +172,9 @@
                             // display: false,
                             // min: -5, // Batas minimum tampilan
                             // max: 100, // Batas maksimum tampilan
-                            // ticks: {
-                            //     stepSize: 25
-                            // },
+                            ticks: {
+                                stepSize: 1
+                            },
                             beginAtZero: true
                         }
                     },

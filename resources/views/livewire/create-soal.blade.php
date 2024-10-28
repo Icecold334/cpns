@@ -5,7 +5,6 @@
         <div class="flex flex-wrap">
             <label for="soal" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Soal</label>
             <x-wysiwyg id="soal" class="my-3" name="soal" wire:ignore :content="$soal" />
-            {{ $soal }}
             <div class=" {{ $kategori_id != null && !$kategori->byPoin ? 'w-2/3 pe-3' : 'w-full' }}">
                 <x-form-input type="select" label="Sub Kategori" id="kategori_id" wire:model.live="kategori_id"
                     autocomplete="off" :error="$errors->first('kategori_id')" class="mb-3">
@@ -30,6 +29,30 @@
             @endif
             <div class="w-full">
                 <label class="block text-sm font-medium text-gray-700 mb-3">Pilihan Jawaban</label>
+                <div class="grid grid-col-1 md:grid-cols-2 gap-6 jut">
+                    @foreach (['a', 'b', 'c', 'd', 'e'] as $index => $option)
+                        <div class="mb-3">
+                            {{-- @if ($kategori_id != null && $kategori->byPoin)
+                            <span
+                                class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-e-0 rounded-s-lg border-gray-300 dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+                                Poin : {{ $index + 1 }}
+                            </span>
+                        @endif
+                        <span
+                            class="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-e-0 border-gray-300 dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
+                            {{ strtoupper($option) }}
+                        </span> --}}
+                            <x-wysiwyg id="{{ $option }}" name="{{ $option }}" wire:ignore />
+                        </div>
+                        {{-- @error($option)
+                            <p class="mb-2 text-sm text-red-600 dark:text-red-500"><span
+                                    class="font-medium">{{ $message }}
+                            </p>
+                        @enderror --}}
+                    @endforeach
+                </div>
+
+                {{-- <label class="block text-sm font-medium text-gray-700 mb-3">Pilihan Jawaban</label>
                 @foreach (['a', 'b', 'c', 'd', 'e'] as $index => $option)
                     <div class="flex mb-3">
                         @if ($kategori_id != null && $kategori->byPoin)
@@ -50,7 +73,7 @@
                         <p class="mb-2  text-sm text-red-600 dark:text-red-500"><span
                                 class="font-medium">{{ $message }}</p>
                     @enderror
-                @endforeach
+                @endforeach --}}
             </div>
         </div>
 
