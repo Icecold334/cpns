@@ -5,40 +5,48 @@
         <div class="flex flex-wrap">
             <div wire:ignore class="w-full">
                 <label for="soal" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Soal</label>
-                <x-wysiwyg id="soal" class="my-3" name="soal" wire:model="soal" :content="$soal" />
+                <x-wysiwyg id="soal" class="my-3" name="soal" wire:model="soal" />
             </div>
-            <div class=" {{ $kategori_id != null && !$kategori->byPoin ? 'w-2/3 pe-3' : 'w-full' }}">
-                <x-form-input type="select" label="Sub Kategori" id="kategori_id" wire:model.live="kategori_id"
-                    autocomplete="off" :error="$errors->first('kategori_id')" class="mb-3">
-                    <option value="">Pilih Sub Kategori</option>
-                    @foreach ($kategoris as $kat)
-                        <option value="{{ $kat->id }}">{{ $kat->deskripsi }}</option>
-                    @endforeach
-                </x-form-input>
-            </div>
-            @if ($kategori_id != null && !$kategori->byPoin)
-                <div class="w-1/3">
-                    <x-form-input type="select" label="Jawaban Benar" id="benar" wire:model.live="benar"
-                        placeholder="Nama Siswa" autocomplete="off" :error="$errors->first('benar')" class="mb-3">
-                        <option value="">Pilih Jawaban</option>
-                        <option value="1">Jawaban A</option>
-                        <option value="2">Jawaban B</option>
-                        <option value="3">Jawaban C</option>
-                        <option value="4">Jawaban D</option>
-                        <option value="5">Jawaban E</option>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-10 w-full">
+                <div class=" {{ $kategori_id != null && !$kategori->byPoin ? 'col-span-1' : 'col-span-2' }}">
+                    <x-form-input type="select" label="Sub Kategori" id="kategori_id" wire:model.live="kategori_id"
+                        autocomplete="off" :error="$errors->first('kategori_id')" class="mb-3">
+                        @if ($kategori === null)
+                            <option value="">Pilih Sub Kategori</option>
+                        @endif
+                        @foreach ($kategoris as $kat)
+                            <option value="{{ $kat->id }}">{{ $kat->deskripsi }}</option>
+                        @endforeach
                     </x-form-input>
                 </div>
-            @endif
+                @if ($kategori_id != null && !$kategori->byPoin)
+                    <div class="col-span-1">
+                        <x-form-input type="select" label="Jawaban Benar" id="benar" wire:model.live="benar"
+                            placeholder="Nama Siswa" autocomplete="off" :error="$errors->first('benar')" class="mb-3">
+                            <option value="">Pilih Jawaban</option>
+                            <option value="1">Jawaban A</option>
+                            <option value="2">Jawaban B</option>
+                            <option value="3">Jawaban C</option>
+                            <option value="4">Jawaban D</option>
+                            <option value="5">Jawaban E</option>
+                        </x-form-input>
+                    </div>
+                @endif
+            </div>
             <div class="w-full">
 
-
-                <label class="block text-sm font-medium text-gray-700 mb-3">Pilihan Jawaban</label>
-                <div class="grid grid-cols-2 gap-x-14">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-14">
                     @foreach (['a', 'b', 'c', 'd', 'e'] as $index => $option)
-                        <div class="flex mb-3" wire:ignore>
-
-                            <x-wysiwyg id="{{ $option }}" wire:key="{{ $option }}" class="my-3"
-                                wire:model="{{ $option }}" />
+                        <div class="mb-3">
+                            <label class="font-medium">
+                                Jawaban
+                                {{ strtoupper($option) }} <span
+                                    class="font-bold">{{ $kategori !== null && $kategori->byPoin ? 'Poin : ' . $index + 1 : '' }}</span>
+                            </label>
+                            <div wire:ignore>
+                                <x-wysiwyg id="{{ $option }}" wire:key="{{ $option }}" class="my-3"
+                                    wire:model="{{ $option }}" />
+                            </div>
                         </div>
                     @endforeach
                 </div>
@@ -72,7 +80,8 @@
         // $(document).ready(function() {
         // })
         document.addEventListener('berhasil', function(e) {
-            $("#a, #b, #c, #d, #e, #benar, #kategori_id ,#inputsoal").val("");
+            document.getElementById("trix-soal").editor.loadHTML();
+            // $("#a, #b, #c, #d, #e, #benar, #kategori_id ,#inputsoal").val("");
             const Toast = Swal.mixin({
                 toast: true,
                 position: "top-end",
