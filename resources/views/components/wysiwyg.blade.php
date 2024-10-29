@@ -1,73 +1,40 @@
 <div class="w-full my-3">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <trix-editor input="content-{{ $id }}" id="trix-{{ $id }}" required></trix-editor>
-    <input id="content-{{ $id }}" type="text" {{ $attributes }}>
+    <input id="content-{{ $id }}" type="hidden" {{ $attributes }}>
     <p id="error-message{{ $id }}" style="color: red; display: none;">Konten tidak boleh kosong.</p>
 </div>
+
 @push('scripts')
     <script>
-        var editor{{ $id }} = document.getElementById("trix-{{ $id }}");
-        var contentInput{{ $id }} = document.getElementById("content-{{ $id }}");
-        var errorMessage{{ $id }} = document.getElementById("error-message{{ $id }}");
-        editor{{ $id }}.addEventListener("trix-change", () => {
-            // console.log(editor{{ $id }}.editor.getDocument().toString()
-            //     .trim());
+        document.addEventListener("DOMContentLoaded", () => {
+            var editor = document.getElementById("trix-{{ $id }}");
+            var contentInput = document.getElementById("content-{{ $id }}");
+            var errorMessage = document.getElementById("error-message{{ $id }}");
 
-            // contentInput{{ $id }}.value = editor{{ $id }}.editor.getDocument().toString()
-            //     .trim();
-            if (contentInput{{ $id }}.value !== "") {
-                errorMessage{{ $id }}.style.display = "none";
-            } else {
-                errorMessage{{ $id }}.style.display = "block";
+            editor.addEventListener("trix-change", (event) => {
+                const document = event.target.editor.getDocument();
+                contentInput.value = document.toString().trim(); // Perbarui input terkait
 
-            }
-        });
-
-        (function() {
-            var HOST = "/trix-upload"
-
-            addEventListener('trix-change', function(e) {
-                // Ambil konten Trix Editor
-                var content = event.target.innerHTML;
-
-                // Simpan konten ke input hidden (agar Livewire menangkapnya di wire:model)
-                document.getElementById("content-{{ $id }}").value = content;
-                document.getElementById('content-{{ $id }}').dispatchEvent(new Event('input'));
-            })
-            document.addEventListener("trix-attachment-remove", function(event) {
-                var attachment = event.attachment;
-                var fileUrl = attachment.getURL(); // Dapatkan URL file
-
-                if (fileUrl) {
-                    // Kirim permintaan untuk menghapus file
-                    removeFileFromServer(fileUrl);
+                // Menampilkan atau menyembunyikan pesan error
+                if (contentInput.value !== "") {
+                    errorMessage.style.display = "none";
+                } else {
+                    errorMessage.style.display = "block";
                 }
+
+                // Memicu event input untuk Livewire
+                contentInput.dispatchEvent(new Event('input'));
             });
 
-            function removeFileFromServer(fileUrl) {
-                fetch('/trix-delete', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                        },
-                        body: JSON.stringify({
-                            url: fileUrl
-                        })
-                    })
-                    .then(response => response.json())
-                    .then(data => {})
-                    .catch(error => console.error('Error:', error));
-            }
+            // Penanganan unggahan file
+            document.addEventListener("trix-attachment-add", function(event) {
+                var attachment = event.attachment;
 
-
-            addEventListener("trix-attachment-add", function(event) {
-                if (event.attachment.file) {
-                    var file = event.attachment.file;
+                if (attachment.file) {
                     var formData = new FormData();
-                    formData.append('file', file);
+                    formData.append('file', attachment.file);
 
-                    // Ganti URL ini dengan URL endpoint server untuk unggahan
                     fetch('/trix-upload', {
                             method: 'POST',
                             body: formData,
@@ -78,14 +45,107 @@
                         })
                         .then(response => response.json())
                         .then(data => {
-                            // Set URL permanen dari server
-                            event.attachment.setAttributes({
+                            attachment.setAttributes({
                                 url: data.url // URL permanen dari server
                             });
                         })
                         .catch(error => console.error('Upload error:', error));
                 }
-            })
-        })();
+            });
+
+            document.addEventListener("trix-attachment-remove", function(event) {
+                var attachment = event.attachment;
+                var fileUrl = attachment.getURL(); // Dapatkan URL file
+
+                if (fileUrl) {
+                    fetch('/trix-delete', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                                    .content
+                            },
+                            body: JSON.stringify({
+                                url: fileUrl
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {})
+                        .catch(error => console.error('Error:', error));
+                }
+            });
+        });
+    </script>
+@endpush
+@push('scripts')
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            var editor = document.getElementById("trix-{{ $id }}");
+            var contentInput = document.getElementById("content-{{ $id }}");
+            var errorMessage = document.getElementById("error-message{{ $id }}");
+
+            editor.addEventListener("trix-change", (event) => {
+                const document = event.target.editor.getDocument();
+                contentInput.value = document.toString().trim(); // Perbarui input terkait
+
+                // Menampilkan atau menyembunyikan pesan error
+                if (contentInput.value !== "") {
+                    errorMessage.style.display = "none";
+                } else {
+                    errorMessage.style.display = "block";
+                }
+
+                // Memicu event input untuk Livewire
+                contentInput.dispatchEvent(new Event('input'));
+            });
+
+            // Penanganan unggahan file
+            document.addEventListener("trix-attachment-add", function(event) {
+                var attachment = event.attachment;
+
+                if (attachment.file) {
+                    var formData = new FormData();
+                    formData.append('file', attachment.file);
+
+                    fetch('/trix-upload', {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                                    .content
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            attachment.setAttributes({
+                                url: data.url // URL permanen dari server
+                            });
+                        })
+                        .catch(error => console.error('Upload error:', error));
+                }
+            });
+
+            document.addEventListener("trix-attachment-remove", function(event) {
+                var attachment = event.attachment;
+                var fileUrl = attachment.getURL(); // Dapatkan URL file
+
+                if (fileUrl) {
+                    fetch('/trix-delete', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                                    .content
+                            },
+                            body: JSON.stringify({
+                                url: fileUrl
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {})
+                        .catch(error => console.error('Error:', error));
+                }
+            });
+        });
     </script>
 @endpush

@@ -36,7 +36,6 @@
                 <div class="grid grid-cols-2 gap-x-14">
                     @foreach (['a', 'b', 'c', 'd', 'e'] as $index => $option)
                         <div class="flex mb-3" wire:ignore>
-                            <input id="content-{{ $option }}" type="text">
 
                             <x-wysiwyg id="{{ $option }}" wire:key="{{ $option }}" class="my-3"
                                 wire:model="{{ $option }}" />
