@@ -1,75 +1,91 @@
 <div class="w-full my-3">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <input id="content" type="hidden" name="content">
-    <trix-editor input="content" id="trix-content"></trix-editor>
+    <trix-editor input="content-{{ $id }}" id="trix-{{ $id }}" required></trix-editor>
+    <input id="content-{{ $id }}" type="text" {{ $attributes }}>
+    <p id="error-message{{ $id }}" style="color: red; display: none;">Konten tidak boleh kosong.</p>
 </div>
-<script>
-    (function() {
-        var HOST = "/trix-upload"
+@push('scripts')
+    <script>
+        var editor{{ $id }} = document.getElementById("trix-{{ $id }}");
+        var contentInput{{ $id }} = document.getElementById("content-{{ $id }}");
+        var errorMessage{{ $id }} = document.getElementById("error-message{{ $id }}");
+        editor{{ $id }}.addEventListener("trix-change", () => {
+            // console.log(editor{{ $id }}.editor.getDocument().toString()
+            //     .trim());
 
-        addEventListener("trix-attachment-add", function(event) {
-            if (event.attachment.file) {
-                uploadFileAttachment(event.attachment)
+            // contentInput{{ $id }}.value = editor{{ $id }}.editor.getDocument().toString()
+            //     .trim();
+            if (contentInput{{ $id }}.value !== "") {
+                errorMessage{{ $id }}.style.display = "none";
+            } else {
+                errorMessage{{ $id }}.style.display = "block";
+
             }
-        })
+        });
 
-        function uploadFileAttachment(attachment) {
-            uploadFile(attachment.file, setProgress, setAttributes)
+        (function() {
+            var HOST = "/trix-upload"
 
-            function setProgress(progress) {
-                attachment.setUploadProgress(progress)
-            }
+            addEventListener('trix-change', function(e) {
+                // Ambil konten Trix Editor
+                var content = event.target.innerHTML;
 
-            function setAttributes(attributes) {
-                attachment.setAttributes(attributes)
-            }
-        }
-
-        function uploadFile(file, progressCallback, successCallback) {
-            var key = createStorageKey(file)
-            var formData = createFormData(key, file)
-            var xhr = new XMLHttpRequest()
-
-            // Ambil CSRF token dari meta tag
-            var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-            xhr.open("POST", HOST, true)
-
-            // Set CSRF token pada header
-            xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken)
-
-            xhr.upload.addEventListener("progress", function(event) {
-                var progress = event.loaded / event.total * 100
-                progressCallback(progress)
+                // Simpan konten ke input hidden (agar Livewire menangkapnya di wire:model)
+                document.getElementById("content-{{ $id }}").value = content;
+                document.getElementById('content-{{ $id }}').dispatchEvent(new Event('input'));
             })
+            document.addEventListener("trix-attachment-remove", function(event) {
+                var attachment = event.attachment;
+                var fileUrl = attachment.getURL(); // Dapatkan URL file
 
-            xhr.addEventListener("load", function(event) {
+                if (fileUrl) {
+                    // Kirim permintaan untuk menghapus file
+                    removeFileFromServer(fileUrl);
+                }
+            });
 
-                if (xhr.status == 204) {
-                    var attributes = {
-                        url: HOST + key,
-                        href: HOST + key + "?content-disposition=attachment"
-                    }
-                    successCallback(attributes)
+            function removeFileFromServer(fileUrl) {
+                fetch('/trix-delete', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        },
+                        body: JSON.stringify({
+                            url: fileUrl
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {})
+                    .catch(error => console.error('Error:', error));
+            }
+
+
+            addEventListener("trix-attachment-add", function(event) {
+                if (event.attachment.file) {
+                    var file = event.attachment.file;
+                    var formData = new FormData();
+                    formData.append('file', file);
+
+                    // Ganti URL ini dengan URL endpoint server untuk unggahan
+                    fetch('/trix-upload', {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                                    .content
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            // Set URL permanen dari server
+                            event.attachment.setAttributes({
+                                url: data.url // URL permanen dari server
+                            });
+                        })
+                        .catch(error => console.error('Upload error:', error));
                 }
             })
-
-            xhr.send(formData)
-        }
-
-        function createStorageKey(file) {
-            var date = new Date()
-            var day = date.toISOString().slice(0, 10)
-            var name = date.getTime() + "-" + file.name
-            return ["tmp", day, name].join("/")
-        }
-
-        function createFormData(key, file) {
-            var data = new FormData()
-            data.append("key", key)
-            data.append("Content-Type", file.type)
-            data.append("file", file)
-            return data
-        }
-    })();
-</script>
+        })();
+    </script>
+@endpush

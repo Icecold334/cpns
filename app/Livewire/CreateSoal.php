@@ -9,6 +9,7 @@ use Livewire\Component;
 use App\Models\Kategori;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
 
 class CreateSoal extends Component
@@ -117,11 +118,13 @@ class CreateSoal extends Component
 
     public function save()
     {
+        dd($this->a);
         $this->validate();
         $soal = new Soal();
         $soal->paket_id = $this->paket->id;
         $soal->kategori_id = $this->kategori_id;
-        $soal->soal = $this->prosesGambarBase64($this->soal);
+        // $soal->soal = $this->prosesGambarBase64($this->soal);
+        $soal->soal = Str::markdown(str_replace('<!--block-->', '', $this->soal));
         $soal->img = $this->img != null ? str_replace('public', 'storage', $this->img->store('public/soal')) : null;
         $soal->save();
         $jawabanData = [

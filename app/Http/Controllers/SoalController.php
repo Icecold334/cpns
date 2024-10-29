@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Soal;
-use App\Http\Requests\StoreSoalRequest;
-use App\Http\Requests\UpdateSoalRequest;
-use App\Models\Jawaban;
 use App\Models\Paket;
-use Illuminate\Support\Facades\Gate;
+use App\Models\Jawaban;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+use App\Http\Requests\StoreSoalRequest;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\UpdateSoalRequest;
 
 class SoalController extends Controller
 {
@@ -84,5 +85,18 @@ class SoalController extends Controller
         }
 
         return response()->json(['error' => 'File not found'], 400);
+    }
+    public function delete(Request $request)
+    {
+
+        $fileUrl = $request->input('url');
+        $filePath = str_replace('storage', 'public', parse_url($fileUrl, PHP_URL_PATH));
+
+        if (Storage::exists($filePath)) {
+            Storage::delete($filePath);
+            return response()->json(['success' => true]);
+        }
+
+        return response()->json(['success' => false, 'message' => 'File tidak ditemukan.']);
     }
 }

@@ -3,8 +3,10 @@
     <form wire:submit.prevent="{{ $soal_array == null ? 'save' : 'update' }}" enctype="multipart/form-data">
         @csrf
         <div class="flex flex-wrap">
-            <label for="soal" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Soal</label>
-            <x-wysiwyg id="soal" class="my-3" name="soal" wire:ignore :content="$soal" />
+            <div wire:ignore class="w-full">
+                <label for="soal" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Soal</label>
+                <x-wysiwyg id="soal" class="my-3" name="soal" wire:model="soal" :content="$soal" />
+            </div>
             <div class=" {{ $kategori_id != null && !$kategori->byPoin ? 'w-2/3 pe-3' : 'w-full' }}">
                 <x-form-input type="select" label="Sub Kategori" id="kategori_id" wire:model.live="kategori_id"
                     autocomplete="off" :error="$errors->first('kategori_id')" class="mb-3">
@@ -31,7 +33,17 @@
 
 
                 <label class="block text-sm font-medium text-gray-700 mb-3">Pilihan Jawaban</label>
-                @foreach (['a', 'b', 'c', 'd', 'e'] as $index => $option)
+                <div class="grid grid-cols-2 gap-x-14">
+                    @foreach (['a', 'b', 'c', 'd', 'e'] as $index => $option)
+                        <div class="flex mb-3" wire:ignore>
+                            <input id="content-{{ $option }}" type="text">
+
+                            <x-wysiwyg id="{{ $option }}" wire:key="{{ $option }}" class="my-3"
+                                wire:model="{{ $option }}" />
+                        </div>
+                    @endforeach
+                </div>
+                {{-- @foreach (['a', 'b', 'c', 'd', 'e'] as $index => $option)
                     <div class="flex mb-3">
                         @if ($kategori_id != null && $kategori->byPoin)
                             <span
@@ -51,7 +63,7 @@
                         <p class="mb-2  text-sm text-red-600 dark:text-red-500"><span
                                 class="font-medium">{{ $message }}</p>
                     @enderror
-                @endforeach
+                @endforeach --}}
             </div>
         </div>
 
