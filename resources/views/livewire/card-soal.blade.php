@@ -7,7 +7,9 @@
             </div>
         </div>
     @endif
-    <p class="text-lg"><span class="font-bold ">{{ $nomor }}.</span> {{ $soal->soal }}</p>
+    <div class="text-lg flex gap-2">
+        <div class="font-bold ">{{ $nomor }}.</div> {!! $soal->soal !!}
+    </div>
 
     <ul class="grid w-full gap-6 md:grid-cols-2 my-4 ">
         @foreach ($shuffledJawaban as $jawab)
@@ -20,7 +22,7 @@
                     <div class="block">
                         <div class="w-full text-sm font-semibold">
                             {{-- {{ intToAlphabet($loop->iteration, true) }}. --}}
-                            {{ $jawab->jawaban }}</div>
+                            {!! $jawab->jawaban !!}</div>
                     </div>
                 </label>
             </li>

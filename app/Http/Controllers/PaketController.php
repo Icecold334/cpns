@@ -43,7 +43,8 @@ class PaketController extends Controller
         return view('paket.hasil', [
             'title' => 'Hasil ' . $paket->nama,
             'paket' => $paket,
-            'total' => floor(($hasils->pluck('nilai')->sum() / ($paket->hasil->where('result_id', $paket->result->last()->id)->pluck('nilai')->count() * 100)) * 100),
+            // 'total' => floor(($hasils->pluck('nilai')->sum() / ($paket->hasil->where('result_id', $paket->result->last()->id)->pluck('nilai')->count() * 100)) * 100),
+            'total' => $hasils->pluck('nilai')->sum(),
             'hasils' => $hasils,
             'user' => Auth::user(),
         ]);
@@ -85,7 +86,7 @@ class PaketController extends Controller
                     += $jawaban->poin;
             } else {
                 if ($jawaban->benar) {
-                    $kategoris[$respon->jawaban->soal->kategori->id]++;
+                    $kategoris[$respon->jawaban->soal->kategori->id] += 5;
                 }
             }
         }
@@ -95,17 +96,18 @@ class PaketController extends Controller
     {
         $kategoris = $paket->base->kategori;
 
-
         $totalNilai = [];
+        // dd($scores);
         foreach ($scores as $key => $score) {
 
 
             $kategori = $kategoris->find($key);
-
             if ($kategori->byPoin) {
-                $totalNilai[$kategori->id] = (int)floor(($scores[$kategori->id] / ($paket->soal->where('kategori_id', $kategori->id)->count() * 5)) * 100);
+                // $totalNilai[$kategori->id] = (int)floor(($scores[$kategori->id] / ($paket->soal->where('kategori_id', $kategori->id)->count() * 5)) * 100);
+                $totalNilai[$kategori->id] = $scores[$kategori->id];
             } else {
-                $totalNilai[$kategori->id] = (int)floor(($scores[$kategori->id] / $paket->soal->where('kategori_id', $kategori->id)->count()) * 100);
+                // $totalNilai[$kategori->id] = (int)floor(($scores[$kategori->id] / $paket->soal->where('kategori_id', $kategori->id)->count()) * 100);
+                $totalNilai[$kategori->id] = $scores[$kategori->id];
             }
         }
         return $totalNilai;
