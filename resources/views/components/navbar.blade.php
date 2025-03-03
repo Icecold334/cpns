@@ -33,9 +33,11 @@
                                     class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
                                     aria-expanded="false" data-dropdown-toggle="dropdown-user">
                                     <span class="sr-only">Open user menu</span>
-                                    <img class="w-8 h-8 rounded-full"
-                                        src="{{ asset(Auth::user()->img ?? 'img/undraw_profile.svg') }}"
-                                        alt="user photo">
+                                    <div class="w-8 h-8 rounded-full overflow-hidden">
+                                        <img class="w-full h-full object-cover"
+                                            src="{{ asset(Auth::user()->img ?? 'img/undraw_profile.svg') }}"
+                                            alt="user photo">
+                                    </div>
                                 </button>
                             </div>
                             <div class="z-50 hidden my-4 text-base list-none bg-primary-950 divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600"
