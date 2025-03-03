@@ -38,7 +38,7 @@ class ProfileComponent extends Component
             'name' => $this->name,
             'email' => $this->email,
             'gender' => $this->gender,
-            'img' => $img,
+            'img' => $img == 'img/undraw_profile.svg' ? null : $img,
         ]);
 
         // Tampilkan pesan sukses

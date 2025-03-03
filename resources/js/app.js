@@ -3,7 +3,6 @@ import $ from "jquery";
 window.jQuery = window.$ = $;
 import Swal from "sweetalert2";
 window.Swal = Swal;
-window.Alpine = Alpine;
 import { DataTable } from "simple-datatables";
 window.DataTable = DataTable;
 import { Editor } from "https://esm.sh/@tiptap/core@2.6.6";
