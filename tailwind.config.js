@@ -60,16 +60,16 @@ export default {
             colors: {
                 primary: {
                     50: "#ffffff", // Putih
-                    100: "#e7d2e8",
-                    200: "#c490c5",
-                    300: "#b26fb4", // Titik seimbang
-                    400: "#ad64ae",
-                    500: "#a759a8",
-                    600: "#a14ea3",
-                    700: "#9b439d",
-                    800: "#953897",
-                    900: "#8f2d91",
-                    950: "#8a228c", // Gelap
+                    100: "#ebf0fd", // Biru sangat muda
+                    200: "#d6e1fb", // Biru muda
+                    300: "#c2d2f9", // Biru muda lebih terang
+                    400: "#adc4f7", // Biru muda cerah
+                    500: "#99b6f5", // Biru cerah
+                    600: "#8598f3", // Biru sedang
+                    700: "#718af1", // Biru tua
+                    800: "#5d7cef", // Biru lebih tua
+                    900: "#4a6eed", // Biru sangat tua
+                    950: "#5470f5", // Biru gelap
                 },
                 secondary: {
                     950: "#1a1d1f",
