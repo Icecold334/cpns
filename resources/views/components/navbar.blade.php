@@ -56,6 +56,11 @@
                                     role="menuitem">Profil</a>
                             </li>
                             <li>
+                                <a href="/password-reset"
+                                    class="block px-4 py-2 text-sm text-white hover:bg-gray-100 hover:text-primary-950 dark:text-white dark:hover:bg-gray-600 dark:hover:text-white"
+                                    role="menuitem">Ganti Password</a>
+                            </li>
+                            <li>
                                 <a href="/logout"
                                     class="block px-4 py-2 text-sm text-white hover:bg-gray-100 hover:text-primary-950 dark:text-white dark:hover:bg-gray-600 dark:hover:text-white"
                                     role="menuitem">Keluar</a>
