@@ -17,9 +17,10 @@ use App\Models\Pengaturan;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
-Auth::routes(['verify' => true]);
+Auth::routes(['verify' => false]);
 Route::get('password-reset', [ProfilController::class, 'password'])->name('list');
-Route::get('/', fn() => view('home.index', ['option' => Pengaturan::first()]));
+// Route::get('/', fn() => view('home.index', ['option' => Pengaturan::first()]));
+Route::get('/', fn() => redirect()->to('login'));
 Route::get('panel', [PanelController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('test', function () {
     return view('wind');

@@ -16,9 +16,9 @@ class DatabaseSeeder extends Seeder
     {
         // Buat pengguna
         Pengaturan::factory()->create(['nama' => '<p>AR-RAHMAN</p> <p class="text-sm">PHSYCO & ACADEMIC SCHOOL</p>', 'primary' => '#4e73df', 'judul' => 'Ini Judul', 'subjudul' => 'ini subjudul', 'notelp' => '085648785256', 'email' => 'email@email.com', 'alamat' => 'Jl. In aja dulu', 'deskripsi' => 'ini teks deskripsi']);
-        User::factory()->create(['name' => 'Fauzan Imam', 'email' => 'fauzanimam334@gmail.com', 'role' => 1, 'gender' => 0, 'password' => Hash::make('a'), 'email_verified_at' => now(),]);
-        User::factory()->create(['name' => 'Ini Guru', 'email' => 'guru@gmail.com', 'role' => 2, 'gender' => 0, 'password' => Hash::make('a'), 'email_verified_at' => now(),]);
-        User::factory()->create(['name' => 'Ini Siswa', 'email' => 'siswa@gmail.com', 'role' => 3, 'gender' => 0, 'password' => Hash::make('a'), 'email_verified_at' => now(),]);
+        User::factory()->create(['name' => 'Admin', 'email' => 'admin@gmail.com', 'role' => 1, 'gender' => 0, 'password' => Hash::make('a'), 'email_verified_at' => now(),]);
+        User::factory()->create(['name' => 'Guru', 'email' => 'guru@gmail.com', 'role' => 2, 'gender' => 0, 'password' => Hash::make('a'), 'email_verified_at' => now(),]);
+        User::factory()->create(['name' => 'Siswa', 'email' => 'siswa@gmail.com', 'role' => 3, 'gender' => 0, 'password' => Hash::make('a'), 'email_verified_at' => now(),]);
         // base
         BaseKategori::factory()->create(['nama' => 'cpns', 'deskripsi' => 'cpns']);
         BaseKategori::factory()->create(['nama' => 'tni/polri-psiko', 'deskripsi' => 'tni/polri-psiko']);
@@ -42,9 +42,9 @@ class DatabaseSeeder extends Seeder
 
         // Buat paket soal
         $paket = Paket::factory()->create(['nama' => 'Paket Soal A', 'durasi' => 3600, 'user_id' => 2, 'base_id' => 1, 'status' => 1]);
-        $paket2 = Paket::factory()->create(['nama' => 'Paket Soal B', 'durasi' => 2400, 'user_id' => 2, 'base_id' => 1]);
+        // $paket2 = Paket::factory()->create(['nama' => 'Paket Soal B', 'durasi' => 2400, 'user_id' => 2, 'base_id' => 1]);
         Paket::factory()->create(['nama' => 'Paket Soal C', 'durasi' => 5, 'user_id' => 2, 'base_id' => 2, 'status' => 1, 'flat' => false]);
-        Soal::factory()->create(['uuid' => fake()->uuid(), 'paket_id' => 3, 'kategori_id' => 4, 'soal' => 'asdads']);
+        Soal::factory()->create(['uuid' => fake()->uuid(), 'paket_id' => 2, 'kategori_id' => 4, 'soal' => 'asdads']);
         Jawaban::factory()->create(['soal_id' => 1, 'row' => 1, 'jawaban' => 'a', 'benar' => 0, 'poin' => 0]);
         Jawaban::factory()->create(['soal_id' => 1, 'row' => 2, 'jawaban' => 'b', 'benar' => 1, 'poin' => 0]);
         Jawaban::factory()->create(['soal_id' => 1, 'row' => 3, 'jawaban' => 'c', 'benar' => 0, 'poin' => 0]);
@@ -401,62 +401,6 @@ class DatabaseSeeder extends Seeder
         foreach ($soal_tkp as $index => $data) {
             $soal = Soal::factory()->create([
                 'paket_id' => $paket->id,
-                'kategori_id' => $kategori_tkp->id,
-                'soal' => $data['soal']
-            ]);
-
-            foreach ($data['jawaban'] as $key => $jawaban) {
-                Jawaban::factory()->create([
-                    'soal_id' => $soal->id,
-                    'row' => $key + 1,
-                    'jawaban' => $jawaban[0], // Jawaban teks
-                    'benar' => true,
-                    'poin' => $jawaban[1] // Poin jawaban
-                ]);
-            }
-        }
-
-        // paket b
-        // Buat soal dan jawaban untuk kategori TIU
-        foreach ($soal_tiu as $index => $data) {
-            $soal = Soal::factory()->create([
-                'paket_id' => $paket2->id,
-                'kategori_id' => $kategori_tiu->id,
-                'soal' => $data['soal']
-            ]);
-
-            foreach ($data['jawaban'] as $key => $jawaban) {
-                Jawaban::factory()->create([
-                    'soal_id' => $soal->id,
-                    'row' => $key + 1,
-                    'jawaban' => $jawaban,
-                    'benar' => $key == 0 // Jawaban pertama benar
-                ]);
-            }
-        }
-
-        // Buat soal dan jawaban untuk kategori TWK
-        foreach ($soal_twk as $index => $data) {
-            $soal = Soal::factory()->create([
-                'paket_id' => $paket2->id,
-                'kategori_id' => $kategori_twk->id,
-                'soal' => $data['soal']
-            ]);
-
-            foreach ($data['jawaban'] as $key => $jawaban) {
-                Jawaban::factory()->create([
-                    'soal_id' => $soal->id,
-                    'row' => $key + 1,
-                    'jawaban' => $jawaban,
-                    'benar' => $key == 0 // Jawaban pertama benar
-                ]);
-            }
-        }
-
-        // Buat soal dan jawaban untuk kategori TKP
-        foreach ($soal_tkp as $index => $data) {
-            $soal = Soal::factory()->create([
-                'paket_id' => $paket2->id,
                 'kategori_id' => $kategori_tkp->id,
                 'soal' => $data['soal']
             ]);

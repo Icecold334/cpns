@@ -77,8 +77,9 @@ class GuruForm extends Component
             'email' => $this->email,
             'gender' => $this->gender,
             'img' => $this->img != null ? str_replace('public', 'storage', $this->img->store('public/user')) : null,
+            'email_verified_at' => now(),
             'role' => 2,
-            'password' => Hash::make('password123'),
+            // 'password' => Hash::make('password123'),
         ]);
 
         return redirect()->to('/guru')
