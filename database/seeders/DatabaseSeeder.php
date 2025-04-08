@@ -41,15 +41,15 @@ class DatabaseSeeder extends Seeder
 
 
         // Buat paket soal
-        $paket = Paket::factory()->create(['nama' => 'Paket Soal A', 'durasi' => 3600, 'user_id' => 2, 'base_id' => 1, 'status' => 1]);
+        $paket = Paket::factory()->create(['nama' => 'Contoh Paket Soal', 'durasi' => 3600, 'user_id' => 2, 'base_id' => 1, 'status' => 1]);
         // $paket2 = Paket::factory()->create(['nama' => 'Paket Soal B', 'durasi' => 2400, 'user_id' => 2, 'base_id' => 1]);
-        Paket::factory()->create(['nama' => 'Paket Soal C', 'durasi' => 5, 'user_id' => 2, 'base_id' => 2, 'status' => 1, 'flat' => false]);
-        Soal::factory()->create(['uuid' => fake()->uuid(), 'paket_id' => 2, 'kategori_id' => 4, 'soal' => 'asdads']);
-        Jawaban::factory()->create(['soal_id' => 1, 'row' => 1, 'jawaban' => 'a', 'benar' => 0, 'poin' => 0]);
-        Jawaban::factory()->create(['soal_id' => 1, 'row' => 2, 'jawaban' => 'b', 'benar' => 1, 'poin' => 0]);
-        Jawaban::factory()->create(['soal_id' => 1, 'row' => 3, 'jawaban' => 'c', 'benar' => 0, 'poin' => 0]);
-        Jawaban::factory()->create(['soal_id' => 1, 'row' => 4, 'jawaban' => 'd', 'benar' => 0, 'poin' => 0]);
-        Jawaban::factory()->create(['soal_id' => 1, 'row' => 5, 'jawaban' => 'e', 'benar' => 0, 'poin' => 0]);
+        // Paket::factory()->create(['nama' => 'Paket Soal C', 'durasi' => 5, 'user_id' => 2, 'base_id' => 2, 'status' => 1, 'flat' => false]);
+        // Soal::factory()->create(['uuid' => fake()->uuid(), 'paket_id' => 2, 'kategori_id' => 4, 'soal' => 'asdads']);
+        // Jawaban::factory()->create(['soal_id' => 1, 'row' => 1, 'jawaban' => 'a', 'benar' => 0, 'poin' => 0]);
+        // Jawaban::factory()->create(['soal_id' => 1, 'row' => 2, 'jawaban' => 'b', 'benar' => 1, 'poin' => 0]);
+        // Jawaban::factory()->create(['soal_id' => 1, 'row' => 3, 'jawaban' => 'c', 'benar' => 0, 'poin' => 0]);
+        // Jawaban::factory()->create(['soal_id' => 1, 'row' => 4, 'jawaban' => 'd', 'benar' => 0, 'poin' => 0]);
+        // Jawaban::factory()->create(['soal_id' => 1, 'row' => 5, 'jawaban' => 'e', 'benar' => 0, 'poin' => 0]);
         // Soal-soal untuk kategori TIU
         $soal_tiu = [
             ["soal" => "Berapa hasil dari 10 x 10?", "jawaban" => ['100', '90', '110', '120', '80']],
