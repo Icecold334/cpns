@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // Buat pengguna
-        Pengaturan::factory()->create(['nama' => 'Aplikasi', 'primary' => '#4e73df', 'judul' => 'Ini Judul', 'subjudul' => 'ini subjudul', 'notelp' => '085648785256', 'email' => 'email@email.com', 'alamat' => 'Jl. In aja dulu', 'deskripsi' => 'ini teks deskripsi']);
+        Pengaturan::factory()->create(['nama' => '<p>AR-RAHMAN</p> <p class="text-sm">PHSYCO & ACADEMIC SCHOOL</p>', 'primary' => '#4e73df', 'judul' => 'Ini Judul', 'subjudul' => 'ini subjudul', 'notelp' => '085648785256', 'email' => 'email@email.com', 'alamat' => 'Jl. In aja dulu', 'deskripsi' => 'ini teks deskripsi']);
         User::factory()->create(['name' => 'Fauzan Imam', 'email' => 'fauzanimam334@gmail.com', 'role' => 1, 'gender' => 0, 'password' => Hash::make('a'), 'email_verified_at' => now(),]);
         User::factory()->create(['name' => 'Ini Guru', 'email' => 'guru@gmail.com', 'role' => 2, 'gender' => 0, 'password' => Hash::make('a'), 'email_verified_at' => now(),]);
         User::factory()->create(['name' => 'Ini Siswa', 'email' => 'siswa@gmail.com', 'role' => 3, 'gender' => 0, 'password' => Hash::make('a'), 'email_verified_at' => now(),]);
@@ -41,7 +41,7 @@ class DatabaseSeeder extends Seeder
 
 
         // Buat paket soal
-        $paket = Paket::factory()->create(['nama' => 'Paket Soal A', 'durasi' => 3600, 'user_id' => 2, 'base_id' => 1]);
+        $paket = Paket::factory()->create(['nama' => 'Paket Soal A', 'durasi' => 3600, 'user_id' => 2, 'base_id' => 1, 'status' => 1]);
         $paket2 = Paket::factory()->create(['nama' => 'Paket Soal B', 'durasi' => 2400, 'user_id' => 2, 'base_id' => 1]);
         Paket::factory()->create(['nama' => 'Paket Soal C', 'durasi' => 5, 'user_id' => 2, 'base_id' => 2, 'status' => 1, 'flat' => false]);
         Soal::factory()->create(['uuid' => fake()->uuid(), 'paket_id' => 3, 'kategori_id' => 4, 'soal' => 'asdads']);

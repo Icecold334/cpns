@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Session;
 class CardSoal extends Component
 {
     public $soals;
+    public $result;
     public $soal;
     public $jawaban = null;
     public $shuffledJawaban = [];
@@ -43,7 +44,7 @@ class CardSoal extends Component
 
     private function getResponJawaban($soalId)
     {
-        return Respon::where('soal_id', $soalId)->where('user_id', Auth::id())->value('jawaban_id');
+        return Respon::where('soal_id', $soalId)->where('user_id', Auth::id())->where('result_id', $this->result->id)->value('jawaban_id');
     }
 
     #[On('soal-pick')]
@@ -53,13 +54,15 @@ class CardSoal extends Component
         $this->setSoalData($soal, $nomor);
     }
 
-    public function before($no)
+    public function before()
     {
+        $no = $this->nomor;
         $this->navigateSoal($no - 2, $no - 1);
     }
 
-    public function after($no)
+    public function after()
     {
+        $no = $this->nomor;
         $this->navigateSoal($no, $no + 1);
     }
 
@@ -82,6 +85,7 @@ class CardSoal extends Component
         Respon::updateOrCreate(
             [
                 'soal_id' => $this->soal->id,
+                'result_id' => $this->result->id,
                 'user_id' => Auth::id(),
             ],
             [

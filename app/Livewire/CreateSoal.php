@@ -8,8 +8,8 @@ use App\Models\Jawaban;
 use Livewire\Component;
 use App\Models\Kategori;
 use Livewire\Attributes\Validate;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
 
 class CreateSoal extends Component
@@ -19,7 +19,7 @@ class CreateSoal extends Component
     public $paket;
     public $soal_array;
 
-    #[Validate('required', message: 'Soal tidak boleh kosong!')]
+    #[Validate('required', message: 'Soal wajib diisi!')]
     public $soal;
 
     #[Validate('required', message: 'Kategori soal harus dipilih!')]
@@ -56,12 +56,12 @@ class CreateSoal extends Component
 
     public function mount()
     {
-
         $this->kategoris = Kategori::where('base_id', $this->paket->base->id)->get();
         if ($this->soal_array != null) {
             $this->soal = $this->soal_array->soal;
             $this->img = $this->soal_array->img;
             $this->kategori_id = $this->soal_array->kategori_id;
+            $this->isi();
             $this->jawaban_array = Jawaban::where('soal_id', $this->soal_array->id)->get();
             $this->a = $this->jawaban_array[0]->jawaban;
             $this->b = $this->jawaban_array[1]->jawaban;
@@ -74,6 +74,7 @@ class CreateSoal extends Component
 
     public function update()
     {
+
         $this->validate();
         if ($this->img != null && !is_string($this->img)) {
             Storage::delete(str_replace('storage', 'public', $this->soal_array->img));
@@ -82,7 +83,7 @@ class CreateSoal extends Component
             $img = $this->soal_array->img;
         }
         $this->soal_array->update([
-            'soal' => $this->soal,
+            'soal' => $this->prosesGambarBase64($this->soal),
             'kategori_id' => $this->kategori_id,
             'img' => $img
         ]);
@@ -107,18 +108,22 @@ class CreateSoal extends Component
             }
         }
         $this->dispatch('berhasil', icon: 'success', message: 'Soal berhasil diubah!');
+        // return redirect()->route('paket.soal.index', ['paket' => $this->paket->uuid])
+        //     ->with('icon', 'success')
+        //     ->with('title', 'Berhasil')
+        //     ->with('message', 'Soal berhasil diubah!');
 
         // return redirect()->route('paket.soal.edit', ['paket' => Paket::where('id', $this->soal_array->paket_id)->first()->uuid, 'soal' => $this->soal_array->uuid])->with('icon', 'success')->with('title', 'Berhasil')->with('message', 'Soal berhasil diubah!');
     }
 
     public function save()
     {
-
         $this->validate();
         $soal = new Soal();
         $soal->paket_id = $this->paket->id;
         $soal->kategori_id = $this->kategori_id;
         $soal->soal = $this->soal;
+        $soal->soal = Str::markdown(str_replace('<!--block-->', '', $this->soal));
         $soal->img = $this->img != null ? str_replace('public', 'storage', $this->img->store('public/soal')) : null;
         $soal->save();
         $jawabanData = [
@@ -142,15 +147,22 @@ class CreateSoal extends Component
             }
             Jawaban::create($data);
         }
-        $this->dispatch('berhasil', icon: 'success', message: 'Soal berhasil ditambahkan!');
+        $this->reset(['kategori_id', 'img', 'benar', 'soal', 'a', 'b', 'c', 'd', 'e']);
         $this->resetInputFields();
+        $this->dispatch('berhasil', icon: 'success', message: 'Soal berhasil ditambahkan!');
+        // return redirect()->route('paket.soal.index', ['paket' => $this->paket->uuid])
+        //     ->with('icon', 'success')
+        //     ->with('title', 'Berhasil')
+        //     ->with('message', 'Soal berhasil ditambahkan!');
     }
 
     public function resetInputFields()
     {
+        // dd('pepek');
         $this->soal = '';
         $this->img = null;
         $this->kategori_id = '';
+        $this->kategori = null;
         $this->a = '';
         $this->b = '';
         $this->c = '';
@@ -159,9 +171,37 @@ class CreateSoal extends Component
         $this->benar = '';
     }
 
-    public function fillType($id)
+    public function updatedKategoriId()
     {
-        return $this->kategori = Kategori::find($id);
+
+        if ($this->kategori_id != null) {
+            $this->isi();
+        } else {
+            $this->reset(['kategori_id', 'img', 'benar', 'soal', 'a', 'b', 'c', 'd', 'e']);
+        }
+    }
+
+    public function isi()
+    {
+        return $this->kategori = $this->kategori_id != null ? Kategori::find($this->kategori_id) : null;
+    }
+
+    private function prosesGambarBase64($htmlInput)
+    {
+        // Cari semua tag <img> dengan src berisi data Base64
+        preg_match_all('/<img.*?src="data:image\/(.*?);base64,(.*?)".*?>/i', $htmlInput, $matches);
+
+        foreach ($matches[2] as $key => $base64Data) {
+            $imgData = base64_decode($base64Data);
+            $fileName = uniqid() . '.jpg';
+            $path = Storage::put("public/soal/{$fileName}", $imgData);
+            // URL untuk disimpan di database
+            $url = asset('storage/soal/' . $fileName);
+            $htmlInput = str_replace($matches[0][$key], '<img src="' . $url . '" contenteditable="false" draggable="true"
+            class="">', $htmlInput);
+        }
+
+        return $htmlInput;
     }
 
     public function render()

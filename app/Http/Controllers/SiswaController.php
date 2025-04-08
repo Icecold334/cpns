@@ -47,7 +47,7 @@ class SiswaController extends Controller
      */
     public function edit(User $siswa)
     {
-        Gate::allowIf(false);
+        Gate::authorize('admin');
         return view('siswa.edit', ['title' => "Ubah $siswa->name", 'user' => $siswa]);
     }
 
@@ -65,7 +65,6 @@ class SiswaController extends Controller
     public function destroy(User $siswa)
     {
         Gate::allowIf(Auth::user()->role == 1);
-
         $siswa->delete();
         return redirect()->route('siswa.index')->with('icon', 'success')->with('title', 'Berhasil')->with('message', $siswa->name . ' berhasil dihapus!');
     }

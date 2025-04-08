@@ -2,13 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Support\Testing\Fakes\Fake;
 
 class Paket extends Model
 {
@@ -25,6 +22,10 @@ class Paket extends Model
         static::creating(function ($model) {
             $model->uuid = fake()->uuid();
         });
+        // static::deleting(function ($paket) {
+        //     $paket->hasil()->delete();
+        //     $paket->soal()->delete();
+        // });
     }
     public function user(): BelongsTo
     {
@@ -41,5 +42,9 @@ class Paket extends Model
     public function hasil(): HasMany
     {
         return $this->hasMany(Hasil::class, 'paket_id');
+    }
+    public function result(): HasMany
+    {
+        return $this->hasMany(Result::class, 'paket_id');
     }
 }

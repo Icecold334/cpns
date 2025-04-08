@@ -10,4 +10,8 @@ class ProfilController extends Controller
     {
         return view('profil.index', ['title' => 'Profil ']);
     }
+    public function password()
+    {
+        return view('profil.password', ['title' => 'Ganti Password ']);
+    }
 }

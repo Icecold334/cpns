@@ -64,4 +64,8 @@ class SoalPolicy
     {
         //
     }
+    public function unpublish(User $user, Paket $paket): bool
+    {
+        return $user->id == 1 && $paket->status;
+    }
 }

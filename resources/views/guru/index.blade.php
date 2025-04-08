@@ -1,105 +1,93 @@
 <x-body>
     <x-slot:title>{{ $title }}</x-slot>
-    <h1>Daftar Guru <a href="{{ route('guru.create') }}"><i class="fa-solid fa-circle-plus"></i></a></h1>
-    <div class="table-responsive">
-        <table class="table" id="gurus">
-            <thead>
+    <div class="flex justify-between mb-10 ">
+        <div class="flex items-center text-3xl sm:text-4xl md:text-5xl ">
+            {{-- <a href="{{ route('paket.index') }}"
+                class=" text-primary-600 hover:text-primary-950 transition duration-200 "><i
+                    class="fa-solid fa-circle-chevron-left "></i></a> --}}
+            <div class=" font-semibold text-slate-800">Daftar Guru</div>
+        </div>
+        <div class="hidden xl:flex items-center text-3xl sm:text-4xl md:text-5xl ">
+            <x-button :button="true" data-modal-target="guruModal" data-modal-toggle="guruModal">
+                <i class="fa-solid fa-circle-plus"></i> Tambah Guru
+            </x-button>
+            <x-modal title='Tambah Guru' id='guruModal'>
+                <livewire:guru-form />
+            </x-modal>
+        </div>
+    </div>
+
+
+    <x-table id="guru">
+        <thead>
+            <tr>
+                <th><i class="fa-solid fa-sort"></i></th>
+                <th>Nama <i class="fa-solid fa-sort"></i></th>
+                <th>Email <i class="fa-solid fa-sort"></i></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($gurus as $guru)
                 <tr>
-                    <th class="text-center" style="width: 5%">#</th>
-                    <th class="text-center">Nama</th>
-                    <th class="text-center">Email</th>
-                    <th class="text-center" style="width: 10%"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($gurus as $user)
-                    <tr>
-                        <td class="text-center">{{ $loop->iteration }}</td>
-                        <td>{{ $user->name }}</td>
-                        {{-- <td class="text-center">{{ $user->phone ?? '-' }}</td> --}}
-                        <td class="text-center">{{ $user->email }}</td>
-                        <td class="text-center">
-                            <a href="/guru/{{ $user->id }}" class="btn badge bg-info text-white px-1">
-                                <i class="fa-solid fa-circle-info"></i>
-                            </a>
-                            {{-- <a href="/guru/{{ $user->id }}/edit" class="btn badge bg-warning text-white px-1">
-                                <i class="fa-solid fa-pen-to-square"></i>
-                            </a> --}}
-                            <form class="d-inline" action="/guru/{{ $user->id }}" method="POST"
-                                id="formDel{{ $user->id }}">
-                                @csrf
-                                @method('DELETE')
-                            </form>
-                            <button class="btn badge bg-danger text-white px-1" id="delete{{ $user->id }}">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                            @push('scripts')
-                                <script>
-                                    $('#delete{{ $user->id }}').click(() => {
+                    <td>{{ $loop->iteration }}.</td>
+                    <td>{{ $guru->name }}</td>
+                    <td>{{ $guru->email }}</td>
+                    <td><x-badge :badge="false" href="/guru/{{ $guru->id }}/edit" color="warning" class="me-3"
+                            data-tooltip-target="edit{{ $guru->id }}">
+                            <i class="fa-solid fa-pen"></i>
+                            <div id="edit{{ $guru->id }}" role="tooltip"
+                                class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                                Ubah data guru
+                                <div class="tooltip-arrow" data-popper-arrow></div>
+                            </div>
+                        </x-badge>
+
+                        <x-badge :badge="true" color="danger" id="delete{{ $guru->id }}"
+                            data-tooltip-target="hapus{{ $guru->id }}">
+                            <i class="fa-solid fa-trash"></i>
+                            <div id="hapus{{ $guru->id }}" role="tooltip"
+                                class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                                Hapus guru
+                                <div class="tooltip-arrow" data-popper-arrow></div>
+                            </div>
+                        </x-badge>
+                        <form id="delete-form-{{ $guru->id }}"
+                            action="{{ route('guru.destroy', ['guru' => $guru->id]) }}" method="POST"
+                            style="display: none;">
+                            @csrf
+                            @method('DELETE')
+                        </form>
+                        @push('scripts')
+                            <script type="module">
+                                $(document).ready(function() {
+                                    $('#delete{{ $guru->id }}').click(() => {
                                         Swal.fire({
-                                            title: "Apa Kamu Yakin?",
-                                            text: "Yakin Hapus Guru {{ $user->name }}?",
-                                            icon: "question",
+                                            title: 'Apa Anda Yakin?',
+                                            text: "Anda akan menghapus guru {{ $guru->name }}!",
+                                            icon: 'question',
                                             showCancelButton: true,
-                                            confirmButtonColor: "#3085d6",
-                                            cancelButtonColor: "#d33",
-                                            confirmButtonText: "Ya",
-                                            cancelButtonText: "Tidak"
+                                            confirmButtonColor: '#3085d6',
+                                            cancelButtonColor: '#d33',
+                                            confirmButtonText: 'Hapus',
+                                            cancelButtonText: 'Batal'
                                         }).then((result) => {
                                             if (result.isConfirmed) {
-                                                let form = $('#formDel{{ $user->id }}')
-                                                form.submit();
+                                                document.getElementById('delete-form-{{ $guru->id }}').submit();
                                             }
                                         });
                                     });
-                                </script>
-                            @endpush
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
+                                });
+                            </script>
+                        @endpush
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </x-table>
     @push('scripts')
-        <script>
-            $("#gurus").DataTable({
-                "responsive": true,
-                columnDefs: [{
-                    orderable: false,
-                    targets: 3
-                }],
-                paging: true,
-                lengthMenu: [5, 10, 20, {
-                    label: "Semua",
-                    value: -1
-                }],
-                pageLength: 10,
-                language: {
-                    decimal: "",
-                    searchPlaceholder: "Cari Data",
-                    emptyTable: "Tabel kosong",
-                    info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
-                    infoEmpty: "Menampilkan 0 sampai 0 dari 0 data",
-                    infoFiltered: "(filtered from _MAX_ total entries)",
-                    infoPostFix: "",
-                    thousands: ",",
-                    lengthMenu: "Tampilkan _MENU_ data",
-                    loadingRecords: "Loading...",
-                    processing: "",
-                    search: "Cari:",
-                    zeroRecords: "Data tidak ditemukan",
-                    paginate: {
-                        first: "<<",
-                        last: ">>",
-                        next: ">",
-                        previous: "<",
-                    },
-                    aria: {
-                        orderable: "Order by this column",
-                        orderableReverse: "Reverse order this column",
-                    },
-                },
-            });
+        <script type="module">
+            table('#guru')
         </script>
     @endpush
 </x-body>

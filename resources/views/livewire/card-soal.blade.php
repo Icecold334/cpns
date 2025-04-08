@@ -1,49 +1,59 @@
-<div class="card-body">
+<div>
     {{-- <h5 class="font-weight-bold">Soal No.{{ $nomor }}</h5> --}}
-    <p class="mb-1 font-weight-bold">{{ $soal->kategori->deskripsi }} - {{ $soal->kategori->nama }}</p>
+    <p class="mb-1 font-bold">{{ $soal->kategori->deskripsi }} - {{ $soal->kategori->nama }}</p>
     @if ($soal->img)
-        <div class="row mb-3 justify-content-center">
-            <div class="col-xl-6 col-md-8 col-sm-10"><img src="{{ asset($soal->img) }}" alt=""
-                    class="img-thumbnail">
+        <div class="flex mb-3 justify-center">
+            <div class="w-full md:w-1/3 xl:w-1/2 "><img src="{{ asset($soal->img) }}" alt="">
             </div>
         </div>
     @endif
-    <p><span class="font-weight-bold">{{ $nomor }}.</span> {{ $soal->soal }}</p>
-
-
-    @foreach ($shuffledJawaban as $jawab)
-        <div class="form-check mb-2">
-
-
-            <input class="btn-check" wire:loading.attr="disabled" type="radio" name="jawab"
-                value="{{ $jawab->id }}" id="jawaban{{ intToAlphabet($jawab->row, true) }}" wire:model.live="jawaban"
-                wire:key="jawab-{{ $jawab->id }}">
-            <label class="btn btn-outline-primary " for="jawaban{{ intToAlphabet($jawab->row, true) }}">
-                {{ intToAlphabet($loop->iteration, true) }}. {{ $jawab->jawaban }}
-            </label>
-        </div>
-    @endforeach
-
-
-    <div class="d-flex align-items-center justify-content-start gap-3 ">
-        <button class="btn btn-primary mt-3 d-flex align-items-center {{ $nomor == 1 ? 'disabled' : '' }}"
-            type="button" wire:click="before({{ $nomor }})" wire:loading.class="disabled">
-            <span role="status"><i class="fa-solid fa-chevron-left"></i> Sebelumnya </span>
-            <div wire:loading>
-                <span class="spinner-grow spinner-grow-sm ms-1 me-0" aria-hidden="true"></span>
-            </div>
-        </button>
-        <button
-            class="btn btn-primary mt-3 d-flex align-items-center {{ $nomor == $soals->count() ? 'disabled' : '' }}"
-            type="button" wire:click="after({{ $nomor }})" wire:loading.class="disabled">
-            <div wire:loading>
-                <span class="spinner-grow spinner-grow-sm ms-0 me-1" aria-hidden="true"></span>
-            </div>
-            <span role="status">Berikutnya <i class="fa-solid fa-chevron-right"></i></span>
-        </button>
-        <button class="btn btn-primary mt-3  d-flex ms-auto" id="selesai">Selesai Ujian</button>
+    <div class="text-lg flex gap-2">
+        <div class="font-bold ">{{ $nomor }}.</div> {!! $soal->soal !!}
     </div>
 
+    <ul class="grid w-full gap-6 md:grid-cols-2 my-4 ">
+        @foreach ($shuffledJawaban as $jawab)
+            <li>
+                <input wire:loading.attr="disabled" type="radio" name="jawab" value="{{ $jawab->id }}"
+                    id="jawaban{{ intToAlphabet($jawab->row, true) }}" wire:model.live="jawaban"
+                    wire:key="jawab-{{ $jawab->id }}"class="hidden peer" required />
+                <label for="jawaban{{ intToAlphabet($jawab->row, true) }}"
+                    class="inline-flex shadow-md items-center justify-between w-full p-5 text-gray-900 transition duration-200 bg-white peer-checked:bg-primary-950 border border-gray-400 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-primary-900 peer-checked:text-gray-100  hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+                    <div class="block">
+                        <div class="w-full text-sm font-semibold">
+                            {{-- {{ intToAlphabet($loop->iteration, true) }}. --}}
+                            {!! $jawab->jawaban !!}</div>
+                    </div>
+                </label>
+            </li>
+        @endforeach
+    </ul>
+
+
+    <div class="grid sm:grid-cols-2 ">
+        <div class="flex gap-2 w-full">
+            <x-button :button="true"
+                class="w-full sm:w-auto {{ $nomor == 1 ? 'bg-primary-500 cursor-not-allowed' : 'bg-primary-950' }}"
+                wire:click="before" wire:loading.attr="disabled" wire:loading.class.remove="bg-primary-950"
+                wire:loading.class="bg-primary-500 cursor-not-allowed" :disabled="$nomor == 1"><span role="status"><i
+                        class="fa-solid fa-chevron-left"></i>
+                    Sebelumnya
+
+                </span></x-button>
+            <x-button :button="true"
+                class="w-full sm:w-auto {{ $nomor == $soals->count() ? 'bg-primary-500 cursor-not-allowed' : 'bg-primary-950' }}"
+                wire:loading.attr="disabled" wire:loading.class.remove="bg-primary-950"
+                wire:loading.class="bg-primary-500 cursor-not-allowed" :disabled="$nomor == $soals->count()" wire:click="after"><span
+                    role="status">
+
+                    Selanjutnya
+                    <i class="fa-solid fa-chevron-right"></i>
+                </span></x-button>
+        </div>
+        <div class="inline sm:ms-auto"><x-button :button="true" class="ms-auto w-full sm:w-auto bg-primary-950"
+                wire:loading.attr="disabled" wire:loading.class.remove="bg-primary-950"
+                wire:loading.class="bg-primary-500 cursor-not-allowed" id="selesai">Selesai</x-button></div>
+    </div>
     @push('scripts')
         <script>
             document.addEventListener('selesai', function(e) {
@@ -61,7 +71,8 @@
                         clearInterval(timerInterval);
                     }
                 }).then((result) => {
-                    window.location = "{{ route('ujian.selesai', ['paket' => $soal->paket->uuid]) }}";
+                    window.location =
+                        "{{ route('ujian.selesai', ['paket' => $soal->paket->uuid, 'result' => $result->id]) }}";
                 });
             }, {
                 once: true
@@ -78,7 +89,8 @@
                     cancelButtonText: 'Batal'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location = "{{ route('ujian.selesai', ['paket' => $soal->paket->uuid]) }}";
+                        window.location =
+                            "{{ route('ujian.selesai', ['paket' => $soal->paket->uuid, 'result' => $result->id]) }}";
                     }
                 });
             });

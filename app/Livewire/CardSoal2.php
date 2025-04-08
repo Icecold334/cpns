@@ -10,7 +10,9 @@ use Illuminate\Support\Facades\Session;
 
 class CardSoal2 extends Component
 {
+
     public $paket;
+    public $result;
     public $total;
     public $terjawab;
     public $belum;
@@ -24,26 +26,36 @@ class CardSoal2 extends Component
     public $nomor = 1;
     public function mount()
     {
-
         $this->durasi = Session::get('time') ?? $this->paket->durasi;
         $this->loadCurrentSoal();
         $this->loadStatus();
     }
+    // public function loadStatus()
+    // {
+    //     $this->total = $this->paket->soal->count();
+    //     $this->terjawab = count(Respon::where('user_id', Auth::user()->id)
+    //         ->where('result_id', $this->result->id)
+    //         ->whereIn('soal_id', $this->paket->soal->pluck('id')->toArray())
+    //         ->pluck('soal_id')
+    //         ->toArray());
+    //     $this->belum = $this->total - $this->terjawab;
+    //     $this->persen = (($this->nomor - 1) / $this->total) * 100;
+    //     // dump([$this->total, $this->terjawab, $this->belum]);
+    // }
     public function loadStatus()
     {
-        // Menghitung total soal dalam paket
         $this->total = $this->paket->soal->count();
-
-        // Mendapatkan array ID soal yang telah dijawab oleh user
         $this->terjawab = count(Respon::where('user_id', Auth::user()->id)
+            ->where('result_id', $this->result->id)
             ->whereIn('soal_id', $this->paket->soal->pluck('id')->toArray())
             ->pluck('soal_id')
             ->toArray());
-
-        // Menghitung soal yang belum dijawab
         $this->belum = $this->total - $this->terjawab;
-        $this->persen = (($this->nomor - 1) / $this->total) * 100;
+
+        // Menghitung persen dengan pembatasan 100
+        $this->persen = min((($this->nomor - 1) / $this->total) * 100, 100);
     }
+
 
     private function loadCurrentSoal()
     {
@@ -61,7 +73,7 @@ class CardSoal2 extends Component
             $this->persen = 100;
         }
         $this->dispatch('redirect-with-delay', [
-            'url' => route('ujian.selesai', ['paket' => $this->paket->uuid]),
+            'url' => route('ujian.selesai', ['paket' => $this->paket->uuid, 'result' => $this->result->id]),
         ]);
     }
 
@@ -75,7 +87,7 @@ class CardSoal2 extends Component
 
     private function getResponJawaban($soalId)
     {
-        return Respon::where('soal_id', $soalId)->where('user_id', Auth::id())->value('jawaban_id');
+        return Respon::where('soal_id', $soalId)->where('user_id', Auth::id())->where('result_id', $this->result->id)->value('jawaban_id');
     }
 
     public function updated($name, $value)
@@ -88,6 +100,7 @@ class CardSoal2 extends Component
         Respon::updateOrCreate(
             [
                 'soal_id' => $this->soal->id,
+                'result_id' => $this->result->id,
                 'user_id' => Auth::id(),
             ],
             [
@@ -98,8 +111,9 @@ class CardSoal2 extends Component
     }
 
 
-    public function after($no)
+    public function after()
     {
+        $no = $this->nomor;
         $this->navigateSoal($no, $no + 1);
     }
 
@@ -123,9 +137,10 @@ class CardSoal2 extends Component
                 $this->durasi = $this->paket->durasi;
                 $this->navigateSoal($nomor, $nomor + 1);
             } else {
+
                 $this->persen = 100;
                 $this->dispatch('redirect-with-delay', [
-                    'url' => route('ujian.selesai', ['paket' => $this->paket->uuid]),
+                    'url' => route('ujian.selesai', ['paket' => $this->paket->uuid, 'result' => $this->result->id]),
                 ]);
             }
         }

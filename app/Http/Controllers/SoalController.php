@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Soal;
-use App\Http\Requests\StoreSoalRequest;
-use App\Http\Requests\UpdateSoalRequest;
-use App\Models\Jawaban;
 use App\Models\Paket;
+use App\Models\Jawaban;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use App\Http\Requests\StoreSoalRequest;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\UpdateSoalRequest;
 
 class SoalController extends Controller
 {
@@ -24,7 +26,7 @@ class SoalController extends Controller
      */
     public function create(Paket $paket)
     {
-        Gate::authorize('create', [Soal::class, $paket]);
+        // Gate::authorize('create', [Soal::class, $paket]);
         return view('soal.create', ['title' => 'Tambah Soal', 'paket' => $paket]);
     }
 
@@ -68,5 +70,33 @@ class SoalController extends Controller
         Jawaban::where('soal_id', $soal->id)->delete();
         $soal->delete();
         return redirect()->route('paket.soal.index', ['paket' => Paket::where('id', $paket->id)->first()->uuid])->with('icon', 'success')->with('title', 'Berhasil')->with('message', 'Soal berhasil dihapus!');
+    }
+
+    public function upload(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file|max:5120', // Maksimal 5MB
+        ]);
+        if ($request->hasFile('file')) {
+            $path = str_replace('public', 'storage', $request->file('file')->store('public/soal'));
+            return response()->json([
+                'url' => asset($path)
+            ]);
+        }
+
+        return response()->json(['error' => 'File not found'], 400);
+    }
+    public function delete(Request $request)
+    {
+
+        $fileUrl = $request->input('url');
+        $filePath = str_replace('storage', 'public', parse_url($fileUrl, PHP_URL_PATH));
+
+        if (Storage::exists($filePath)) {
+            Storage::delete($filePath);
+            return response()->json(['success' => true]);
+        }
+
+        return response()->json(['success' => false, 'message' => 'File tidak ditemukan.']);
     }
 }

@@ -13,6 +13,16 @@ class Kategori extends Model
 
     protected $guarded = ['id'];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        // static::deleting(function ($kategori) {
+        //     $kategori->soal()->delete();
+        //     $kategori->hasil()->delete();
+        // });
+    }
+
     public function soal(): HasMany
     {
         return $this->hasMany(Soal::class, 'kategori_id');

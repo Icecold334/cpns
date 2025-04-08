@@ -24,4 +24,8 @@ class Hasil extends Model
     {
         return $this->belongsTo(Kategori::class, 'kategori_id');
     }
+    public function result(): BelongsTo
+    {
+        return $this->belongsTo(Result::class, 'result_id');
+    }
 }

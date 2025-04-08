@@ -1,76 +1,40 @@
 <div>
-
+    <!-- Modal -->
     <form wire:submit.prevent="@if ($id == null) save @else update @endif" enctype="multipart/form-data">
         @csrf
-        <div class="row">
+        <div class="flex">
+            <div class="w-full">
+                <!-- Nama Siswa -->
+                <x-form-input type="text" label="Nama Siswa" id="name" wire:model.live="name"
+                    placeholder="Nama Siswa" autocomplete="off" :error="$errors->first('name')" class="mb-3" />
 
-            <div class="col-xl-6 col-md-12 col-sm-12">
-                <div class="form-group mb-3">
-                    <label for="name" class="form-label">Nama Siswa<span class="text-danger">*</span></label>
-                    <input type="text" class="form-control  @error('name') is-invalid @enderror" id="name"
-                        placeholder="Nama Siswa" wire:model.live="name" autocomplete="off">
-                    @error('name')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                    @enderror
-                </div>
-            </div>
-            <div class="col-xl-6 col-md-12 col-sm-12">
-                <div class="form-group mb-3">
-                    <label for="gender" class="form-label d-block mb-3">Jenis Kelamin<span
+                <!-- Jenis Kelamin -->
+                <div class="mb-3">
+                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jenis Kelamin<span
                             class="text-danger">*</span></label>
+                    <x-form-input type="radio" label="Laki-laki" id="laki" name="jkel"
+                        wire:model.live="gender" value="0" />
+                    <x-form-input type="radio" label="Perempuan" id="perempuan" name="jkel"
+                        wire:model.live="gender" value="1" />
+                </div>
 
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="gender" id="laki" wire:model="gender"
-                            value="0">
-                        <label class="form-check-label" for="laki">
-                            Laki-laki
-                        </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="gender" id="perempuan" wire:model="gender"
-                            value="1">
-                        <label class="form-check-label" for="perempuan">
-                            Perempuan
-                        </label>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-12 col-md-12 col-sm-12">
-                <div class="form-group mb-3">
-                    <label for="email" class="form-label">Email<span class="text-danger">*</span></label>
-                    <input type="text" class="form-control  @error('email') is-invalid @enderror" id="email"
-                        placeholder="Email Siswa" wire:model.live="email" autocomplete="off">
-                    @if ($errors->has('email'))
-                        <div class="invalid-feedback">
-                            {{ $errors->first('email') }}
-                        </div>
-                    @else
-                        <div id="emailHelp" class="form-text small">Pastikan alamat email sudah benar.</div>
-                    @endif
-                </div>
-            </div>
-            <div class="col-xl-12 col-md-12 col-sm-12">
-                <div class="form-group mb-3">
-                    <label for="img" class="form-label">Foto</label>
+                <!-- Email Siswa -->
+                <x-form-input type="email" label="Email" id="email" wire:model.live="email"
+                    placeholder="Email Siswa" autocomplete="off" :error="$errors->first('email')" class="mb-3" />
+
+                <!-- Foto Siswa -->
+                <div class="mb-3 ">
                     @if ($img)
-                        <img src="{{ $img->temporaryUrl() }}" class="d-block img-thumbnail mb-3" width="30%"
-                            alt="">
+                        <img src="{{ is_string($img) ? asset($img) : $img->temporaryUrl() }}"
+                            class="border-4 shadow-lg rounded-xl mb-3w-1/2 sm:w-1/3 md:w-1/5" alt="">
                     @endif
-                    <input type="file" class="form-control  @error('img') is-invalid @enderror" id="img"
-                        placeholder="img Guru" wire:model.live="img" autocomplete="off">
-                    @error('img')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                    @enderror
+                    <x-form-input type="file" id="img" label="Foto" wire:model.live="img" :error="$errors->first('img')"
+                        class="mb-3" />
                 </div>
+
+                <!-- Submit Button -->
+                <x-button button="true" class="mt-3" type="submit">Simpan</x-button>
             </div>
-
         </div>
-
-        <button type="submit" class="btn btn-primary">Simpan</button>
     </form>
-
 </div>

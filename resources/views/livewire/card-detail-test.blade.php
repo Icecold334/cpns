@@ -1,17 +1,13 @@
-<div class="card-body d-flex justify-content-center align-items-center">
-    <div class="d-flex justify-content-center">
-        <table class="table table-borderless table-responsive m-0">
-            <tr>
-                <td class="font-weight-bold text-center">Jumlah Soal</td>
-                <td class="font-weight-bold text-center ">Terjawab</td>
-                <td class="font-weight-bold text-center ">Belum Terjawab</td>
+<x-table class="w-full text-gray-800">
+    <tr>
+        <td class="font-bold px-6 md:px-0 xl:px-8 text-center">Jumlah Soal</td>
+        <td class="font-bold px-6 md:px-0 xl:px-8 text-center ">Terjawab</td>
+        <td class="font-bold px-6 md:px-0 xl:px-8 text-center ">Belum Terjawab</td>
 
-            </tr>
-            <tr>
-                <td class="font-weight-bold text-center">{{ $total }}</td>
-                <td class="font-weight-bold text-center text-success">{{ $terjawab }}</td>
-                <td class="font-weight-bold text-center text-danger">{{ $belum }}</td>
-            </tr>
-        </table>
-    </div>
-</div>
+    </tr>
+    <tr>
+        <td class="font-bold px-6 md:px-0 xl:px-8 text-center">{{ $total }}</td>
+        <td class="font-bold px-6 md:px-0 xl:px-8 text-center text-green-600">{{ $terjawab }}</td>
+        <td class="font-bold px-6 md:px-0 xl:px-8 text-center text-red-600">{{ $belum }}</td>
+    </tr>
+</x-table>

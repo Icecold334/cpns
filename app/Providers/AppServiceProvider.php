@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Foundation\Auth\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -21,6 +22,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Auth::loginUsingId(1);
         Gate::define('admin', function (User $user) {
             return $user->role == 1;
         });

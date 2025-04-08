@@ -15,22 +15,32 @@ use App\Http\Controllers\{
 };
 use App\Models\Pengaturan;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 Auth::routes(['verify' => true]);
+Route::get('password-reset', [ProfilController::class, 'password'])->name('list');
 Route::get('/', fn() => view('home.index', ['option' => Pengaturan::first()]));
 Route::get('panel', [PanelController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('test', function () {
+    return view('wind');
+});
 Route::resource('guru', GuruController::class)->middleware(['admin', 'verified']);
 Route::resource('siswa', SiswaController::class)->middleware(['guru', 'verified']);
 Route::prefix('paket')->middleware(['auth', 'verified'])->group(function () {
+    Route::get('{paket}/list', [PaketController::class, 'list'])->name('list');
     Route::get('publish/{paket}', [PaketController::class, 'publish'])->middleware('guru')->name('publish');
-    Route::get('hasil/{paket}', [PaketController::class, 'hasil'])->name('hasil');
+    Route::get('hasil/{paket}/', [PaketController::class, 'hasil'])->name('hasil');
     Route::middleware('siswa')->group(function () {
         Route::get('test/{paket}', [PaketController::class, 'testIndex']);
         Route::get('test/{paket}/play', [PaketController::class, 'test'])->name('play');
-        Route::get('test/{paket}/selesai', [PaketController::class, 'selesai'])->name('ujian.selesai');
+        Route::get('test/{paket}/{result}/selesai', [PaketController::class, 'selesai'])->name('ujian.selesai');
     });
 });
+Route::post('/trix-upload', [SoalController::class, 'upload'])->middleware(['auth', 'verified']);
+Route::post('/trix-delete', [SoalController::class, 'delete'])->middleware(['auth', 'verified']);
 Route::resource('paket', PaketController::class)->middleware(['auth', 'verified']);
+Route::delete('kategori/base/{base}', [KategoriController::class, 'destroyBase'])->name('base.destroy');
+Route::get('kategori/{id}/{type}/edit', [KategoriController::class, 'edit'])->middleware(['admin', 'guru', 'verified']);
 Route::resource('kategori', KategoriController::class)->middleware(['auth', 'verified']);
 Route::resource('paket.soal', SoalController::class)->middleware(['auth', 'verified']);
 Route::get('pengaturan', [PengaturanController::class, 'index'])->middleware(['admin', 'verified'])->name('settings');

@@ -15,6 +15,7 @@ class GuruController extends Controller
      */
     public function index()
     {
+
         return view('guru.index', ['title' => 'Daftar Guru', 'gurus' => User::where('role', 2)->get()]);
     }
 

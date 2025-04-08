@@ -14,9 +14,10 @@ return new class extends Migration
     {
         Schema::create('respons', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('soal_id')->constrained('soals');
-            $table->foreignId('jawaban_id')->constrained('jawabans');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('result_id')->constrained('results')->onDelete('cascade');
+            $table->foreignId('soal_id')->constrained('soals')->onDelete('cascade');
+            $table->foreignId('jawaban_id')->constrained('jawabans')->onDelete('cascade');
             $table->timestamp('response_time')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamps();
         });
