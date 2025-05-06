@@ -27,7 +27,7 @@ class CardTimer extends Component
             if ($current->between($start, $end)) {
                 $this->timeRemaining = abs((int)$end->diffInSeconds($current));
             } else {
-                redirect()->route('ujian.selesai', ['paket' => $this->paket->uuid, 'result' => $this->result->id]);
+                return redirect()->route('ujian.selesai', ['paket' => $this->paket->uuid, 'result' => $this->result->id]);
             }
         } else {
             $this->timeRemaining = $this->durasi;
@@ -48,6 +48,14 @@ class CardTimer extends Component
             redirect()->route('ujian.selesai', ['paket' => $this->paket->uuid, 'result' => $this->result->id]);
         }
     }
+    public function selesai()
+    {
+        // dd('asdsad');
+        $this->dispatch('selesai');
+        return redirect()->route('ujian.selesai', ['paket' => $this->paket->uuid, 'result' => $this->result->id]);
+    }
+
+
 
 
 

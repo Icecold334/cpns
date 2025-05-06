@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('img')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('password')->default('$2y$12$fjpcP5nPELyZ8ESKHXUd1.V.CjIzVAMrL0TVLGpGwmWIqa4Bb5NHW');
             $table->integer('role');
             $table->enum('gender', [0, 1]);
             $table->rememberToken();
