@@ -28,7 +28,7 @@
                 <div class="flex-1">
                     <h5 class="text-xl font-bold text-gray-900 dark:text-white">Paket Ujian Belum Dikerjakan</h5>
                     <p class="text-2xl font-semibold text-gray-700 dark:text-gray-200">
-                        {{ $pakets->count() - $results->count() }}
+                        {{ max(0, $pakets->count() - $results->count()) }}
                     </p>
                 </div>
                 <div

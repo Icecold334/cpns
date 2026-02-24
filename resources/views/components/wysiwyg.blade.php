@@ -12,6 +12,9 @@
             var editor = document.getElementById("trix-{{ $id }}");
             var contentInput = document.getElementById("content-{{ $id }}");
             var errorMessage = document.getElementById("error-message{{ $id }}");
+            editor.addEventListener("trix-file-accept", function(event) {
+                event.preventDefault();
+            });
 
             editor.addEventListener("trix-change", (event) => {
                 const document = event.target.editor.getDocument();

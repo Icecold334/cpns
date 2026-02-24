@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // Buat pengguna
-        Pengaturan::factory()->create(['nama' => '<p>AR-RAHMAN</p> <p class="text-sm">PHSYCO & ACADEMIC SCHOOL</p>', 'primary' => '#4e73df', 'judul' => 'Ini Judul', 'subjudul' => 'ini subjudul', 'notelp' => '085648785256', 'email' => 'email@email.com', 'alamat' => 'Jl. In aja dulu', 'deskripsi' => 'ini teks deskripsi']);
+        Pengaturan::factory()->create(['nama' => '<p>Examify</p>', 'primary' => '#4e73df', 'judul' => 'Ini Judul', 'subjudul' => 'ini subjudul', 'notelp' => '085648785256', 'email' => 'email@email.com', 'alamat' => 'Jl. In aja dulu', 'deskripsi' => 'ini teks deskripsi']);
         User::factory()->create(['name' => 'Admin', 'email' => 'admin@gmail.com', 'role' => 1, 'gender' => 0, 'password' => Hash::make('a'), 'email_verified_at' => now(),]);
         User::factory()->create(['name' => 'Guru', 'email' => 'guru@gmail.com', 'role' => 2, 'gender' => 0, 'password' => Hash::make('a'), 'email_verified_at' => now(),]);
         User::factory()->create(['name' => 'Siswa', 'email' => 'siswa@gmail.com', 'role' => 3, 'gender' => 0, 'password' => Hash::make('a'), 'email_verified_at' => now(),]);
